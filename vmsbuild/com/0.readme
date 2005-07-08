@@ -1,0 +1,4 @@
+@build
+@build extlib
+@build bldlib
+@build kitgen
