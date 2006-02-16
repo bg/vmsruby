@@ -24,8 +24,11 @@ $ CALL BUILD SOCKET		'phase' 'target' 'libroot'
 $ CALL BUILD NKF		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST 		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.MD5		'phase' 'target' 'libroot'
+$ CALL BUILD DIGEST.SHA1	'phase' 'target' 'libroot'
 $ CALL BUILD SDBM		'phase' 'target' 'libroot'
 $ CALL BUILD FCNTL		'phase' 'target'
+$! CALL BUILD DL			'phase' 'target' 'libroot'
+$ CALL BUILD STRINGIO		'phase' 'target' 'libroot'
 $ EXIT
 $
 $!
