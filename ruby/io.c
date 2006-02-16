@@ -12,10 +12,13 @@
 
 **********************************************************************/
 
+/* BG: 4-Feb-04: We need the Compaq C Extension version of fopen(),
+   so POSIX compatibility needs to be turned off for this module
 #if defined(__VMS)
 #define _XOPEN_SOURCE
 #define _POSIX_C_SOURCE 2
 #endif
+*/
 
 #include "ruby.h"
 #include "rubyio.h"
@@ -116,6 +119,10 @@ static int gets_lineno;
 static int init_p = 0, next_p = 0;
 static VALUE lineno = INT2FIX(0);
 
+#ifdef __VMS
+VALUE rb_VmsFileMode;
+#endif
+
 #ifdef _STDIO_USES_IOSTREAM  /* GNU libc */
 #  ifdef _IO_fpos_t
 #    define READ_DATA_PENDING(fp) ((fp)->_IO_read_ptr != (fp)->_IO_read_end)
@@ -141,7 +148,8 @@ static VALUE lineno = INT2FIX(0);
 #else
 /* requires systems own version of the ReadDataPending() */
 extern int ReadDataPending();
-#  define READ_DATA_PENDING(fp) (!feof(fp))
+#  define READ_DATA_PENDING(fp) (ReadDataPending(fp))
+/* #  define READ_DATA_PENDING(fp) (!feof(fp)) */
 #  define READ_DATA_BUFFERED(fp) 0
 #endif
 #ifndef READ_DATA_BUFFERED
@@ -1170,7 +1178,7 @@ appendline(fptr, delim, strp)
 
     do {
 #ifdef READ_DATA_PENDING_PTR
-	long pending = READ_DATA_PENDING_COUNT(f);
+        long pending = READ_DATA_PENDING_COUNT(f);
 	if (pending > 0) {
 	    const char *p = READ_DATA_PENDING_PTR(f);
 	    const char *e = memchr(p, delim, pending);
@@ -2436,8 +2444,23 @@ rb_fopen(fname, mode)
 {
     FILE *file;
 
+#ifdef __VMS
+    /* BG: 02-Feb-05: Support VMS file open modes to allow shared
+     * access. */
+    if (!NIL_P(rb_VmsFileMode) && (TYPE(rb_VmsFileMode) == T_STRING)) {
+       file = fopen(fname, mode, RSTRING(rb_VmsFileMode)->ptr);
+    }
+    else {
+       file = fopen(fname, mode);
+    }
+    rb_VmsFileMode = Qnil;
+#else
     file = fopen(fname, mode);
+#endif
     if (!file) {
+        /* BG: 02-Feb-05: Don't know what this is about.  Our workaround
+         * above only handles the first attempt.  I guess it should be
+         * factored out into a routine called there and here. */
 	if (errno == EMFILE || errno == ENFILE) {
 	    rb_gc();
 	    file = fopen(fname, mode);
@@ -4057,7 +4080,11 @@ next_argv()
 		    chmod(fn, st.st_mode);
 #endif
 		    if (st.st_uid!=st2.st_uid || st.st_gid!=st2.st_gid) {
+#ifdef HAVE_FCHOWN
 			fchown(fileno(fw), st.st_uid, st.st_gid);
+#else
+			chown(fn, st.st_uid, st.st_gid);
+#endif
 		    }
 #endif
 		    rb_stdout = prep_stdio(fw, FMODE_WRITABLE, rb_cFile);
@@ -5515,5 +5542,10 @@ Init_IO()
 #endif
 #ifdef O_SYNC
     rb_file_const("SYNC", INT2FIX(O_SYNC));
+#endif
+
+#ifdef __VMS
+    rb_VmsFileMode = Qnil;
+    rb_define_variable("$VMS_FILE_MODE",&rb_VmsFileMode);
 #endif
 }

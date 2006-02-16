@@ -1392,6 +1392,9 @@ esac
 RUBY_LIB_PATH="${RUBY_LIB_PREFIX}/${MAJOR}.${MINOR}"
 
 AC_ARG_WITH(sitedir,
+    vms)
+	AC_LIBOBJ([vms])
+	;;
 	    [  --with-sitedir=DIR      site libraries in DIR [PREFIX/lib/ruby/site_ruby]],
             [sitedir=$withval],
             [sitedir='${prefix}/lib/ruby/site_ruby'])

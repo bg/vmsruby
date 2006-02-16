@@ -63,6 +63,7 @@
 #define RUBY_PLATFORM     "unknown-vms"	/* unknown processor */
 #endif
 
+#define RUBY_SEARCH_PATH  "/RUBY_LIBROOT/site_ruby/dylib"
 #define RUBY_SITE_LIB2    "/RUBY_LIBROOT/site_ruby/" RUBY_PLATFORM
 #define RUBY_SITE_ARCHLIB "/RUBY_LIBROOT/site_ruby/" VMS_RUBY_STREAM "/" RUBY_PLATFORM
 #define RUBY_SITE_LIB     "/RUBY_LIBROOT/site_ruby"
@@ -87,12 +88,13 @@
 #define HAVE_SENDMSG 1
 #define HAVE_RECVMSG 1
 #define HAVE_GETNAMEINFO 1
-#define HAVE_INET_NTOP 1
-#define HAVE_INET_NTOA 1
-#define HAVE_INET_PTON 1
-#define HAVE_INET_ATON 1
+/* #define HAVE_INET_NTOP 1 */
+/* #define HAVE_INET_NTOA 1 */
+/* #define HAVE_INET_PTON 1 */
+/* #define HAVE_INET_ATON 1 */
 #define HAVE_GETSERVBYPORT 1
 #define HAVE_UNAME 1
+/* #define HAVE_FCHOWN 1 */
 /*
 #define HAVE_GETHOSTBYNAME2 1
 #define HAVE_GETADDRINFO 1

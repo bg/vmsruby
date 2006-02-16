@@ -1750,7 +1750,7 @@ rb_file_chown(obj, owner, group)
     o = NUM2INT(owner);
     g = NUM2INT(group);
     GetOpenFile(obj, fptr);
-#if defined(DJGPP) || defined(__CYGWIN32__) || defined(_WIN32) || defined(__EMX__)
+#if defined(DJGPP) || defined(__CYGWIN32__) || defined(_WIN32) || defined(__EMX__) || !defined(HAVE_FCHOWN)
     if (!fptr->path) return Qnil;
     if (chown(fptr->path, o, g) == -1)
 	rb_sys_fail(fptr->path);

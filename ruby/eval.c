@@ -10290,7 +10290,7 @@ rb_thread_schedule()
 	    }
 	    END_FOREACH_FROM(curr, th);
 	}
- 	if (select_timeout && n == 0) {
+        if (select_timeout && n == 0) {
  	    if (now < 0.0) now = timeofday();
  	    FOREACH_THREAD_FROM(curr, th) {
  		if (((th->wait_for&(WAIT_SELECT|WAIT_TIME)) == (WAIT_SELECT|WAIT_TIME)) &&
@@ -10543,6 +10543,7 @@ rb_thread_select(max, read, write, except, timeout)
 	    TRAP_BEG;
 	    n = select(max, read, write, except, tvp);
 	    TRAP_END;
+
 	    if (n < 0) {
 		switch (errno) {
 		  case EINTR:
