@@ -24,10 +24,21 @@
 !!!     03-SEP-03       BH / TH / TH   12=15647
 !!!     - Created.
 !!!
-!!!     ?INSTALL?	BH/?WT?/?QA?   12=15647
+!!!     02-Mar-05	BH / BH / BH   12=15647
 !!!     - Fix redirection problem where redirection op contains
 !!!       no spaces between op and operand. i.e. a>b
 !!!     - Remove CharNext macro.
+!!!
+!!!	?INSTALL?	BG /?WT?/?QA?	12=
+!!!	- Remove parsing of redir chars in the middle of an argument,
+!!!	  as it is not consistent with VMS perl's solution, and it
+!!!	  breaks expressions where an angle-bracket is part of the
+!!!	  argument (e.g. ruby -e "p 123; if (1>0)").
+!!!	  - This means that VMS ruby does not function the same as
+!!!	    win32 or Unix ruby, but that is not easily avoided, so
+!!!	    long as VMS Ruby parses argv[] instead of the whole
+!!!	    foreign command line, as it has know way of seeing whether
+!!!	    angle-brackets are enclosed in double-quotes or not.
 !!!
 !!!======
 !!!======
@@ -127,6 +138,13 @@ int getRedirection(int *arg_c, char ***arg_v)
          hasRedir = 1;
          *redirOpPos = '\0';
          redirOpPos = NULL;
+// The only way to fix these cases would be to switch from argv[]
+// parsing to lib$get_foreign() so we can avoid parsing the
+// redir characters when they are really parts of arguments
+// enclosed in double-quotes.  The argv[] arguments come in with
+// double-quotes already stripped by DCL, so there is no way to
+// make use of them to "protect" these special characters.
+/*
       } else if((redirOpPos=strchr(argPtr,'<'))) {
          direction |= REDIR_READ;
          input = redirOpPos+1;
@@ -154,6 +172,7 @@ int getRedirection(int *arg_c, char ***arg_v)
             }
          }
          hasRedir = 1;
+*/
       }
    }
    
