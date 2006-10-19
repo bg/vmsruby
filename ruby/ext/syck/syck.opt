@@ -1,0 +1,4 @@
+!
+! Link option for VMS port
+!
+SYMBOL_VECTOR=(Init_syck=PROCEDURE)
