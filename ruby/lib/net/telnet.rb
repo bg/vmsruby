@@ -16,6 +16,11 @@ require "English"
  
 module Net
 
+  MAX_READ=case PLATFORM
+    when /VMS/i then    1024
+    else           1024*1024
+  end
+
   #
   # == Net::Telnet
   #
@@ -546,12 +551,14 @@ module Net
       line = ''
       buf = ''
       rest = ''
-      until(prompt === line and not IO::select([@sock], nil, nil, waittime))
-        unless IO::select([@sock], nil, nil, time_out)
-          raise TimeoutError, "timed out while waiting for more data"
-        end
+      # BG> 3-Oct-2006 disable wait for select as this currently does
+      #   not work with VMS ruby.
+      until(prompt === line) # and not IO::select([@sock], nil, nil, waittime) 
+        #unless IO::select([@sock], nil, nil, time_out)
+        #  raise TimeoutError, "timed out while waiting for more data"
+        #end
         begin
-          c = @sock.sysread(1024 * 1024)
+          c = @sock.sysread(MAX_READ)
           @dumplog.log_dump('<', c) if @options.has_key?("Dump_log")
           if @options["Telnetmode"]
             c = rest + c
@@ -567,6 +574,7 @@ module Net
               rest = ''
             end
          else
+            p :NonTelnetMode
            # Not Telnetmode.
            #
            # We cannot use preprocess() on this data, because that
