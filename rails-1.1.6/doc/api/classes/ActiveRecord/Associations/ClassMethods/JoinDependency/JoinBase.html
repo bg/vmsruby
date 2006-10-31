@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::Associations::ClassMethods::JoinDependency::JoinBase</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::Associations::ClassMethods::JoinDependency::JoinBase</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../../files/vendor/rails/activerecord/lib/active_record/associations_rb.html">vendor/rails/activerecord/lib/active_record/associations.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000549">aliased_prefix</a></li>
+  <li><a href="#M000550">aliased_primary_key</a></li>
+  <li><a href="#M000551">aliased_table_name</a></li>
+  <li><a href="#M000552">column_names_with_alias</a></li>
+  <li><a href="#M000553">extract_record</a></li>
+  <li><a href="#M000555">instantiate</a></li>
+  <li><a href="#M000548">new</a></li>
+  <li><a href="#M000554">record_id</a></li>
+  </ul>
+
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>active_record</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>table_joins</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000548"></a><b>new</b>(active_record, joins = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000548_source')" id="l_M000548_source">show source</a> ]</p>
+  <div id="M000548_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1360</span>
+1360:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">active_record</span>, <span class="ruby-identifier">joins</span> = <span class="ruby-keyword kw">nil</span>)
+1361:               <span class="ruby-ivar">@active_record</span> = <span class="ruby-identifier">active_record</span>
+1362:               <span class="ruby-ivar">@cached_record</span> = {}
+1363:               <span class="ruby-ivar">@table_joins</span>   = <span class="ruby-identifier">joins</span>
+1364:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000549"></a><b>aliased_prefix</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000549_source')" id="l_M000549_source">show source</a> ]</p>
+  <div id="M000549_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1366</span>
+1366:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">aliased_prefix</span>
+1367:               <span class="ruby-value str">&quot;t0&quot;</span>
+1368:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000550"></a><b>aliased_primary_key</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000550_source')" id="l_M000550_source">show source</a> ]</p>
+  <div id="M000550_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1370</span>
+1370:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">aliased_primary_key</span>
+1371:               <span class="ruby-node">&quot;#{ aliased_prefix }_r0&quot;</span>
+1372:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000551"></a><b>aliased_table_name</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000551_source')" id="l_M000551_source">show source</a> ]</p>
+  <div id="M000551_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1374</span>
+1374:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">aliased_table_name</span>
+1375:               <span class="ruby-identifier">active_record</span>.<span class="ruby-identifier">table_name</span>
+1376:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000552"></a><b>column_names_with_alias</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000552_source')" id="l_M000552_source">show source</a> ]</p>
+  <div id="M000552_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1378</span>
+1378:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">column_names_with_alias</span>
+1379:               <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_names_with_alias</span>
+1380:                 <span class="ruby-ivar">@column_names_with_alias</span> = []
+1381:                 ([<span class="ruby-identifier">primary_key</span>] <span class="ruby-operator">+</span> (<span class="ruby-identifier">column_names</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">primary_key</span>])).<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column_name</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+1382:                   <span class="ruby-ivar">@column_names_with_alias</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">column_name</span>, <span class="ruby-node">&quot;#{ aliased_prefix }_r#{ i }&quot;</span>]
+1383:                 <span class="ruby-keyword kw">end</span>
+1384:               <span class="ruby-keyword kw">end</span>
+1385:               <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@column_names_with_alias</span>
+1386:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000553"></a><b>extract_record</b>(row)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000553_source')" id="l_M000553_source">show source</a> ]</p>
+  <div id="M000553_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1388</span>
+1388:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">extract_record</span>(<span class="ruby-identifier">row</span>)
+1389:               <span class="ruby-identifier">column_names_with_alias</span>.<span class="ruby-identifier">inject</span>({}){<span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, (<span class="ruby-identifier">cn</span>, <span class="ruby-identifier">an</span>)<span class="ruby-operator">|</span> <span class="ruby-identifier">record</span>[<span class="ruby-identifier">cn</span>] = <span class="ruby-identifier">row</span>[<span class="ruby-identifier">an</span>]; <span class="ruby-identifier">record</span>}
+1390:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000555"></a><b>instantiate</b>(row)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000555_source')" id="l_M000555_source">show source</a> ]</p>
+  <div id="M000555_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1396</span>
+1396:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">row</span>)
+1397:               <span class="ruby-ivar">@cached_record</span>[<span class="ruby-identifier">record_id</span>(<span class="ruby-identifier">row</span>)] <span class="ruby-operator">||=</span> <span class="ruby-identifier">active_record</span>.<span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">extract_record</span>(<span class="ruby-identifier">row</span>))
+1398:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000554"></a><b>record_id</b>(row)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000554_source')" id="l_M000554_source">show source</a> ]</p>
+  <div id="M000554_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1392</span>
+1392:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">record_id</span>(<span class="ruby-identifier">row</span>)
+1393:               <span class="ruby-identifier">row</span>[<span class="ruby-identifier">aliased_primary_key</span>]
+1394:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

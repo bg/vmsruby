@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveSupport::CoreExtensions::Hash::Keys</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveSupport::CoreExtensions::Hash::Keys</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activesupport/lib/active_support/core_ext/hash/keys_rb.html">vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000272">assert_valid_keys</a></li>
+  <li><a href="#M000266">stringify_keys</a></li>
+  <li><a href="#M000267">stringify_keys!</a></li>
+  <li><a href="#M000268">symbolize_keys</a></li>
+  <li><a href="#M000269">symbolize_keys!</a></li>
+  <li><a href="#M000270">to_options</a></li>
+  <li><a href="#M000271">to_options!</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000272"></a><b>assert_valid_keys</b>(*valid_keys)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000272_source')" id="l_M000272_source">show source</a> ]</p>
+  <div id="M000272_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb, line 46</span>
+46:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">assert_valid_keys</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">valid_keys</span>)
+47:           <span class="ruby-identifier">unknown_keys</span> = <span class="ruby-identifier">keys</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">valid_keys</span>].<span class="ruby-identifier">flatten</span>
+48:           <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Unknown key(s): #{unknown_keys.join(&quot;, &quot;)}&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">unknown_keys</span>.<span class="ruby-identifier">empty?</span>
+49:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000266"></a><b>stringify_keys</b>()
+  </div>
+  <div class="description">
+  <p>
+Return a new hash with all keys converted to strings.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000266_source')" id="l_M000266_source">show source</a> ]</p>
+  <div id="M000266_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb, line 6</span>
+ 6:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">stringify_keys</span>
+ 7:           <span class="ruby-identifier">inject</span>({}) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options</span>, (<span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span>)<span class="ruby-operator">|</span>
+ 8:             <span class="ruby-identifier">options</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">value</span>
+ 9:             <span class="ruby-identifier">options</span>
+10:           <span class="ruby-keyword kw">end</span>
+11:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000267"></a><b>stringify_keys!</b>()
+  </div>
+  <div class="description">
+  <p>
+Destructively convert all keys to strings.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000267_source')" id="l_M000267_source">show source</a> ]</p>
+  <div id="M000267_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb, line 14</span>
+14:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">stringify_keys!</span>
+15:           <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+16:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;String&quot;</span> <span class="ruby-comment cmt"># weird hack to make the tests run when string_ext_test.rb is also running</span>
+17:               <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">key</span>]
+18:               <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">key</span>)
+19:             <span class="ruby-keyword kw">end</span>
+20:           <span class="ruby-keyword kw">end</span>
+21:           <span class="ruby-keyword kw">self</span>
+22:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000268"></a><b>symbolize_keys</b>()
+  </div>
+  <div class="description">
+  <p>
+Return a new hash with all keys converted to symbols.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="Keys.html#M000270">to_options</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000268_source')" id="l_M000268_source">show source</a> ]</p>
+  <div id="M000268_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb, line 25</span>
+25:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">symbolize_keys</span>
+26:           <span class="ruby-identifier">inject</span>({}) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options</span>, (<span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span>)<span class="ruby-operator">|</span>
+27:             <span class="ruby-identifier">options</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">value</span>
+28:             <span class="ruby-identifier">options</span>
+29:           <span class="ruby-keyword kw">end</span>
+30:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000269"></a><b>symbolize_keys!</b>()
+  </div>
+  <div class="description">
+  <p>
+Destructively convert all keys to symbols.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="Keys.html#M000271">to_options!</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000269_source')" id="l_M000269_source">show source</a> ]</p>
+  <div id="M000269_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/hash/keys.rb, line 33</span>
+33:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">symbolize_keys!</span>
+34:           <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+35:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+36:               <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">key</span>]
+37:               <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">key</span>)
+38:             <span class="ruby-keyword kw">end</span>
+39:           <span class="ruby-keyword kw">end</span>
+40:           <span class="ruby-keyword kw">self</span>
+41:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000270"></a><b>to_options</b>()
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="Keys.html#M000268">symbolize_keys</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000271"></a><b>to_options!</b>()
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="Keys.html#M000269">symbolize_keys!</a>
+</p>
+  </div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

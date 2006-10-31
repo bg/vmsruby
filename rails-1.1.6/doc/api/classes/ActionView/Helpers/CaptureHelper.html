@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::CaptureHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::CaptureHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/capture_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/capture_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Capture lets you extract parts of code which can be used in other points of
+the template or even layout file.
+</p>
+<h2>Capturing a block into an instance variable</h2>
+<pre>
+  &lt;% @script = capture do %&gt;
+    [some html...]
+  &lt;% end %&gt;
+</pre>
+<h2>Add javascript to header using <a href="CaptureHelper.html#M000528">content_for</a></h2>
+<p>
+<a href="CaptureHelper.html#M000528">content_for</a>(&quot;name&quot;) is a
+wrapper for capture which will make the fragment available by name to a
+yielding layout or template.
+</p>
+<p>
+layout.rhtml:
+</p>
+<pre>
+  &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+      &lt;title&gt;layout with js&lt;/title&gt;
+      &lt;script type=&quot;text/javascript&quot;&gt;
+        &lt;%= yield :script %&gt;
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;%= yield %&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+</pre>
+<p>
+view.rhtml
+</p>
+<pre>
+  This page shows an alert box!
+
+  &lt;% content_for(&quot;script&quot;) do %&gt;
+    alert('hello world')
+  &lt;% end %&gt;
+
+  Normal view text
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000527">capture</a></li>
+  <li><a href="#M000528">content_for</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000527"></a><b>capture</b>(*args, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Capture allows you to extract a part of the template into an instance
+variable. You can use this instance variable anywhere in your templates and
+even in your layout.
+</p>
+<p>
+Example of capture being used in a .rhtml page:
+</p>
+<pre>
+  &lt;% @greeting = capture do %&gt;
+    Welcome To my shiny new web page!
+  &lt;% end %&gt;
+</pre>
+<p>
+Example of capture being used in a .rxml page:
+</p>
+<pre>
+  @greeting = capture do
+    'Welcome To my shiny new web page!'
+  end
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000527_source')" id="l_M000527_source">show source</a> ]</p>
+  <div id="M000527_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/capture_helper.rb, line 56</span>
+56:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">capture</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+57:         <span class="ruby-comment cmt"># execute the block</span>
+58:         <span class="ruby-keyword kw">begin</span>
+59:           <span class="ruby-identifier">buffer</span> = <span class="ruby-identifier">eval</span>(<span class="ruby-value str">&quot;_erbout&quot;</span>, <span class="ruby-identifier">block</span>.<span class="ruby-identifier">binding</span>)
+60:         <span class="ruby-keyword kw">rescue</span>
+61:           <span class="ruby-identifier">buffer</span> = <span class="ruby-keyword kw">nil</span>
+62:         <span class="ruby-keyword kw">end</span>
+63:         
+64:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">buffer</span>.<span class="ruby-identifier">nil?</span>
+65:           <span class="ruby-identifier">capture_block</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+66:         <span class="ruby-keyword kw">else</span>
+67:           <span class="ruby-identifier">capture_erb_with_buffer</span>(<span class="ruby-identifier">buffer</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+68:         <span class="ruby-keyword kw">end</span>
+69:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000528"></a><b>content_for</b>(name, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Calling <a href="CaptureHelper.html#M000528">content_for</a> stores the
+block of markup for later use. Subsequently, you can make calls to it by
+name with <tt>yield</tt> in another template or in the layout.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  &lt;% content_for(&quot;header&quot;) do %&gt;
+    alert('hello world')
+  &lt;% end %&gt;
+</pre>
+<p>
+You can use yield :header anywhere in your templates.
+</p>
+<pre>
+  &lt;%= yield :header %&gt;
+</pre>
+<p>
+NOTE: Beware that <a href="CaptureHelper.html#M000528">content_for</a> is
+ignored in caches. So you shouldn&#8217;t use it for elements that are
+going to be fragment cached.
+</p>
+<p>
+The deprecated way of accessing a <a
+href="CaptureHelper.html#M000528">content_for</a> block was to use a
+instance variable named @@content_for_#{name_of_the_content_block}@. So
+<tt>&lt;%= <a
+href="CaptureHelper.html#M000528">content_for</a>(&#8216;footer&#8217;)
+%&gt;</tt> would be avaiable as <tt>&lt;%= @content_for_footer %&gt;</tt>.
+The preferred notation now is <tt>&lt;%= yield :footer %&gt;</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000528_source')" id="l_M000528_source">show source</a> ]</p>
+  <div id="M000528_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/capture_helper.rb, line 92</span>
+92:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">content_for</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+93:         <span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;@content_for_#{name} = (@content_for_#{name} || '') + capture(&amp;block)&quot;</span>
+94:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

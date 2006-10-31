@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionWebService::API::Method</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionWebService::API::Method</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionwebservice/lib/action_web_service/api_rb.html">vendor/rails/actionwebservice/lib/action_web_service/api.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Represents an API method and its associated metadata, and provides
+functionality to assist in commonly performed API method tasks.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000364">[]</a></li>
+  <li><a href="#M000360">cast_expects</a></li>
+  <li><a href="#M000361">cast_returns</a></li>
+  <li><a href="#M000362">expects_index_of</a></li>
+  <li><a href="#M000363">expects_to_hash</a></li>
+  <li><a href="#M000358">new</a></li>
+  <li><a href="#M000359">param_names</a></li>
+  <li><a href="#M000365">to_s</a></li>
+  </ul>
+
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>expects</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>name</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>public_name</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>returns</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000358"></a><b>new</b>(name, public_name, expects, returns)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000358_source')" id="l_M000358_source">show source</a> ]</p>
+  <div id="M000358_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 172</span>
+172:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">public_name</span>, <span class="ruby-identifier">expects</span>, <span class="ruby-identifier">returns</span>)
+173:         <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
+174:         <span class="ruby-ivar">@public_name</span> = <span class="ruby-identifier">public_name</span>
+175:         <span class="ruby-ivar">@expects</span> = <span class="ruby-identifier">expects</span>
+176:         <span class="ruby-ivar">@returns</span> = <span class="ruby-identifier">returns</span>
+177:         <span class="ruby-ivar">@caster</span> = <span class="ruby-constant">ActionWebService</span><span class="ruby-operator">::</span><span class="ruby-constant">Casting</span><span class="ruby-operator">::</span><span class="ruby-constant">BaseCaster</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>)
+178:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000364"></a><b>[]</b>(sig_type)
+  </div>
+  <div class="description">
+  <p>
+Backwards compatibility with previous API
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000364_source')" id="l_M000364_source">show source</a> ]</p>
+  <div id="M000364_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 216</span>
+216:       <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">sig_type</span>)
+217:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">sig_type</span>
+218:         <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:expects</span>
+219:           <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">compat_signature_entry</span>(<span class="ruby-identifier">x</span>)}
+220:         <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:returns</span>
+221:           <span class="ruby-ivar">@returns</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">compat_signature_entry</span>(<span class="ruby-identifier">x</span>)}
+222:         <span class="ruby-keyword kw">end</span>
+223:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000360"></a><b>cast_expects</b>(params)
+  </div>
+  <div class="description">
+  <p>
+Casts a set of Ruby values into the expected Ruby values
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000360_source')" id="l_M000360_source">show source</a> ]</p>
+  <div id="M000360_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 187</span>
+187:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cast_expects</span>(<span class="ruby-identifier">params</span>)
+188:         <span class="ruby-ivar">@caster</span>.<span class="ruby-identifier">cast_expects</span>(<span class="ruby-identifier">params</span>)
+189:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000361"></a><b>cast_returns</b>(return_value)
+  </div>
+  <div class="description">
+  <p>
+Cast a Ruby return value into the expected Ruby value
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000361_source')" id="l_M000361_source">show source</a> ]</p>
+  <div id="M000361_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 192</span>
+192:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cast_returns</span>(<span class="ruby-identifier">return_value</span>)
+193:         <span class="ruby-ivar">@caster</span>.<span class="ruby-identifier">cast_returns</span>(<span class="ruby-identifier">return_value</span>)
+194:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000362"></a><b>expects_index_of</b>(param_name)
+  </div>
+  <div class="description">
+  <p>
+Returns the index of the first expected parameter with the given name
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000362_source')" id="l_M000362_source">show source</a> ]</p>
+  <div id="M000362_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 198</span>
+198:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">expects_index_of</span>(<span class="ruby-identifier">param_name</span>)
+199:         <span class="ruby-keyword kw">return</span> <span class="ruby-value">-1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">nil?</span>
+200:         (<span class="ruby-value">0</span><span class="ruby-operator">..</span>(<span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+201:           <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@expects</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">param_name</span>.<span class="ruby-identifier">to_s</span>
+202:         <span class="ruby-keyword kw">end</span>
+203:         <span class="ruby-value">-1</span>
+204:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000363"></a><b>expects_to_hash</b>(params)
+  </div>
+  <div class="description">
+  <p>
+Returns a hash keyed by parameter name for the given parameter list
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000363_source')" id="l_M000363_source">show source</a> ]</p>
+  <div id="M000363_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 208</span>
+208:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">expects_to_hash</span>(<span class="ruby-identifier">params</span>)
+209:         <span class="ruby-keyword kw">return</span> {} <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">nil?</span>
+210:         <span class="ruby-identifier">h</span> = {}
+211:         <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">zip</span>(<span class="ruby-identifier">params</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">type</span>, <span class="ruby-identifier">param</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">param</span> }
+212:         <span class="ruby-identifier">h</span>
+213:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000359"></a><b>param_names</b>()
+  </div>
+  <div class="description">
+  <p>
+The list of parameter names for this method
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000359_source')" id="l_M000359_source">show source</a> ]</p>
+  <div id="M000359_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 181</span>
+181:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">param_names</span>
+182:         <span class="ruby-keyword kw">return</span> [] <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@expects</span>
+183:         <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">type</span><span class="ruby-operator">|</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">name</span> }
+184:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000365"></a><b>to_s</b>()
+  </div>
+  <div class="description">
+  <p>
+String representation of this method
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000365_source')" id="l_M000365_source">show source</a> ]</p>
+  <div id="M000365_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/api.rb, line 226</span>
+226:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+227:         <span class="ruby-identifier">fqn</span> = <span class="ruby-value str">&quot;&quot;</span>
+228:         <span class="ruby-identifier">fqn</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-ivar">@returns</span> <span class="ruby-operator">?</span> (<span class="ruby-ivar">@returns</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">human_name</span>(<span class="ruby-keyword kw">false</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; &quot;</span>) <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;void &quot;</span>)
+229:         <span class="ruby-identifier">fqn</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{@public_name}(&quot;</span>
+230:         <span class="ruby-identifier">fqn</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@expects</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">human_name</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;, &quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@expects</span>
+231:         <span class="ruby-identifier">fqn</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;)&quot;</span>
+232:         <span class="ruby-identifier">fqn</span>
+233:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

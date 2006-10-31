@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveRecord::Acts::Tree::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveRecord::Acts::Tree::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activerecord/lib/active_record/acts/tree_rb.html">vendor/rails/activerecord/lib/active_record/acts/tree.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Specify this act if you want to model a tree structure by providing a
+parent association and a children association. This act requires that you
+have a foreign key column, which by default is called parent_id.
+</p>
+<pre>
+  class Category &lt; ActiveRecord::Base
+    acts_as_tree :order =&gt; &quot;name&quot;
+  end
+
+  Example :
+  root
+   \_ child1
+        \_ subchild1
+        \_ subchild2
+
+  root      = Category.create(&quot;name&quot; =&gt; &quot;root&quot;)
+  child1    = root.children.create(&quot;name&quot; =&gt; &quot;child1&quot;)
+  subchild1 = child1.children.create(&quot;name&quot; =&gt; &quot;subchild1&quot;)
+
+  root.parent   # =&gt; nil
+  child1.parent # =&gt; root
+  root.children # =&gt; [child1]
+  root.children.first.children.first # =&gt; subchild1
+</pre>
+<p>
+In addition to the parent and children associations, the following instance
+methods are added to the class after specifying the act:
+</p>
+<ul>
+<li>siblings : Returns all the children of the parent, excluding the current
+node ([ subchild2 ] when called from subchild1)
+
+</li>
+<li>self_and_siblings : Returns all the children of the parent, including the
+current node ([ subchild1, subchild2 ] when called from subchild1)
+
+</li>
+<li>ancestors : Returns all the ancestors of the current node ([child1, root]
+when called from subchild2)
+
+</li>
+<li>root : Returns the root of the current node (root when called from
+subchild2)
+
+</li>
+</ul>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000566">acts_as_tree</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000566"></a><b>acts_as_tree</b>(options = {})
+  </div>
+  <div class="description">
+  <p>
+Configuration options are:
+</p>
+<ul>
+<li><tt>foreign_key</tt> - specifies the column name to use for tracking of the
+tree (default: parent_id)
+
+</li>
+<li><tt>order</tt> - makes it possible to sort the children according to this
+SQL snippet.
+
+</li>
+<li><tt>counter_cache</tt> - keeps a count in a children_count column if set to
+true (default: false).
+
+</li>
+</ul>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000566_source')" id="l_M000566_source">show source</a> ]</p>
+  <div id="M000566_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/tree.rb, line 43</span>
+43:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">acts_as_tree</span>(<span class="ruby-identifier">options</span> = {})
+44:           <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:foreign_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;parent_id&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">:counter_cache</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span> }
+45:           <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+46: 
+47:           <span class="ruby-identifier">belongs_to</span> <span class="ruby-identifier">:parent</span>, <span class="ruby-identifier">:class_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:foreign_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:foreign_key</span>], <span class="ruby-identifier">:counter_cache</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:counter_cache</span>]
+48:           <span class="ruby-identifier">has_many</span> <span class="ruby-identifier">:children</span>, <span class="ruby-identifier">:class_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:foreign_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:foreign_key</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:order</span>], <span class="ruby-identifier">:dependent</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:destroy</span>
+49: 
+50:           <span class="ruby-identifier">class_eval</span> <span class="ruby-value str">&quot;include ActiveRecord::Acts::Tree::InstanceMethods\n\ndef self.roots\nfind(:all, :conditions =&gt; \&quot;\#{configuration[:foreign_key]} IS NULL\&quot;, :order =&gt; \#{configuration[:order].nil? ? \&quot;nil\&quot; : %Q{\&quot;\#{configuration[:order]}\&quot;}})\nend\n\ndef self.root\nfind(:first, :conditions =&gt; \&quot;\#{configuration[:foreign_key]} IS NULL\&quot;, :order =&gt; \#{configuration[:order].nil? ? \&quot;nil\&quot; : %Q{\&quot;\#{configuration[:order]}\&quot;}})\nend\n&quot;</span>
+51:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

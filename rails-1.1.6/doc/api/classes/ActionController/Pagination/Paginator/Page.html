@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionController::Pagination::Paginator::Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionController::Pagination::Paginator::Page</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/actionpack/lib/action_controller/pagination_rb.html">vendor/rails/actionpack/lib/action_controller/pagination.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+A class representing a single page in a paginator.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000123">&lt;=&gt;</a></li>
+  <li><a href="#M000122">==</a></li>
+  <li><a href="#M000127">first?</a></li>
+  <li><a href="#M000125">first_item</a></li>
+  <li><a href="#M000128">last?</a></li>
+  <li><a href="#M000126">last_item</a></li>
+  <li><a href="#M000121">new</a></li>
+  <li><a href="#M000130">next</a></li>
+  <li><a href="#M000124">offset</a></li>
+  <li><a href="#M000129">previous</a></li>
+  <li><a href="#M000132">to_sql</a></li>
+  <li><a href="#M000131">window</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li>Comparable</li>
+</ul>
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>number</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>paginator</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000121"></a><b>new</b>(paginator, number)
+  </div>
+  <div class="description">
+  <p>
+Creates a new <a href="Page.html">Page</a> for the given <tt>paginator</tt>
+with the index <tt>number</tt>. If <tt>number</tt> is not in the range of
+valid page numbers or is not a number at all, it defaults to 1.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000121_source')" id="l_M000121_source">show source</a> ]</p>
+  <div id="M000121_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 290</span>
+290:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">paginator</span>, <span class="ruby-identifier">number</span>)
+291:           <span class="ruby-ivar">@paginator</span> = <span class="ruby-identifier">paginator</span>
+292:           <span class="ruby-ivar">@number</span> = <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_i</span>
+293:           <span class="ruby-ivar">@number</span> = <span class="ruby-value">1</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">has_page_number?</span> <span class="ruby-ivar">@number</span>
+294:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000123"></a><b>&lt;=&gt;</b>(page)
+  </div>
+  <div class="description">
+  <p>
+Compares two <a href="Page.html">Page</a> objects and returns -1 if the
+left-hand page comes before the right-hand page, 0 if the pages are equal,
+and 1 if the left-hand page comes after the right-hand page. Raises
+ArgumentError if the pages do not belong to the same <a
+href="../Paginator.html">Paginator</a> object.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000123_source')" id="l_M000123_source">show source</a> ]</p>
+  <div id="M000123_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 311</span>
+311:         <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">page</span>)
+312:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@paginator</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">paginator</span>
+313:           <span class="ruby-ivar">@number</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">number</span>
+314:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000122"></a><b>==</b>(page)
+  </div>
+  <div class="description">
+  <p>
+Compares two <a href="Page.html">Page</a> objects and returns true when
+they represent the same page (i.e., their paginators are the same and they
+have the same page number).
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000122_source')" id="l_M000122_source">show source</a> ]</p>
+  <div id="M000122_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 301</span>
+301:         <span class="ruby-keyword kw">def</span> <span class="ruby-operator">==</span>(<span class="ruby-identifier">page</span>)
+302:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">nil?</span>
+303:           <span class="ruby-ivar">@paginator</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">paginator</span> <span class="ruby-keyword kw">and</span> 
+304:             <span class="ruby-ivar">@number</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">number</span>
+305:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000127"></a><b>first?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true if this page is the first page in the paginator.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000127_source')" id="l_M000127_source">show source</a> ]</p>
+  <div id="M000127_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 332</span>
+332:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first?</span>
+333:           <span class="ruby-keyword kw">self</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">first</span>
+334:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000125"></a><b>first_item</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the number of the first item displayed.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000125_source')" id="l_M000125_source">show source</a> ]</p>
+  <div id="M000125_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 322</span>
+322:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first_item</span>
+323:           <span class="ruby-identifier">offset</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+324:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000128"></a><b>last?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true if this page is the last page in the paginator.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000128_source')" id="l_M000128_source">show source</a> ]</p>
+  <div id="M000128_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 337</span>
+337:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last?</span>
+338:           <span class="ruby-keyword kw">self</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">last</span>
+339:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000126"></a><b>last_item</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the number of the last item displayed.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000126_source')" id="l_M000126_source">show source</a> ]</p>
+  <div id="M000126_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 327</span>
+327:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_item</span>
+328:           [<span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">items_per_page</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@number</span>, <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">item_count</span>].<span class="ruby-identifier">min</span>
+329:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000130"></a><b>next</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a new <a href="Page.html">Page</a> object representing the page
+just after this page, or nil if this is the last page.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000130_source')" id="l_M000130_source">show source</a> ]</p>
+  <div id="M000130_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 349</span>
+349:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">next</span>
+350:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">last?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">else</span> <span class="ruby-ivar">@paginator</span>[<span class="ruby-ivar">@number</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>] <span class="ruby-keyword kw">end</span>
+351:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000124"></a><b>offset</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the item offset for the first item in this page.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000124_source')" id="l_M000124_source">show source</a> ]</p>
+  <div id="M000124_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 317</span>
+317:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">offset</span>
+318:           <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">items_per_page</span> <span class="ruby-operator">*</span> (<span class="ruby-ivar">@number</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+319:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000129"></a><b>previous</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a new <a href="Page.html">Page</a> object representing the page
+just before this page, or nil if this is the first page.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000129_source')" id="l_M000129_source">show source</a> ]</p>
+  <div id="M000129_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 343</span>
+343:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">previous</span>
+344:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">first?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">else</span> <span class="ruby-ivar">@paginator</span>[<span class="ruby-ivar">@number</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>] <span class="ruby-keyword kw">end</span>
+345:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000132"></a><b>to_sql</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the limit/offset array for this page.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000132_source')" id="l_M000132_source">show source</a> ]</p>
+  <div id="M000132_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 360</span>
+360:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_sql</span>
+361:           [<span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">items_per_page</span>, <span class="ruby-identifier">offset</span>]
+362:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000131"></a><b>window</b>(padding=2)
+  </div>
+  <div class="description">
+  <p>
+Returns a new <a href="Window.html">Window</a> object for this page with
+the specified <tt>padding</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000131_source')" id="l_M000131_source">show source</a> ]</p>
+  <div id="M000131_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 355</span>
+355:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">window</span>(<span class="ruby-identifier">padding</span>=<span class="ruby-value">2</span>)
+356:           <span class="ruby-constant">Window</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">padding</span>)
+357:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

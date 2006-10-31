@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionWebService::Container::Delegated::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionWebService::Container::Delegated::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/actionwebservice/lib/action_web_service/container/delegated_container_rb.html">vendor/rails/actionwebservice/lib/action_web_service/container/delegated_container.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000351">has_web_service?</a></li>
+  <li><a href="#M000350">web_service</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000351"></a><b>has_web_service?</b>(name)
+  </div>
+  <div class="description">
+  <p>
+Whether this service contains a service with the given <tt>name</tt>
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000351_source')" id="l_M000351_source">show source</a> ]</p>
+  <div id="M000351_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/container/delegated_container.rb, line 55</span>
+55:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">has_web_service?</span>(<span class="ruby-identifier">name</span>)
+56:           <span class="ruby-identifier">web_services</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>)
+57:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000350"></a><b>web_service</b>(name, object=nil, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Declares a web service that will provide access to the API of the given
+<tt>object</tt>. <tt>object</tt> must be an <a
+href="../../Base.html">ActionWebService::Base</a> derivative.
+</p>
+<p>
+Web service object creation can either be <em>immediate</em>, where the
+object instance is given at class definition time, or <em>deferred</em>,
+where object instantiation is delayed until request time.
+</p>
+<h4>Immediate web service object example</h4>
+<pre>
+  class ApiController &lt; ApplicationController
+    web_service_dispatching_mode :delegated
+
+    web_service :person, PersonService.new
+  end
+</pre>
+<p>
+For deferred instantiation, a block should be given instead of an object
+instance. This block will be executed in controller instance context, so it
+can rely on controller instance variables being present.
+</p>
+<h4>Deferred web service object example</h4>
+<pre>
+  class ApiController &lt; ApplicationController
+    web_service_dispatching_mode :delegated
+
+    web_service(:person) { PersonService.new(request.env) }
+  end
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000350_source')" id="l_M000350_source">show source</a> ]</p>
+  <div id="M000350_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/container/delegated_container.rb, line 40</span>
+40:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">web_service</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">object</span>=<span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+41:           <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">object</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">block_given?</span>) <span class="ruby-operator">||</span> (<span class="ruby-identifier">object</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">nil?</span>)
+42:             <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ContainerError</span>, <span class="ruby-value str">&quot;either service, or a block must be given&quot;</span>)
+43:           <span class="ruby-keyword kw">end</span>
+44:           <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>
+45:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+46:             <span class="ruby-identifier">info</span> = { <span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span> } }
+47:           <span class="ruby-keyword kw">else</span>
+48:             <span class="ruby-identifier">info</span> = { <span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">object</span> } }
+49:           <span class="ruby-keyword kw">end</span>
+50:           <span class="ruby-identifier">write_inheritable_hash</span>(<span class="ruby-value str">&quot;web_services&quot;</span>, <span class="ruby-identifier">info</span>)
+51:           <span class="ruby-identifier">call_web_service_definition_callbacks</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">info</span>)
+52:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

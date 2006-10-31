@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionWebService::Invocation::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionWebService::Invocation::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionwebservice/lib/action_web_service/invocation_rb.html">vendor/rails/actionwebservice/lib/action_web_service/invocation.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Invocation interceptors provide a means to execute custom code before and
+after method invocations on <a
+href="../Base.html">ActionWebService::Base</a> objects.
+</p>
+<p>
+When running in <em>Direct</em> dispatching mode, ActionController filters
+should be used for this functionality instead.
+</p>
+<p>
+The semantics of invocation interceptors are the same as ActionController
+filters, and accept the same parameters and options.
+</p>
+<p>
+A <em>before</em> interceptor can also cancel execution by returning
+<tt>false</tt>, or returning a <tt>[false, &quot;cancel reason&quot;]</tt>
+array if it wishes to supply a reason for canceling the request.
+</p>
+<h3>Example</h3>
+<pre>
+  class CustomService &lt; ActionWebService::Base
+    before_invocation :intercept_add, :only =&gt; [:add]
+
+    def add(a, b)
+      a + b
+    end
+
+    private
+      def intercept_add
+        return [false, &quot;permission denied&quot;] # cancel it
+      end
+  end
+</pre>
+<p>
+Options:
+</p>
+<dl>
+<dt><tt>:except</tt></dt><dd>A list of methods for which the interceptor will NOT be called
+
+</dd>
+<dt><tt>:only</tt></dt><dd>A list of methods for which the interceptor WILL be called
+
+</dd>
+</dl>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000372">after_invocation</a></li>
+  <li><a href="#M000370">append_after_invocation</a></li>
+  <li><a href="#M000367">append_before_invocation</a></li>
+  <li><a href="#M000369">before_invocation</a></li>
+  <li><a href="#M000371">prepend_after_invocation</a></li>
+  <li><a href="#M000368">prepend_before_invocation</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000372"></a><b>after_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="ClassMethods.html#M000370">append_after_invocation</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000370"></a><b>append_after_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Appends the given <tt>interceptors</tt> to be called <em>after</em> method
+invocation.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="ClassMethods.html#M000372">after_invocation</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000370_source')" id="l_M000370_source">show source</a> ]</p>
+  <div id="M000370_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/invocation.rb, line 66</span>
+66:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">append_after_invocation</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">interceptors</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+67:         <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">extract_conditions!</span>(<span class="ruby-identifier">interceptors</span>)
+68:         <span class="ruby-identifier">interceptors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+69:         <span class="ruby-identifier">add_interception_conditions</span>(<span class="ruby-identifier">interceptors</span>, <span class="ruby-identifier">conditions</span>)
+70:         <span class="ruby-identifier">append_interceptors_to_chain</span>(<span class="ruby-value str">&quot;after&quot;</span>, <span class="ruby-identifier">interceptors</span>)
+71:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000367"></a><b>append_before_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Appends the given <tt>interceptors</tt> to be called <em>before</em> method
+invocation.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="ClassMethods.html#M000369">before_invocation</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000367_source')" id="l_M000367_source">show source</a> ]</p>
+  <div id="M000367_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/invocation.rb, line 46</span>
+46:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">append_before_invocation</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">interceptors</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+47:         <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">extract_conditions!</span>(<span class="ruby-identifier">interceptors</span>)
+48:         <span class="ruby-identifier">interceptors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+49:         <span class="ruby-identifier">add_interception_conditions</span>(<span class="ruby-identifier">interceptors</span>, <span class="ruby-identifier">conditions</span>)
+50:         <span class="ruby-identifier">append_interceptors_to_chain</span>(<span class="ruby-value str">&quot;before&quot;</span>, <span class="ruby-identifier">interceptors</span>)
+51:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000369"></a><b>before_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="ClassMethods.html#M000367">append_before_invocation</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000371"></a><b>prepend_after_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Prepends the given <tt>interceptors</tt> to be called <em>after</em> method
+invocation.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000371_source')" id="l_M000371_source">show source</a> ]</p>
+  <div id="M000371_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/invocation.rb, line 75</span>
+75:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">prepend_after_invocation</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">interceptors</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+76:         <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">extract_conditions!</span>(<span class="ruby-identifier">interceptors</span>)
+77:         <span class="ruby-identifier">interceptors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+78:         <span class="ruby-identifier">add_interception_conditions</span>(<span class="ruby-identifier">interceptors</span>, <span class="ruby-identifier">conditions</span>)
+79:         <span class="ruby-identifier">prepend_interceptors_to_chain</span>(<span class="ruby-value str">&quot;after&quot;</span>, <span class="ruby-identifier">interceptors</span>)
+80:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000368"></a><b>prepend_before_invocation</b>(*interceptors, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Prepends the given <tt>interceptors</tt> to be called <em>before</em>
+method invocation.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000368_source')" id="l_M000368_source">show source</a> ]</p>
+  <div id="M000368_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/invocation.rb, line 55</span>
+55:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">prepend_before_invocation</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">interceptors</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+56:         <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">extract_conditions!</span>(<span class="ruby-identifier">interceptors</span>)
+57:         <span class="ruby-identifier">interceptors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+58:         <span class="ruby-identifier">add_interception_conditions</span>(<span class="ruby-identifier">interceptors</span>, <span class="ruby-identifier">conditions</span>)
+59:         <span class="ruby-identifier">prepend_interceptors_to_chain</span>(<span class="ruby-value str">&quot;before&quot;</span>, <span class="ruby-identifier">interceptors</span>)
+60:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

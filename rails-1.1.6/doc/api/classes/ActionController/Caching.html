@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Caching</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Caching</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionpack/lib/action_controller/caching_rb.html">vendor/rails/actionpack/lib/action_controller/caching.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+<a href="Caching.html">Caching</a> is a cheap way of speeding up slow
+applications by keeping the result of calculations, renderings, and
+database calls around for subsequent requests. Action Controller affords
+you three approaches in varying levels of granularity: Page, Action,
+Fragment.
+</p>
+<p>
+You can read more about each approach and the sweeping assistance by
+clicking the modules below.
+</p>
+<p>
+Note: To turn off all caching and sweeping, set Base.perform_caching =
+false.
+</p>
+</div>
+
+
+
+
+
+
+  <div class="sectiontitle">Classes and Modules</div>
+  Module <a href="Caching/Actions.html" class="link">ActionController::Caching::Actions</a><br />
+Module <a href="Caching/Fragments.html" class="link">ActionController::Caching::Fragments</a><br />
+Module <a href="Caching/Pages.html" class="link">ActionController::Caching::Pages</a><br />
+Module <a href="Caching/Sweeping.html" class="link">ActionController::Caching::Sweeping</a><br />
+
+
+
+
+</div>
+
+  </div>
+
+    </body>
+</html>

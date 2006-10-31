@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Flash</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Flash</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionpack/lib/action_controller/flash_rb.html">vendor/rails/actionpack/lib/action_controller/flash.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+The flash provides a way to pass temporary objects between actions.
+Anything you place in the flash will be exposed to the very next action and
+then cleared out. This is a great way of doing notices and alerts, such as
+a create action that sets <tt>flash[:notice] = &quot;Successfully
+created&quot;</tt> before redirecting to a display action that can then
+expose the flash to its template. Actually, that exposure is automatically
+done. Example:
+</p>
+<pre>
+  class WeblogController &lt; ActionController::Base
+    def create
+      # save post
+      flash[:notice] = &quot;Successfully created post&quot;
+      redirect_to :action =&gt; &quot;display&quot;, :params =&gt; { :id =&gt; post.id }
+    end
+
+    def display
+      # doesn't need to assign the flash notice to the template, that's done automatically
+    end
+  end
+
+  display.rhtml
+    &lt;% if @flash[:notice] %&gt;&lt;div class=&quot;notice&quot;&gt;&lt;%= @flash[:notice] %&gt;&lt;/div&gt;&lt;% end %&gt;
+</pre>
+<p>
+This example just places a string in the flash, but you can put any object
+in there. And of course, you can put as many as you like at a time too.
+Just remember: They&#8216;ll be gone by the time the next action has been
+performed.
+</p>
+<p>
+See docs on the <a href="Flash/FlashHash.html">FlashHash</a> class for more
+details about the flash.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000141">included</a></li>
+  </ul>
+
+
+
+  <div class="sectiontitle">Classes and Modules</div>
+  Class <a href="Flash/FlashHash.html" class="link">ActionController::Flash::FlashHash</a><br />
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000141"></a><b>included</b>(base)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000141_source')" id="l_M000141_source">show source</a> ]</p>
+  <div id="M000141_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/flash.rb, line 27</span>
+27:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">included</span>(<span class="ruby-identifier">base</span>)
+28:       <span class="ruby-identifier">base</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">:include</span>, <span class="ruby-constant">InstanceMethods</span>
+29: 
+30:       <span class="ruby-identifier">base</span>.<span class="ruby-identifier">class_eval</span> <span class="ruby-keyword kw">do</span>
+31:         <span class="ruby-identifier">alias_method</span> <span class="ruby-identifier">:assign_shortcuts_without_flash</span>, <span class="ruby-identifier">:assign_shortcuts</span>
+32:         <span class="ruby-identifier">alias_method</span> <span class="ruby-identifier">:assign_shortcuts</span>, <span class="ruby-identifier">:assign_shortcuts_with_flash</span>
+33: 
+34:         <span class="ruby-identifier">alias_method</span> <span class="ruby-identifier">:process_cleanup_without_flash</span>, <span class="ruby-identifier">:process_cleanup</span>
+35:         <span class="ruby-identifier">alias_method</span> <span class="ruby-identifier">:process_cleanup</span>, <span class="ruby-identifier">:process_cleanup_with_flash</span>
+36:       <span class="ruby-keyword kw">end</span>
+37:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

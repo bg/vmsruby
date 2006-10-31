@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionController::IntegrationTest</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionController::IntegrationTest</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionpack/lib/action_controller/integration_rb.html">vendor/rails/actionpack/lib/action_controller/integration.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Test::Unit::TestCase
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+An <a href="IntegrationTest.html">IntegrationTest</a> is one that spans
+multiple controllers and actions, tying them all together to ensure they
+work together as expected. It tests more completely than either unit or
+functional tests do, exercising the entire stack, from the dispatcher to
+the database.
+</p>
+<p>
+At its simplest, you simply extend <a
+href="IntegrationTest.html">IntegrationTest</a> and write your tests using
+the get/post methods:
+</p>
+<pre>
+  require &quot;#{File.dirname(__FILE__)}/test_helper&quot;
+
+  class ExampleTest &lt; ActionController::IntegrationTest
+    fixtures :people
+
+    def test_login
+      # get the login page
+      get &quot;/login&quot;
+      assert_equal 200, status
+
+      # post the login and follow through to the home page
+      post &quot;/login&quot;, :username =&gt; people(:jamis).username,
+        :password =&gt; people(:jamis).password
+      follow_redirect!
+      assert_equal 200, status
+      assert_equal &quot;/home&quot;, path
+    end
+  end
+</pre>
+<p>
+However, you can also have multiple session instances open per test, and
+even extend those instances with assertions and methods to create a very
+powerful testing DSL that is specific for your application. You can even
+reference any named routes you happen to have defined!
+</p>
+<pre>
+  require &quot;#{File.dirname(__FILE__)}/test_helper&quot;
+
+  class AdvancedTest &lt; ActionController::IntegrationTest
+    fixtures :people, :rooms
+
+    def test_login_and_speak
+      jamis, david = login(:jamis), login(:david)
+      room = rooms(:office)
+
+      jamis.enter(room)
+      jamis.speak(room, &quot;anybody home?&quot;)
+
+      david.enter(room)
+      david.speak(room, &quot;hello!&quot;)
+    end
+
+    private
+
+      module CustomAssertions
+        def enter(room)
+          # reference a named route, for maximum internal consistency!
+          get(room_url(:id =&gt; room.id))
+          assert(...)
+          ...
+        end
+
+        def speak(room, message)
+          xml_http_request &quot;/say/#{room.id}&quot;, :message =&gt; message
+          assert(...)
+          ...
+        end
+      end
+
+      def login(who)
+        open_session do |sess|
+          sess.extend(CustomAssertions)
+          who = people(who)
+          sess.post &quot;/login&quot;, :username =&gt; who.username,
+            :password =&gt; who.password
+          assert(...)
+        end
+      end
+  end
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000195">method_missing</a></li>
+  <li><a href="#M000194">open_session</a></li>
+  <li><a href="#M000193">reset!</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000195"></a><b>method_missing</b>(sym, *args, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Delegate unhandled messages to the current session instance.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000195_source')" id="l_M000195_source">show source</a> ]</p>
+  <div id="M000195_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/integration.rb, line 521</span>
+521:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+522:       <span class="ruby-identifier">reset!</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@integration_session</span>
+523:       <span class="ruby-identifier">returning</span> <span class="ruby-ivar">@integration_session</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">do</span>
+524:         <span class="ruby-identifier">copy_session_variables!</span>
+525:       <span class="ruby-keyword kw">end</span>
+526:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000194"></a><b>open_session</b>() {|session if block_given?| ...}
+  </div>
+  <div class="description">
+  <p>
+Open a new session instance. If a block is given, the new session is
+yielded to the block before being returned.
+</p>
+<pre>
+  session = open_session do |sess|
+    sess.extend(CustomAssertions)
+  end
+</pre>
+<p>
+By default, a single session is automatically created for you, but you can
+use this method to open multiple sessions that ought to be tested
+simultaneously.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000194_source')" id="l_M000194_source">show source</a> ]</p>
+  <div id="M000194_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/integration.rb, line 490</span>
+490:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">open_session</span>
+491:       <span class="ruby-identifier">session</span> = <span class="ruby-constant">Integration</span><span class="ruby-operator">::</span><span class="ruby-constant">Session</span>.<span class="ruby-identifier">new</span>
+492: 
+493:       <span class="ruby-comment cmt"># delegate the fixture accessors back to the test instance</span>
+494:       <span class="ruby-identifier">extras</span> = <span class="ruby-constant">Module</span>.<span class="ruby-identifier">new</span> { <span class="ruby-identifier">attr_accessor</span> <span class="ruby-identifier">:delegate</span>, <span class="ruby-identifier">:test_result</span> }
+495:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">fixture_table_names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">table_name</span><span class="ruby-operator">|</span>
+496:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">tr</span>(<span class="ruby-value str">&quot;.&quot;</span>, <span class="ruby-value str">&quot;_&quot;</span>)
+497:         <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">name</span>)
+498:         <span class="ruby-identifier">extras</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:define_method</span>, <span class="ruby-identifier">name</span>) { <span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">args</span><span class="ruby-operator">|</span> <span class="ruby-identifier">delegate</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) }
+499:       <span class="ruby-keyword kw">end</span>
+500: 
+501:       <span class="ruby-comment cmt"># delegate add_assertion to the test case</span>
+502:       <span class="ruby-identifier">extras</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:define_method</span>, <span class="ruby-identifier">:add_assertion</span>) { <span class="ruby-identifier">test_result</span>.<span class="ruby-identifier">add_assertion</span> }
+503:       <span class="ruby-identifier">session</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-identifier">extras</span>)
+504:       <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delegate</span> = <span class="ruby-keyword kw">self</span>
+505:       <span class="ruby-identifier">session</span>.<span class="ruby-identifier">test_result</span> = <span class="ruby-ivar">@_result</span>
+506: 
+507:       <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">session</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+508:       <span class="ruby-identifier">session</span>
+509:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000193"></a><b>reset!</b>()
+  </div>
+  <div class="description">
+  <p>
+Reset the current session. This is useful for testing multiple sessions in
+a single test case.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000193_source')" id="l_M000193_source">show source</a> ]</p>
+  <div id="M000193_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/integration.rb, line 467</span>
+467:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset!</span>
+468:       <span class="ruby-ivar">@integration_session</span> = <span class="ruby-identifier">open_session</span>
+469:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

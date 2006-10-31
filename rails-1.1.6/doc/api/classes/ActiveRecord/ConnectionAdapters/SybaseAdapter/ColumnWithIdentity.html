@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::SybaseAdapter::ColumnWithIdentity</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::SybaseAdapter::ColumnWithIdentity</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Column
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000742">binary_to_string</a></li>
+  <li><a href="#M000739">new</a></li>
+  <li><a href="#M000740">simplified_type</a></li>
+  <li><a href="#M000741">string_to_binary</a></li>
+  </ul>
+
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>identity</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>primary</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000742"></a><b>binary_to_string</b>(value)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000742_source')" id="l_M000742_source">show source</a> ]</p>
+  <div id="M000742_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 102</span>
+102:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">binary_to_string</span>(<span class="ruby-identifier">value</span>)
+103:           <span class="ruby-comment cmt"># FIXME: sybase-ctlib uses separate sql method for binary columns.</span>
+104:           <span class="ruby-identifier">value</span>
+105:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000739"></a><b>new</b>(name, default, sql_type = nil, nullable = nil, identity = nil, primary = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000739_source')" id="l_M000739_source">show source</a> ]</p>
+  <div id="M000739_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 80</span>
+80:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default</span>, <span class="ruby-identifier">sql_type</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">nullable</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">identity</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">primary</span> = <span class="ruby-keyword kw">nil</span>)
+81:           <span class="ruby-keyword kw">super</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default</span>, <span class="ruby-identifier">sql_type</span>, <span class="ruby-identifier">nullable</span>)
+82:           <span class="ruby-ivar">@default</span>, <span class="ruby-ivar">@identity</span>, <span class="ruby-ivar">@primary</span> = <span class="ruby-identifier">type_cast</span>(<span class="ruby-identifier">default</span>), <span class="ruby-identifier">identity</span>, <span class="ruby-identifier">primary</span>
+83:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000741"></a><b>string_to_binary</b>(value)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000741_source')" id="l_M000741_source">show source</a> ]</p>
+  <div id="M000741_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 98</span>
+ 98:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">string_to_binary</span>(<span class="ruby-identifier">value</span>)
+ 99:           <span class="ruby-node">&quot;0x#{value.unpack(&quot;H*&quot;)[0]}&quot;</span>
+100:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000740"></a><b>simplified_type</b>(field_type)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000740_source')" id="l_M000740_source">show source</a> ]</p>
+  <div id="M000740_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 85</span>
+85:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">simplified_type</span>(<span class="ruby-identifier">field_type</span>)
+86:           <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">field_type</span>
+87:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/int|bigint|smallint|tinyint/i</span>                        <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:integer</span>
+88:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/float|double|decimal|money|numeric|real|smallmoney/i</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:float</span>
+89:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/text|ntext/i</span>                                         <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:text</span>
+90:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/binary|image|varbinary/i</span>                             <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:binary</span>
+91:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/char|nchar|nvarchar|string|varchar/i</span>                 <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:string</span>
+92:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/bit/i</span>                                                <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:boolean</span>
+93:             <span class="ruby-keyword kw">when</span> <span class="ruby-regexp re">/datetime|smalldatetime/i</span>                             <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:datetime</span>
+94:             <span class="ruby-keyword kw">else</span>                                                       <span class="ruby-keyword kw">super</span>
+95:           <span class="ruby-keyword kw">end</span>
+96:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveSupport::CoreExtensions::String::StartsEndsWith</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveSupport::CoreExtensions::String::StartsEndsWith</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activesupport/lib/active_support/core_ext/string/starts_ends_with_rb.html">vendor/rails/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Additional string tests.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000338">ends_with?</a></li>
+  <li><a href="#M000337">starts_with?</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000338"></a><b>ends_with?</b>(suffix)
+  </div>
+  <div class="description">
+  <p>
+Does the string end with the specified <tt>suffix</tt>?
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000338_source')" id="l_M000338_source">show source</a> ]</p>
+  <div id="M000338_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb, line 13</span>
+13:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ends_with?</span>(<span class="ruby-identifier">suffix</span>)
+14:           <span class="ruby-identifier">suffix</span> = <span class="ruby-identifier">suffix</span>.<span class="ruby-identifier">to_s</span>
+15:           <span class="ruby-keyword kw">self</span>[<span class="ruby-operator">-</span><span class="ruby-identifier">suffix</span>.<span class="ruby-identifier">length</span>, <span class="ruby-identifier">suffix</span>.<span class="ruby-identifier">length</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">suffix</span>      
+16:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000337"></a><b>starts_with?</b>(prefix)
+  </div>
+  <div class="description">
+  <p>
+Does the string start with the specified <tt>prefix</tt>?
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000337_source')" id="l_M000337_source">show source</a> ]</p>
+  <div id="M000337_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/starts_ends_with.rb, line 7</span>
+ 7:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">starts_with?</span>(<span class="ruby-identifier">prefix</span>)
+ 8:           <span class="ruby-identifier">prefix</span> = <span class="ruby-identifier">prefix</span>.<span class="ruby-identifier">to_s</span>
+ 9:           <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span>, <span class="ruby-identifier">prefix</span>.<span class="ruby-identifier">length</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">prefix</span>
+10:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

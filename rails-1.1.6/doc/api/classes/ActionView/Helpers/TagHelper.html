@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::TagHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::TagHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/tag_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/tag_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+This is poor man&#8217;s Builder for the rare cases where you need to
+programmatically make tags but can&#8217;t use Builder.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000490">cdata_section</a></li>
+  <li><a href="#M000489">content_tag</a></li>
+  <li><a href="#M000488">tag</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li>ERB::Util</li>
+</ul>
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000490"></a><b>cdata_section</b>(content)
+  </div>
+  <div class="description">
+  <p>
+Returns a CDATA section for the given <tt>content</tt>. CDATA sections are
+used to escape blocks of text containing characters which would otherwise
+be recognized as markup. CDATA sections begin with the string
+<tt>&amp;lt;![CDATA[</tt> and end with (and may not contain) the string
+<tt>]]&gt;</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000490_source')" id="l_M000490_source">show source</a> ]</p>
+  <div id="M000490_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/tag_helper.rb, line 30</span>
+30:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cdata_section</span>(<span class="ruby-identifier">content</span>)
+31:         <span class="ruby-node">&quot;&lt;![CDATA[#{content}]]&gt;&quot;</span>
+32:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000489"></a><b>content_tag</b>(name, content, options = nil)
+  </div>
+  <div class="description">
+  <p>
+Examples:
+</p>
+<ul>
+<li><tt><a href="TagHelper.html#M000489">content_tag</a>(&quot;p&quot;,
+&quot;Hello world!&quot;) =&gt; &lt;p&gt;Hello world!&lt;/p&gt;</tt>
+
+</li>
+<li><tt><a href="TagHelper.html#M000489">content_tag</a>(&quot;div&quot;, <a
+href="TagHelper.html#M000489">content_tag</a>(&quot;p&quot;, &quot;Hello
+world!&quot;), &quot;class&quot; =&gt; &quot;strong&quot;) =&gt; </tt>
+<tt>&lt;div class=&quot;strong&quot;&gt;&lt;p&gt;Hello
+world!&lt;/p&gt;&lt;/div&gt;</tt>
+
+</li>
+</ul>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000489_source')" id="l_M000489_source">show source</a> ]</p>
+  <div id="M000489_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/tag_helper.rb, line 21</span>
+21:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">content_tag</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">content</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword kw">nil</span>)
+22:         <span class="ruby-node">&quot;&lt;#{name}#{tag_options(options.stringify_keys) if options}&gt;#{content}&lt;/#{name}&gt;&quot;</span>
+23:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000488"></a><b>tag</b>(name, options = nil, open = false)
+  </div>
+  <div class="description">
+  <p>
+Examples:
+</p>
+<ul>
+<li><tt>tag(&quot;br&quot;) =&gt; &lt;br /&gt;</tt>
+
+</li>
+<li><tt>tag(&quot;input&quot;, { &quot;type&quot; =&gt; &quot;text&quot;})
+=&gt; &lt;input type=&quot;text&quot; /&gt;</tt>
+
+</li>
+</ul>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000488_source')" id="l_M000488_source">show source</a> ]</p>
+  <div id="M000488_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/tag_helper.rb, line 13</span>
+13:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tag</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">open</span> = <span class="ruby-keyword kw">false</span>)
+14:         <span class="ruby-node">&quot;&lt;#{name}#{tag_options(options.stringify_keys) if options}&quot;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">open</span> <span class="ruby-value">? </span><span class="ruby-value str">&quot;&gt;&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot; /&gt;&quot;</span>)
+15:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

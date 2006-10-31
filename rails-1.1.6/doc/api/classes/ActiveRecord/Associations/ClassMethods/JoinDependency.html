@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::Associations::ClassMethods::JoinDependency</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::Associations::ClassMethods::JoinDependency</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activerecord/lib/active_record/associations_rb.html">vendor/rails/activerecord/lib/active_record/associations.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000538">aliased_table_names_for</a></li>
+  <li><a href="#M000539">build</a></li>
+  <li><a href="#M000540">construct</a></li>
+  <li><a href="#M000541">construct_association</a></li>
+  <li><a href="#M000537">instantiate</a></li>
+  <li><a href="#M000535">join_associations</a></li>
+  <li><a href="#M000536">join_base</a></li>
+  <li><a href="#M000534">new</a></li>
+  </ul>
+
+
+
+  <div class="sectiontitle">Classes and Modules</div>
+  Class <a href="JoinDependency/JoinAssociation.html" class="link">ActiveRecord::Associations::ClassMethods::JoinDependency::JoinAssociation</a><br />
+Class <a href="JoinDependency/JoinBase.html" class="link">ActiveRecord::Associations::ClassMethods::JoinDependency::JoinBase</a><br />
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>joins</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>reflections</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>table_aliases</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000534"></a><b>new</b>(base, associations, joins)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000534_source')" id="l_M000534_source">show source</a> ]</p>
+  <div id="M000534_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1259</span>
+1259:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">base</span>, <span class="ruby-identifier">associations</span>, <span class="ruby-identifier">joins</span>)
+1260:             <span class="ruby-ivar">@joins</span>                 = [<span class="ruby-constant">JoinBase</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">base</span>, <span class="ruby-identifier">joins</span>)]
+1261:             <span class="ruby-ivar">@associations</span>          = <span class="ruby-identifier">associations</span>
+1262:             <span class="ruby-ivar">@reflections</span>           = []
+1263:             <span class="ruby-ivar">@base_records_hash</span>     = {}
+1264:             <span class="ruby-ivar">@base_records_in_order</span> = []
+1265:             <span class="ruby-ivar">@table_aliases</span>         = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">aliases</span>, <span class="ruby-identifier">table</span><span class="ruby-operator">|</span> <span class="ruby-identifier">aliases</span>[<span class="ruby-identifier">table</span>] = <span class="ruby-value">0</span> }
+1266:             <span class="ruby-ivar">@table_aliases</span>[<span class="ruby-identifier">base</span>.<span class="ruby-identifier">table_name</span>] = <span class="ruby-value">1</span>
+1267:             <span class="ruby-identifier">build</span>(<span class="ruby-identifier">associations</span>)
+1268:           <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000538"></a><b>aliased_table_names_for</b>(table_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000538_source')" id="l_M000538_source">show source</a> ]</p>
+  <div id="M000538_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1289</span>
+1289:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">aliased_table_names_for</span>(<span class="ruby-identifier">table_name</span>)
+1290:             <span class="ruby-identifier">joins</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">join</span><span class="ruby-operator">|</span> <span class="ruby-identifier">join</span>.<span class="ruby-identifier">table_name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">table_name</span> }.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">join</span><span class="ruby-operator">|</span> <span class="ruby-identifier">join</span>.<span class="ruby-identifier">aliased_table_name</span>}
+1291:           <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000537"></a><b>instantiate</b>(rows)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000537_source')" id="l_M000537_source">show source</a> ]</p>
+  <div id="M000537_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1278</span>
+1278:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">rows</span>)
+1279:             <span class="ruby-identifier">rows</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+1280:               <span class="ruby-identifier">primary_id</span> = <span class="ruby-identifier">join_base</span>.<span class="ruby-identifier">record_id</span>(<span class="ruby-identifier">row</span>)
+1281:               <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@base_records_hash</span>[<span class="ruby-identifier">primary_id</span>]
+1282:                 <span class="ruby-ivar">@base_records_in_order</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-ivar">@base_records_hash</span>[<span class="ruby-identifier">primary_id</span>] = <span class="ruby-identifier">join_base</span>.<span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">row</span>))
+1283:               <span class="ruby-keyword kw">end</span>
+1284:               <span class="ruby-identifier">construct</span>(<span class="ruby-ivar">@base_records_hash</span>[<span class="ruby-identifier">primary_id</span>], <span class="ruby-ivar">@associations</span>, <span class="ruby-identifier">join_associations</span>.<span class="ruby-identifier">dup</span>, <span class="ruby-identifier">row</span>)
+1285:             <span class="ruby-keyword kw">end</span>
+1286:             <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@base_records_in_order</span>
+1287:           <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000535"></a><b>join_associations</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000535_source')" id="l_M000535_source">show source</a> ]</p>
+  <div id="M000535_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1270</span>
+1270:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">join_associations</span>
+1271:             <span class="ruby-ivar">@joins</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">to_a</span>
+1272:           <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000536"></a><b>join_base</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000536_source')" id="l_M000536_source">show source</a> ]</p>
+  <div id="M000536_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1274</span>
+1274:           <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">join_base</span>
+1275:             <span class="ruby-ivar">@joins</span>[<span class="ruby-value">0</span>]
+1276:           <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Protected Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000539"></a><b>build</b>(associations, parent = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000539_source')" id="l_M000539_source">show source</a> ]</p>
+  <div id="M000539_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1294</span>
+1294:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build</span>(<span class="ruby-identifier">associations</span>, <span class="ruby-identifier">parent</span> = <span class="ruby-keyword kw">nil</span>)
+1295:               <span class="ruby-identifier">parent</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@joins</span>.<span class="ruby-identifier">last</span>
+1296:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">associations</span>
+1297:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>, <span class="ruby-constant">String</span>
+1298:                   <span class="ruby-identifier">reflection</span> = <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">reflections</span>[<span class="ruby-identifier">associations</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">intern</span>] <span class="ruby-keyword kw">or</span>
+1299:                   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConfigurationError</span>, <span class="ruby-node">&quot;Association named '#{ associations }' was not found; perhaps you misspelled it?&quot;</span>
+1300:                   <span class="ruby-ivar">@reflections</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">reflection</span>
+1301:                   <span class="ruby-ivar">@joins</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">JoinAssociation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">reflection</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parent</span>)
+1302:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>
+1303:                   <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">association</span><span class="ruby-operator">|</span>
+1304:                     <span class="ruby-identifier">build</span>(<span class="ruby-identifier">association</span>, <span class="ruby-identifier">parent</span>)
+1305:                   <span class="ruby-keyword kw">end</span>
+1306:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Hash</span>
+1307:                   <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">sort</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">b</span><span class="ruby-operator">|</span><span class="ruby-identifier">a</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">&lt;=&gt;</span><span class="ruby-identifier">b</span>.<span class="ruby-identifier">to_s</span>}.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+1308:                     <span class="ruby-identifier">build</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">parent</span>)
+1309:                     <span class="ruby-identifier">build</span>(<span class="ruby-identifier">associations</span>[<span class="ruby-identifier">name</span>])
+1310:                   <span class="ruby-keyword kw">end</span>
+1311:                 <span class="ruby-keyword kw">else</span>
+1312:                   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConfigurationError</span>, <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">inspect</span>
+1313:               <span class="ruby-keyword kw">end</span>
+1314:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000540"></a><b>construct</b>(parent, associations, joins, row)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000540_source')" id="l_M000540_source">show source</a> ]</p>
+  <div id="M000540_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1316</span>
+1316:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">construct</span>(<span class="ruby-identifier">parent</span>, <span class="ruby-identifier">associations</span>, <span class="ruby-identifier">joins</span>, <span class="ruby-identifier">row</span>)
+1317:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">associations</span>
+1318:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>, <span class="ruby-constant">String</span>
+1319:                   <span class="ruby-keyword kw">while</span> (<span class="ruby-identifier">join</span> = <span class="ruby-identifier">joins</span>.<span class="ruby-identifier">shift</span>).<span class="ruby-identifier">reflection</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">to_s</span>
+1320:                     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConfigurationError</span>, <span class="ruby-value str">&quot;Not Enough Associations&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">joins</span>.<span class="ruby-identifier">empty?</span>
+1321:                   <span class="ruby-keyword kw">end</span>
+1322:                   <span class="ruby-identifier">construct_association</span>(<span class="ruby-identifier">parent</span>, <span class="ruby-identifier">join</span>, <span class="ruby-identifier">row</span>)
+1323:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>
+1324:                   <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">association</span><span class="ruby-operator">|</span>
+1325:                     <span class="ruby-identifier">construct</span>(<span class="ruby-identifier">parent</span>, <span class="ruby-identifier">association</span>, <span class="ruby-identifier">joins</span>, <span class="ruby-identifier">row</span>)
+1326:                   <span class="ruby-keyword kw">end</span>
+1327:                 <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Hash</span>
+1328:                   <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">sort</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">b</span><span class="ruby-operator">|</span><span class="ruby-identifier">a</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">&lt;=&gt;</span><span class="ruby-identifier">b</span>.<span class="ruby-identifier">to_s</span>}.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+1329:                     <span class="ruby-identifier">association</span> = <span class="ruby-identifier">construct_association</span>(<span class="ruby-identifier">parent</span>, <span class="ruby-identifier">joins</span>.<span class="ruby-identifier">shift</span>, <span class="ruby-identifier">row</span>)
+1330:                     <span class="ruby-identifier">construct</span>(<span class="ruby-identifier">association</span>, <span class="ruby-identifier">associations</span>[<span class="ruby-identifier">name</span>], <span class="ruby-identifier">joins</span>, <span class="ruby-identifier">row</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">association</span>
+1331:                   <span class="ruby-keyword kw">end</span>
+1332:                 <span class="ruby-keyword kw">else</span>
+1333:                   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConfigurationError</span>, <span class="ruby-identifier">associations</span>.<span class="ruby-identifier">inspect</span>
+1334:               <span class="ruby-keyword kw">end</span>
+1335:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000541"></a><b>construct_association</b>(record, join, row)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000541_source')" id="l_M000541_source">show source</a> ]</p>
+  <div id="M000541_source" class="dyn-source">
+<pre>
+      <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/associations.rb, line 1337</span>
+1337:             <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">construct_association</span>(<span class="ruby-identifier">record</span>, <span class="ruby-identifier">join</span>, <span class="ruby-identifier">row</span>)
+1338:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">join</span>.<span class="ruby-identifier">reflection</span>.<span class="ruby-identifier">macro</span>
+1339:                 <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:has_many</span>, <span class="ruby-identifier">:has_and_belongs_to_many</span>
+1340:                   <span class="ruby-identifier">collection</span> = <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">join</span>.<span class="ruby-identifier">reflection</span>.<span class="ruby-identifier">name</span>)
+1341:                   <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">loaded</span>
+1342:     
+1343:                   <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">join</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">record_id</span>(<span class="ruby-identifier">row</span>).<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">join</span>.<span class="ruby-identifier">aliased_primary_key</span>].<span class="ruby-identifier">nil?</span>
+1344:                   <span class="ruby-identifier">association</span> = <span class="ruby-identifier">join</span>.<span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">row</span>)
+1345:                   <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">target</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">association</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">target</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">association</span>)
+1346:                 <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:has_one</span>, <span class="ruby-identifier">:belongs_to</span>
+1347:                   <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">join</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">record_id</span>(<span class="ruby-identifier">row</span>).<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">join</span>.<span class="ruby-identifier">aliased_primary_key</span>].<span class="ruby-identifier">nil?</span>
+1348:                   <span class="ruby-identifier">association</span> = <span class="ruby-identifier">join</span>.<span class="ruby-identifier">instantiate</span>(<span class="ruby-identifier">row</span>)
+1349:                   <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;set_#{join.reflection.name}_target&quot;</span>, <span class="ruby-identifier">association</span>)
+1350:                 <span class="ruby-keyword kw">else</span>
+1351:                   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ConfigurationError</span>, <span class="ruby-node">&quot;unknown macro: #{join.reflection.macro}&quot;</span>
+1352:               <span class="ruby-keyword kw">end</span>
+1353:               <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">association</span>
+1354:             <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

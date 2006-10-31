@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::SessionManagement::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::SessionManagement::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_controller/session_management_rb.html">vendor/rails/actionpack/lib/action_controller/session_management.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000102">session</a></li>
+  <li><a href="#M000101">session_options</a></li>
+  <li><a href="#M000100">session_store</a></li>
+  <li><a href="#M000099">session_store=</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000102"></a><b>session</b>(*args)
+  </div>
+  <div class="description">
+  <p>
+Specify how sessions ought to be managed for a subset of the actions on the
+controller. Like filters, you can specify <tt>:only</tt> and
+<tt>:except</tt> clauses to restrict the subset, otherwise options apply to
+all actions on this controller.
+</p>
+<p>
+The session options are inheritable, as well, so if you specify them in a
+parent controller, they apply to controllers that extend the parent.
+</p>
+<p>
+Usage:
+</p>
+<pre>
+  # turn off session management for all actions.
+  session :off
+
+  # turn off session management for all actions _except_ foo and bar.
+  session :off, :except =&gt; %w(foo bar)
+
+  # turn off session management for only the foo and bar actions.
+  session :off, :only =&gt; %w(foo bar)
+
+  # the session will only work over HTTPS, but only for the foo action
+  session :only =&gt; :foo, :session_secure =&gt; true
+
+  # the session will only be disabled for 'foo', and only if it is
+  # requested as a web service
+  session :off, :only =&gt; :foo,
+          :if =&gt; Proc.new { |req| req.parameters[:ws] }
+</pre>
+<p>
+All session options described for <a
+href="../Base.html#M000213">ActionController::Base.process_cgi</a> are
+valid arguments.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000102_source')" id="l_M000102_source">show source</a> ]</p>
+  <div id="M000102_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/session_management.rb, line 69</span>
+69:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">session</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+70:         <span class="ruby-identifier">options</span> = <span class="ruby-constant">Hash</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span> <span class="ruby-value">? </span><span class="ruby-identifier">args</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> {}
+71: 
+72:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:disabled</span>] = <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
+73:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:only</span>] = [<span class="ruby-operator">*</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:only</span>]].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">to_s</span> } <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:only</span>]
+74:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] = [<span class="ruby-operator">*</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>]].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">to_s</span> } <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>]
+75:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:only</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>]
+76:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;only one of either :only or :except are allowed&quot;</span>
+77:         <span class="ruby-keyword kw">end</span>
+78: 
+79:         <span class="ruby-identifier">write_inheritable_array</span>(<span class="ruby-value str">&quot;session_options&quot;</span>, [<span class="ruby-identifier">options</span>])
+80:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000101"></a><b>session_options</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the hash used to configure the session. Example use:
+</p>
+<pre>
+  ActionController::Base.session_options[:session_secure] = true # session only available over HTTPS
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000101_source')" id="l_M000101_source">show source</a> ]</p>
+  <div id="M000101_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/session_management.rb, line 36</span>
+36:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">session_options</span>
+37:         <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">CgiRequest</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_SESSION_OPTIONS</span>
+38:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000100"></a><b>session_store</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the session store class currently used.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000100_source')" id="l_M000100_source">show source</a> ]</p>
+  <div id="M000100_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/session_management.rb, line 29</span>
+29:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">session_store</span>
+30:         <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">CgiRequest</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_SESSION_OPTIONS</span>[<span class="ruby-identifier">:database_manager</span>]
+31:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000099"></a><b>session_store=</b>(store)
+  </div>
+  <div class="description">
+  <p>
+Set the session store to be used for keeping the session data between
+requests. The default is using the file system, but you can also specify
+one of the other included stores (:active_record_store, :drb_store,
+:mem_cache_store, or :memory_store) or use your own class.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000099_source')" id="l_M000099_source">show source</a> ]</p>
+  <div id="M000099_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/session_management.rb, line 23</span>
+23:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">session_store=</span>(<span class="ruby-identifier">store</span>)
+24:         <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">CgiRequest</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_SESSION_OPTIONS</span>[<span class="ruby-identifier">:database_manager</span>] =
+25:           <span class="ruby-identifier">store</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) <span class="ruby-operator">?</span> <span class="ruby-constant">CGI</span><span class="ruby-operator">::</span><span class="ruby-constant">Session</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">store</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:drb_store</span> <span class="ruby-operator">?</span> <span class="ruby-value str">&quot;DRbStore&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">store</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">camelize</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">store</span>
+26:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

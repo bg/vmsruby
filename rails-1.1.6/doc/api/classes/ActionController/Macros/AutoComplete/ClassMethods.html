@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Macros::AutoComplete::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Macros::AutoComplete::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/actionpack/lib/action_controller/macros/auto_complete_rb.html">vendor/rails/actionpack/lib/action_controller/macros/auto_complete.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Example:
+</p>
+<pre>
+  # Controller
+  class BlogController &lt; ApplicationController
+    auto_complete_for :post, :title
+  end
+
+  # View
+  &lt;%= text_field_with_auto_complete :post, title %&gt;
+</pre>
+<p>
+By default, <a href="ClassMethods.html#M000043">auto_complete_for</a>
+limits the results to 10 entries, and sorts by the given field.
+</p>
+<p>
+<a href="ClassMethods.html#M000043">auto_complete_for</a> takes a third
+parameter, an options hash to the find method used to search for the
+records:
+</p>
+<pre>
+  auto_complete_for :post, :title, :limit =&gt; 15, :order =&gt; 'created_at DESC'
+</pre>
+<p>
+For help on defining text input fields with autocompletion, see <a
+href="../../../ActionView/Helpers/JavaScriptHelper.html">ActionView::Helpers::JavaScriptHelper</a>.
+</p>
+<p>
+For more examples, see script.aculo.us:
+</p>
+<ul>
+<li><a
+href="http://script.aculo.us/demos/ajax/autocompleter">script.aculo.us/demos/ajax/autocompleter</a>
+
+</li>
+<li><a
+href="http://script.aculo.us/demos/ajax/autocompleter_customized">script.aculo.us/demos/ajax/autocompleter_customized</a>
+
+</li>
+</ul>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000043">auto_complete_for</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000043"></a><b>auto_complete_for</b>(object, method, options = {})
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000043_source')" id="l_M000043_source">show source</a> ]</p>
+  <div id="M000043_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/macros/auto_complete.rb, line 37</span>
+37:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-identifier">options</span> = {})
+38:           <span class="ruby-identifier">define_method</span>(<span class="ruby-node">&quot;auto_complete_for_#{object}_#{method}&quot;</span>) <span class="ruby-keyword kw">do</span>
+39:             <span class="ruby-identifier">find_options</span> = { 
+40:               <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-node">&quot;LOWER(#{method}) LIKE ?&quot;</span>, <span class="ruby-value str">'%'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">object</span>][<span class="ruby-identifier">method</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'%'</span> ], 
+41:               <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{method} ASC&quot;</span>,
+42:               <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span> }.<span class="ruby-identifier">merge!</span>(<span class="ruby-identifier">options</span>)
+43:             
+44:             <span class="ruby-ivar">@items</span> = <span class="ruby-identifier">object</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">camelize</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">find_options</span>)
+45: 
+46:             <span class="ruby-identifier">render</span> <span class="ruby-identifier">:inline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;&lt;%= auto_complete_result @items, '#{method}' %&gt;&quot;</span>
+47:           <span class="ruby-keyword kw">end</span>
+48:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

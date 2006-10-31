@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::TableDefinition</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::TableDefinition</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Represents a SQL table in an abstract way. Columns are stored as
+ColumnDefinition in the columns attribute.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000658">[]</a></li>
+  <li><a href="#M000659">column</a></li>
+  <li><a href="#M000656">new</a></li>
+  <li><a href="#M000657">primary_key</a></li>
+  <li><a href="#M000660">to_sql</a></li>
+  </ul>
+
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[RW]
+    </td>
+    <td class='attr-name'>columns</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000656"></a><b>new</b>(base)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000656_source')" id="l_M000656_source">show source</a> ]</p>
+  <div id="M000656_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb, line 190</span>
+190:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">base</span>)
+191:         <span class="ruby-ivar">@columns</span> = []
+192:         <span class="ruby-ivar">@base</span> = <span class="ruby-identifier">base</span>
+193:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000658"></a><b>[]</b>(name)
+  </div>
+  <div class="description">
+  <p>
+Returns a ColumnDefinition for the column with name <tt>name</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000658_source')" id="l_M000658_source">show source</a> ]</p>
+  <div id="M000658_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb, line 202</span>
+202:       <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">name</span>)
+203:         <span class="ruby-ivar">@columns</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>}
+204:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000659"></a><b>column</b>(name, type, options = {})
+  </div>
+  <div class="description">
+  <p>
+Instantiates a new column for the table. The <tt>type</tt> parameter must
+be one of the following values: <tt>:<a
+href="TableDefinition.html#M000657">primary_key</a></tt>, <tt>:string</tt>,
+<tt>:text</tt>, <tt>:integer</tt>, <tt>:float</tt>, <tt>:datetime</tt>,
+<tt>:timestamp</tt>, <tt>:time</tt>, <tt>:date</tt>, <tt>:binary</tt>,
+<tt>:boolean</tt>.
+</p>
+<p>
+Available options are (none of these exists by default):
+</p>
+<ul>
+<li><tt>:limit</tt>: Requests a maximum column length (<tt>:string</tt>,
+<tt>:text</tt>, <tt>:binary</tt> or <tt>:integer</tt> columns only)
+
+</li>
+<li><tt>:default</tt>: The column&#8217;s default value. You cannot explicitely
+set the default value to <tt>NULL</tt>. Simply leave off this option if you
+want a <tt>NULL</tt> default value.
+
+</li>
+<li><tt>:null</tt>: Allows or disallows <tt>NULL</tt> values in the column.
+This option could have been named <tt>:null_allowed</tt>.
+
+</li>
+</ul>
+<p>
+This method returns <tt>self</tt>.
+</p>
+<h5>Examples</h5>
+<pre>
+ # Assuming def is an instance of TableDefinition
+ def.column(:granted, :boolean)
+   #=&gt; granted BOOLEAN
+
+ def.column(:picture, :binary, :limit =&gt; 2.megabytes)
+   #=&gt; picture BLOB(2097152)
+
+ def.column(:sales_stage, :string, :limit =&gt; 20, :default =&gt; 'new', :null =&gt; false)
+   #=&gt; sales_stage VARCHAR(20) DEFAULT 'new' NOT NULL
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000659_source')" id="l_M000659_source">show source</a> ]</p>
+  <div id="M000659_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb, line 237</span>
+237:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">options</span> = {})
+238:         <span class="ruby-identifier">column</span> = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">ColumnDefinition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@base</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span>)
+239:         <span class="ruby-identifier">column</span>.<span class="ruby-identifier">limit</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">native</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>][<span class="ruby-identifier">:limit</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">native</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>]
+240:         <span class="ruby-identifier">column</span>.<span class="ruby-identifier">default</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:default</span>]
+241:         <span class="ruby-identifier">column</span>.<span class="ruby-identifier">null</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:null</span>]
+242:         <span class="ruby-ivar">@columns</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">column</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@columns</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">column</span>
+243:         <span class="ruby-keyword kw">self</span>
+244:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000657"></a><b>primary_key</b>(name)
+  </div>
+  <div class="description">
+  <p>
+Appends a primary key definition to the table definition. Can be called
+multiple times, but this is probably not a good idea.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000657_source')" id="l_M000657_source">show source</a> ]</p>
+  <div id="M000657_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb, line 197</span>
+197:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">primary_key</span>(<span class="ruby-identifier">name</span>)
+198:         <span class="ruby-identifier">column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">native</span>[<span class="ruby-identifier">:primary_key</span>])
+199:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000660"></a><b>to_sql</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a String whose contents are the column definitions concatenated
+together. This string can then be pre and appended to to generate the final
+SQL to create the table.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000660_source')" id="l_M000660_source">show source</a> ]</p>
+  <div id="M000660_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb, line 249</span>
+249:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_sql</span>
+250:         <span class="ruby-ivar">@columns</span> <span class="ruby-operator">*</span> <span class="ruby-value str">', '</span>
+251:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

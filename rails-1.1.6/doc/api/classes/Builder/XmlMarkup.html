@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: Builder::XmlMarkup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />Builder::XmlMarkup</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup_rb.html">vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+XmlBase
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Create XML markup easily. All (well, almost all) methods sent to an <a
+href="XmlMarkup.html">XmlMarkup</a> object will be translated to the
+equivalent XML markup. Any method with a block will be treated as an XML
+markup tag with nested markup in the block.
+</p>
+<p>
+Examples will demonstrate this easier than words. In the following,
+<tt>xm</tt> is an <tt><a href="XmlMarkup.html">XmlMarkup</a></tt> object.
+</p>
+<pre>
+  xm.em(&quot;emphasized&quot;)             # =&gt; &lt;em&gt;emphasized&lt;/em&gt;
+  xm.em { xmm.b(&quot;emp &amp; bold&quot;) }   # =&gt; &lt;em&gt;&lt;b&gt;emph &amp;amp; bold&lt;/b&gt;&lt;/em&gt;
+  xm.a(&quot;A Link&quot;, &quot;href&quot;=&gt;&quot;http://onestepback.org&quot;)
+                                  # =&gt; &lt;a href=&quot;http://onestepback.org&quot;&gt;A Link&lt;/a&gt;
+  xm.div { br }                    # =&gt; &lt;div&gt;&lt;br/&gt;&lt;/div&gt;
+  xm.target(&quot;name&quot;=&gt;&quot;compile&quot;, &quot;option&quot;=&gt;&quot;fast&quot;)
+                                  # =&gt; &lt;target option=&quot;fast&quot; name=&quot;compile&quot;\&gt;
+                                  # NOTE: order of attributes is not specified.
+
+  xm.instruct!                   # &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+  xm.html {                      # &lt;html&gt;
+    xm.head {                    #   &lt;head&gt;
+      xm.title(&quot;History&quot;)        #     &lt;title&gt;History&lt;/title&gt;
+    }                            #   &lt;/head&gt;
+    xm.body {                    #   &lt;body&gt;
+      xm.comment! &quot;HI&quot;           #     &lt;!-- HI --&gt;
+      xm.h1(&quot;Header&quot;)            #     &lt;h1&gt;Header&lt;/h1&gt;
+      xm.p(&quot;paragraph&quot;)          #     &lt;p&gt;paragraph&lt;/p&gt;
+    }                            #   &lt;/body&gt;
+  }                              # &lt;/html&gt;
+</pre>
+<h2>Notes:</h2>
+<ul>
+<li>The order that attributes are inserted in markup tags is undefined.
+
+</li>
+<li>Sometimes you wish to insert text without enclosing tags. Use the
+<tt>text!</tt> method to accomplish this.
+
+<p>
+Example:
+</p>
+<pre>
+  xm.div {                          # &lt;div&gt;
+    xm.text! &quot;line&quot;; xm.br          #   line&lt;br/&gt;
+    xm.text! &quot;another line&quot;; xmbr   #    another line&lt;br/&gt;
+  }                                 # &lt;/div&gt;
+</pre>
+</li>
+<li>The special XML characters &lt;, &gt;, and &amp; are converted to &amp;lt;,
+&amp;gt; and &amp;amp; automatically. Use the <tt>&lt;&lt;</tt> operation
+to insert text without modification.
+
+</li>
+<li>Sometimes tags use special characters not allowed in ruby identifiers. Use
+the <tt>tag!</tt> method to handle these cases.
+
+<p>
+Example:
+</p>
+<pre>
+  xml.tag!(&quot;SOAP:Envelope&quot;) { ... }
+</pre>
+<p>
+will produce &#8230;
+</p>
+<pre>
+  &lt;SOAP:Envelope&gt; ... &lt;/SOAP:Envelope&gt;&quot;
+</pre>
+<p>
+<tt>tag!</tt> will also take text and attribute arguments (after the tag
+name) like normal markup methods. (But see the next bullet item for a
+better way to handle XML namespaces).
+</p>
+</li>
+<li>Direct support for XML namespaces is now available. If the first argument
+to a tag call is a symbol, it will be joined to the tag to produce a
+namespace:tag combination. It is easier to show this than describe it.
+
+<pre>
+  xml.SOAP :Envelope do ... end
+</pre>
+<p>
+Just put a space before the colon in a namespace to produce the right form
+for builder (e.g. &quot;<tt>SOAP:Envelope</tt>&quot; =&gt;
+&quot;<tt>xml.SOAP :Envelope</tt>&quot;)
+</p>
+</li>
+<li><a href="XmlMarkup.html">XmlMarkup</a> builds the markup in any object
+(called a <em>target</em>) that accepts the <tt>&lt;&lt;</tt> method. If no
+target is given, then <a href="XmlMarkup.html">XmlMarkup</a> defaults to a
+string target.
+
+<p>
+Examples:
+</p>
+<pre>
+  xm = Builder::XmlMarkup.new
+  result = xm.title(&quot;yada&quot;)
+  # result is a string containing the markup.
+
+  buffer = &quot;&quot;
+  xm = Builder::XmlMarkup.new(buffer)
+  # The markup is appended to buffer (using &lt;&lt;)
+
+  xm = Builder::XmlMarkup.new(STDOUT)
+  # The markup is written to STDOUT (using &lt;&lt;)
+
+  xm = Builder::XmlMarkup.new
+  x2 = Builder::XmlMarkup.new(:target=&gt;xm)
+  # Markup written to +x2+ will be send to +xm+.
+</pre>
+</li>
+<li>Indentation is enabled by providing the number of spaces to indent for each
+level as a second argument to XmlBuilder.new. Initial indentation may be
+specified using a third parameter.
+
+<p>
+Example:
+</p>
+<pre>
+  xm = Builder.new(:ident=&gt;2)
+  # xm will produce nicely formatted and indented XML.
+
+  xm = Builder.new(:indent=&gt;2, :margin=&gt;4)
+  # xm will produce nicely formatted and indented XML with 2
+  # spaces per indent and an over all indentation level of 4.
+
+  builder = Builder::XmlMarkup.new(:target=&gt;$stdout, :indent=&gt;2)
+  builder.name { |b| b.first(&quot;Jim&quot;); b.last(&quot;Weirich) }
+  # prints:
+  #     &lt;name&gt;
+  #       &lt;first&gt;Jim&lt;/first&gt;
+  #       &lt;last&gt;Weirich&lt;/last&gt;
+  #     &lt;/name&gt;
+</pre>
+</li>
+<li>The instance_eval implementation which forces self to refer to the message
+receiver as self is now obsolete. We now use normal block calls to execute
+the markup block. This means that all markup methods must now be explicitly
+send to the xml builder. For instance, instead of
+
+<pre>
+   xml.div { strong(&quot;text&quot;) }
+</pre>
+<p>
+you need to write:
+</p>
+<pre>
+   xml.div { xml.strong(&quot;text&quot;) }
+</pre>
+<p>
+Although more verbose, the subtle change in semantics within the block was
+found to be prone to error. To make this change a little less cumbersome,
+the markup block now gets the markup object sent as an argument, allowing
+you to use a shorter alias within the block.
+</p>
+<p>
+For example:
+</p>
+<pre>
+  xml_builder = Builder::XmlMarkup.new
+  xml_builder.div { |xml|
+    xml.stong(&quot;text&quot;)
+  }
+</pre>
+</li>
+</ul>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000347">cdata!</a></li>
+  <li><a href="#M000344">comment!</a></li>
+  <li><a href="#M000345">declare!</a></li>
+  <li><a href="#M000346">instruct!</a></li>
+  <li><a href="#M000342">new</a></li>
+  <li><a href="#M000343">target!</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000342"></a><b>new</b>(options={})
+  </div>
+  <div class="description">
+  <p>
+Create an XML markup builder. Parameters are specified by an option hash.
+</p>
+<table>
+<tr><td valign="top">:target=&gt;<em>target_object</em>:</td><td>Object receiving the markup. <tt>out</tt> must respond to the
+<tt>&lt;&lt;</tt> operator. The default is a plain string target.
+
+</td></tr>
+<tr><td valign="top">:indent=&gt;<em>indentation</em>:</td><td>Number of spaces used for indentation. The default is no indentation and no
+line breaks.
+
+</td></tr>
+<tr><td valign="top">:margin=&gt;<em>initial_indentation_level</em>:</td><td>Amount of initial indentation (specified in levels, not spaces).
+
+</td></tr>
+</table>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000342_source')" id="l_M000342_source">show source</a> ]</p>
+  <div id="M000342_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 175</span>
+175:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">options</span>={})
+176:       <span class="ruby-identifier">indent</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:indent</span>] <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
+177:       <span class="ruby-identifier">margin</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:margin</span>] <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
+178:       <span class="ruby-keyword kw">super</span>(<span class="ruby-identifier">indent</span>, <span class="ruby-identifier">margin</span>)
+179:       <span class="ruby-ivar">@target</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:target</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;&quot;</span>
+180:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000347"></a><b>cdata!</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Surrounds the given text with a CDATA tag
+</p>
+<p>
+For example:
+</p>
+<pre>
+  xml.cdata! &quot;blah blah blah&quot;
+      # =&gt; &lt;![CDATA[blah blah blah]]&gt;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000347_source')" id="l_M000347_source">show source</a> ]</p>
+  <div id="M000347_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 248</span>
+248:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cdata!</span>(<span class="ruby-identifier">text</span>)
+249:       <span class="ruby-identifier">_ensure_no_block</span> <span class="ruby-identifier">block_given?</span>
+250:       <span class="ruby-identifier">_special</span>(<span class="ruby-value str">&quot;&lt;![CDATA[&quot;</span>, <span class="ruby-value str">&quot;]]&gt;&quot;</span>, <span class="ruby-identifier">text</span>, <span class="ruby-keyword kw">nil</span>)
+251:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000344"></a><b>comment!</b>(comment_text)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000344_source')" id="l_M000344_source">show source</a> ]</p>
+  <div id="M000344_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 187</span>
+187:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">comment!</span>(<span class="ruby-identifier">comment_text</span>)
+188:       <span class="ruby-identifier">_ensure_no_block</span> <span class="ruby-identifier">block_given?</span>
+189:       <span class="ruby-identifier">_special</span>(<span class="ruby-value str">&quot;&lt;!-- &quot;</span>, <span class="ruby-value str">&quot; --&gt;&quot;</span>, <span class="ruby-identifier">comment_text</span>, <span class="ruby-keyword kw">nil</span>)
+190:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000345"></a><b>declare!</b>(inst, *args, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Insert an XML declaration into the XML markup.
+</p>
+<p>
+For example:
+</p>
+<pre>
+  xml.declare! :ELEMENT, :blah, &quot;yada&quot;
+      # =&gt; &lt;!ELEMENT blah &quot;yada&quot;&gt;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000345_source')" id="l_M000345_source">show source</a> ]</p>
+  <div id="M000345_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 198</span>
+198:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">declare!</span>(<span class="ruby-identifier">inst</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+199:       <span class="ruby-identifier">_indent</span>
+200:       <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;!#{inst}&quot;</span>
+201:       <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span>
+202:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">arg</span>
+203:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>
+204:           <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{ &quot;#{arg}&quot;}</span>
+205:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>
+206:           <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; #{arg}&quot;</span>
+207:         <span class="ruby-keyword kw">end</span>
+208:       <span class="ruby-keyword kw">end</span>
+209:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+210:         <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot; [&quot;</span>
+211:         <span class="ruby-identifier">_newline</span>
+212:         <span class="ruby-identifier">_nested_structures</span>(<span class="ruby-identifier">block</span>)
+213:         <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;]&quot;</span>
+214:       <span class="ruby-keyword kw">end</span>
+215:       <span class="ruby-ivar">@target</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;&gt;&quot;</span>
+216:       <span class="ruby-identifier">_newline</span>
+217:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000346"></a><b>instruct!</b>(directive_tag=:xml, attrs={})
+  </div>
+  <div class="description">
+  <p>
+Insert a processing instruction into the XML markup. E.g.
+</p>
+<p>
+For example:
+</p>
+<pre>
+   xml.instruct!
+       #=&gt; &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+   xml.instruct! :aaa, :bbb=&gt;&quot;ccc&quot;
+       #=&gt; &lt;?aaa bbb=&quot;ccc&quot;?&gt;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000346_source')" id="l_M000346_source">show source</a> ]</p>
+  <div id="M000346_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 228</span>
+228:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">instruct!</span>(<span class="ruby-identifier">directive_tag</span>=<span class="ruby-identifier">:xml</span>, <span class="ruby-identifier">attrs</span>={})
+229:       <span class="ruby-identifier">_ensure_no_block</span> <span class="ruby-identifier">block_given?</span>
+230:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">directive_tag</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:xml</span>
+231:         <span class="ruby-identifier">a</span> = { <span class="ruby-identifier">:version=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">&quot;1.0&quot;</span>, <span class="ruby-identifier">:encoding=</span><span class="ruby-operator">&gt;</span><span class="ruby-value str">&quot;UTF-8&quot;</span> }
+232:         <span class="ruby-identifier">attrs</span> = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">merge</span> <span class="ruby-identifier">attrs</span>
+233:       <span class="ruby-keyword kw">end</span>
+234:       <span class="ruby-identifier">_special</span>(
+235:         <span class="ruby-node">&quot;&lt;?#{directive_tag}&quot;</span>,
+236:         <span class="ruby-value str">&quot;?&gt;&quot;</span>,
+237:         <span class="ruby-keyword kw">nil</span>,
+238:         <span class="ruby-identifier">attrs</span>,
+239:         [<span class="ruby-identifier">:version</span>, <span class="ruby-identifier">:encoding</span>, <span class="ruby-identifier">:standalone</span>])
+240:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000343"></a><b>target!</b>()
+  </div>
+  <div class="description">
+  <p>
+Return the target of the builder.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000343_source')" id="l_M000343_source">show source</a> ]</p>
+  <div id="M000343_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/vendor/builder/xmlmarkup.rb, line 183</span>
+183:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">target!</span>
+184:       <span class="ruby-ivar">@target</span>
+185:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

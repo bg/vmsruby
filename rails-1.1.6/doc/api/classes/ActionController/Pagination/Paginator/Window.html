@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionController::Pagination::Paginator::Window</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionController::Pagination::Paginator::Window</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/actionpack/lib/action_controller/pagination_rb.html">vendor/rails/actionpack/lib/action_controller/pagination.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+A class for representing ranges around a given page.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000133">new</a></li>
+  <li><a href="#M000134">padding=</a></li>
+  <li><a href="#M000135">pages</a></li>
+  <li><a href="#M000136">to_a</a></li>
+  </ul>
+
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>first</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>last</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>padding</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>page</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>paginator</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000133"></a><b>new</b>(page, padding=2)
+  </div>
+  <div class="description">
+  <p>
+Creates a new <a href="Window.html">Window</a> object for the given
+<tt>page</tt> with the specified <tt>padding</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000133_source')" id="l_M000133_source">show source</a> ]</p>
+  <div id="M000133_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 373</span>
+373:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">page</span>, <span class="ruby-identifier">padding</span>=<span class="ruby-value">2</span>)
+374:           <span class="ruby-ivar">@paginator</span> = <span class="ruby-identifier">page</span>.<span class="ruby-identifier">paginator</span>
+375:           <span class="ruby-ivar">@page</span> = <span class="ruby-identifier">page</span>
+376:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">padding</span> = <span class="ruby-identifier">padding</span>
+377:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000134"></a><b>padding=</b>(padding)
+  </div>
+  <div class="description">
+  <p>
+Sets the window&#8217;s padding (the number of pages on either side of the
+window page).
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000134_source')" id="l_M000134_source">show source</a> ]</p>
+  <div id="M000134_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 382</span>
+382:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">padding=</span>(<span class="ruby-identifier">padding</span>)
+383:           <span class="ruby-ivar">@padding</span> = <span class="ruby-identifier">padding</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">padding</span>
+384:           <span class="ruby-comment cmt"># Find the beginning and end pages of the window</span>
+385:           <span class="ruby-ivar">@first</span> = <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">has_page_number?</span>(<span class="ruby-ivar">@page</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@padding</span>) <span class="ruby-operator">?</span>
+386:             <span class="ruby-ivar">@paginator</span>[<span class="ruby-ivar">@page</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@padding</span>] <span class="ruby-operator">:</span> <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">first</span>
+387:           <span class="ruby-ivar">@last</span> =  <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">has_page_number?</span>(<span class="ruby-ivar">@page</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@padding</span>) <span class="ruby-operator">?</span>
+388:             <span class="ruby-ivar">@paginator</span>[<span class="ruby-ivar">@page</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@padding</span>] <span class="ruby-operator">:</span> <span class="ruby-ivar">@paginator</span>.<span class="ruby-identifier">last</span>
+389:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000135"></a><b>pages</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns an array of <a href="Page.html">Page</a> objects in the current
+window.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="Window.html#M000136">to_a</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000135_source')" id="l_M000135_source">show source</a> ]</p>
+  <div id="M000135_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/pagination.rb, line 393</span>
+393:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pages</span>
+394:           (<span class="ruby-ivar">@first</span>.<span class="ruby-identifier">number</span><span class="ruby-operator">..</span><span class="ruby-ivar">@last</span>.<span class="ruby-identifier">number</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">collect!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@paginator</span>[<span class="ruby-identifier">n</span>]}
+395:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000136"></a><b>to_a</b>()
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="Window.html#M000135">pages</a>
+</p>
+  </div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

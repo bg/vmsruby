@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: OCI8AutoRecover</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />OCI8AutoRecover</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../files/vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+DelegateClass(OCI8)
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+The <a href="OCI8AutoRecover.html">OCI8AutoRecover</a> class enhances the
+OCI8 driver with auto-recover and reset functionality. If a call to <a
+href="OCI8AutoRecover.html#M000006">exec</a> fails, and autocommit is
+turned on (ie., we&#8217;re not in the middle of a longer transaction), it
+will automatically reconnect and try again. If autocommit is turned off,
+this would be dangerous (as the earlier part of the implied transaction may
+have failed silently if the connection died) &#8212; so instead the
+connection is marked as dead, to be reconnected on it&#8217;s next use.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000006">exec</a></li>
+  <li><a href="#M000003">new</a></li>
+  <li><a href="#M000004">ping</a></li>
+  <li><a href="#M000005">reset!</a></li>
+  </ul>
+
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">LOST_CONNECTION_ERROR_CODES</td>
+    <td>=</td>
+    <td class="attr-value">[ 28, 1012, 3113, 3114 ]</td>
+  </tr>
+  <tr valign='top'>
+    <td>&nbsp;</td>
+    <td colspan="2" class="attr-desc">
+ORA-00028: your session has been killed ORA-01012: not logged on ORA-03113:
+end-of-file on communication channel ORA-03114: not connected to ORACLE
+
+</td>
+  </tr>
+  </table>
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[RW]
+    </td>
+    <td class='attr-name'>active</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000003"></a><b>new</b>(config, factory = OracleConnectionFactory.new)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000003_source')" id="l_M000003_source">show source</a> ]</p>
+  <div id="M000003_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 594</span>
+594:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">config</span>, <span class="ruby-identifier">factory</span> = <span class="ruby-constant">OracleConnectionFactory</span>.<span class="ruby-identifier">new</span>)
+595:       <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">true</span>
+596:       <span class="ruby-ivar">@username</span>, <span class="ruby-ivar">@password</span>, <span class="ruby-ivar">@database</span> = <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:username</span>], <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:password</span>], <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:database</span>]
+597:       <span class="ruby-ivar">@factory</span> = <span class="ruby-identifier">factory</span>
+598:       <span class="ruby-ivar">@connection</span>  = <span class="ruby-ivar">@factory</span>.<span class="ruby-identifier">new_connection</span> <span class="ruby-ivar">@username</span>, <span class="ruby-ivar">@password</span>, <span class="ruby-ivar">@database</span>
+599:       <span class="ruby-keyword kw">super</span> <span class="ruby-ivar">@connection</span>
+600:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000006"></a><b>exec</b>(sql, *bindvars)
+  </div>
+  <div class="description">
+  <p>
+Adds auto-recovery functionality.
+</p>
+<p>
+See: <a
+href="http://www.jiubao.org/ruby-oci8/api.en.html#label-11">www.jiubao.org/ruby-oci8/api.en.html#label-11</a>
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000006_source')" id="l_M000006_source">show source</a> ]</p>
+  <div id="M000006_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 635</span>
+635:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">exec</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">bindvars</span>)
+636:       <span class="ruby-identifier">should_retry</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">auto_retry?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">autocommit?</span>
+637: 
+638:       <span class="ruby-keyword kw">begin</span>
+639:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">exec</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">bindvars</span>)
+640:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">OCIException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+641:         <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">LOST_CONNECTION_ERROR_CODES</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">e</span>.<span class="ruby-identifier">code</span>)
+642:         <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">false</span>
+643:         <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">should_retry</span>
+644:         <span class="ruby-identifier">should_retry</span> = <span class="ruby-keyword kw">false</span>
+645:         <span class="ruby-identifier">reset!</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+646:         <span class="ruby-keyword kw">retry</span>
+647:       <span class="ruby-keyword kw">end</span>
+648:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000004"></a><b>ping</b>()
+  </div>
+  <div class="description">
+  <p>
+Checks connection, returns true if active. Note that ping actively checks
+the connection, while active? simply returns the last known state.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000004_source')" id="l_M000004_source">show source</a> ]</p>
+  <div id="M000004_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 605</span>
+605:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ping</span>
+606:       <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">exec</span>(<span class="ruby-value str">&quot;select 1 from dual&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">nil</span> }
+607:       <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">true</span>
+608:     <span class="ruby-keyword kw">rescue</span>
+609:       <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">false</span>
+610:       <span class="ruby-identifier">raise</span>
+611:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000005"></a><b>reset!</b>()
+  </div>
+  <div class="description">
+  <p>
+Resets connection, by logging off and creating a new connection.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000005_source')" id="l_M000005_source">show source</a> ]</p>
+  <div id="M000005_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 614</span>
+614:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset!</span>
+615:       <span class="ruby-identifier">logoff</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+616:       <span class="ruby-keyword kw">begin</span>
+617:         <span class="ruby-ivar">@connection</span> = <span class="ruby-ivar">@factory</span>.<span class="ruby-identifier">new_connection</span> <span class="ruby-ivar">@username</span>, <span class="ruby-ivar">@password</span>, <span class="ruby-ivar">@database</span>
+618:         <span class="ruby-identifier">__setobj__</span> <span class="ruby-ivar">@connection</span>
+619:         <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">true</span>
+620:       <span class="ruby-keyword kw">rescue</span>
+621:         <span class="ruby-ivar">@active</span> = <span class="ruby-keyword kw">false</span>
+622:         <span class="ruby-identifier">raise</span>
+623:       <span class="ruby-keyword kw">end</span>
+624:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

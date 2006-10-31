@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::NumberHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::NumberHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/number_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Provides methods for converting a number into a formatted string that
+currently represents one of the following forms: phone number, percentage,
+money, or precision level.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000453">human_size</a></li>
+  <li><a href="#M000449">number_to_currency</a></li>
+  <li><a href="#M000452">number_to_human_size</a></li>
+  <li><a href="#M000450">number_to_percentage</a></li>
+  <li><a href="#M000448">number_to_phone</a></li>
+  <li><a href="#M000451">number_with_delimiter</a></li>
+  <li><a href="#M000454">number_with_precision</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000453"></a><b>human_size</b>(size)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="NumberHelper.html#M000452">number_to_human_size</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000449"></a><b>number_to_currency</b>(number, options = {})
+  </div>
+  <div class="description">
+  <p>
+Formats a <tt>number</tt> into a currency string. The <tt>options</tt> hash
+can be used to customize the format of the output. The <tt>number</tt> can
+contain a level of precision using the <tt>precision</tt> key; default is 2
+The currency type can be set using the <tt>unit</tt> key; default is
+&quot;$&quot; The unit separator can be set using the <tt>separator</tt>
+key; default is &quot;.&quot; The delimiter can be set using the
+<tt>delimiter</tt> key; default is &quot;,&quot; Examples:
+</p>
+<pre>
+   number_to_currency(1234567890.50)     =&gt; $1,234,567,890.50
+   number_to_currency(1234567890.506)    =&gt; $1,234,567,890.51
+   number_to_currency(1234567890.50, {:unit =&gt; &quot;&amp;pound;&quot;, :separator =&gt; &quot;,&quot;, :delimiter =&gt; &quot;&quot;}) =&gt; &amp;pound;1234567890,50
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000449_source')" id="l_M000449_source">show source</a> ]</p>
+  <div id="M000449_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 37</span>
+37:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_to_currency</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">options</span> = {})
+38:         <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">stringify_keys</span>
+39:         <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">unit</span>, <span class="ruby-identifier">separator</span>, <span class="ruby-identifier">delimiter</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;precision&quot;</span>) { <span class="ruby-value">2</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;unit&quot;</span>) { <span class="ruby-value str">&quot;$&quot;</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;separator&quot;</span>) { <span class="ruby-value str">&quot;.&quot;</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;delimiter&quot;</span>) { <span class="ruby-value str">&quot;,&quot;</span> }
+40:         <span class="ruby-identifier">separator</span> = <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">precision</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+41:         <span class="ruby-keyword kw">begin</span>
+42:           <span class="ruby-identifier">parts</span> = <span class="ruby-identifier">number_with_precision</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">precision</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">'.'</span>)
+43:           <span class="ruby-identifier">unit</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">number_with_delimiter</span>(<span class="ruby-identifier">parts</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">delimiter</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">separator</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parts</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span>
+44:         <span class="ruby-keyword kw">rescue</span>
+45:           <span class="ruby-identifier">number</span>
+46:         <span class="ruby-keyword kw">end</span>
+47:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000452"></a><b>number_to_human_size</b>(size)
+  </div>
+  <div class="description">
+  <p>
+Returns a formatted-for-humans file size.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  human_size(123)          =&gt; 123 Bytes
+  human_size(1234)         =&gt; 1.2 KB
+  human_size(12345)        =&gt; 12.1 KB
+  human_size(1234567)      =&gt; 1.2 MB
+  human_size(1234567890)   =&gt; 1.1 GB
+</pre>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="NumberHelper.html#M000453">human_size</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000452_source')" id="l_M000452_source">show source</a> ]</p>
+  <div id="M000452_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 87</span>
+87:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_to_human_size</span>(<span class="ruby-identifier">size</span>)
+88:         <span class="ruby-keyword kw">case</span> 
+89:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">kilobyte</span><span class="ruby-operator">:</span> <span class="ruby-value str">'%d Bytes'</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">size</span>
+90:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">megabyte</span><span class="ruby-operator">:</span> <span class="ruby-value str">'%.1f KB'</span>  <span class="ruby-operator">%</span> (<span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-value">1.0</span>.<span class="ruby-identifier">kilobyte</span>)
+91:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">gigabyte</span><span class="ruby-operator">:</span> <span class="ruby-value str">'%.1f MB'</span>  <span class="ruby-operator">%</span> (<span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-value">1.0</span>.<span class="ruby-identifier">megabyte</span>)
+92:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">terabyte</span><span class="ruby-operator">:</span> <span class="ruby-value str">'%.1f GB'</span>  <span class="ruby-operator">%</span> (<span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-value">1.0</span>.<span class="ruby-identifier">gigabyte</span>)
+93:           <span class="ruby-keyword kw">else</span>                    <span class="ruby-value str">'%.1f TB'</span>  <span class="ruby-operator">%</span> (<span class="ruby-identifier">size</span> <span class="ruby-operator">/</span> <span class="ruby-value">1.0</span>.<span class="ruby-identifier">terabyte</span>)
+94:         <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-value str">'.0'</span>, <span class="ruby-value str">''</span>)
+95:       <span class="ruby-keyword kw">rescue</span>
+96:         <span class="ruby-keyword kw">nil</span>
+97:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000450"></a><b>number_to_percentage</b>(number, options = {})
+  </div>
+  <div class="description">
+  <p>
+Formats a <tt>number</tt> as into a percentage string. The <tt>options</tt>
+hash can be used to customize the format of the output. The <tt>number</tt>
+can contain a level of precision using the <tt>precision</tt> key; default
+is 3 The unit separator can be set using the <tt>separator</tt> key;
+default is &quot;.&quot; Examples:
+</p>
+<pre>
+  number_to_percentage(100)    =&gt; 100.000%
+  number_to_percentage(100, {:precision =&gt; 0}) =&gt; 100%
+  number_to_percentage(302.0574, {:precision =&gt; 2})  =&gt; 302.06%
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000450_source')" id="l_M000450_source">show source</a> ]</p>
+  <div id="M000450_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 56</span>
+56:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_to_percentage</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">options</span> = {})
+57:         <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">stringify_keys</span>
+58:         <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">separator</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;precision&quot;</span>) { <span class="ruby-value">3</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;separator&quot;</span>) { <span class="ruby-value str">&quot;.&quot;</span> }
+59:         <span class="ruby-keyword kw">begin</span>
+60:           <span class="ruby-identifier">number</span> = <span class="ruby-identifier">number_with_precision</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">precision</span>)
+61:           <span class="ruby-identifier">parts</span> = <span class="ruby-identifier">number</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'.'</span>)
+62:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">at</span>(<span class="ruby-value">1</span>).<span class="ruby-identifier">nil?</span>
+63:             <span class="ruby-identifier">parts</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
+64:           <span class="ruby-keyword kw">else</span>
+65:             <span class="ruby-identifier">parts</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">separator</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parts</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
+66:           <span class="ruby-keyword kw">end</span>
+67:         <span class="ruby-keyword kw">rescue</span>
+68:           <span class="ruby-identifier">number</span>
+69:         <span class="ruby-keyword kw">end</span>
+70:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000448"></a><b>number_to_phone</b>(number, options = {})
+  </div>
+  <div class="description">
+  <p>
+Formats a <tt>number</tt> into a US phone number string. The
+<tt>options</tt> can be a hash used to customize the format of the output.
+The area code can be surrounded by parentheses by setting +:area_code+ to
+true; default is false The delimiter can be set using +:delimiter+; default
+is &quot;-&quot; Examples:
+</p>
+<pre>
+  number_to_phone(1235551234)   =&gt; 123-555-1234
+  number_to_phone(1235551234, {:area_code =&gt; true})   =&gt; (123) 555-1234
+  number_to_phone(1235551234, {:delimiter =&gt; &quot; &quot;})    =&gt; 123 555 1234
+  number_to_phone(1235551234, {:area_code =&gt; true, :extension =&gt; 555})  =&gt; (123) 555-1234 x 555
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000448_source')" id="l_M000448_source">show source</a> ]</p>
+  <div id="M000448_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 15</span>
+15:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_to_phone</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">options</span> = {})
+16:         <span class="ruby-identifier">options</span>   = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">stringify_keys</span>
+17:         <span class="ruby-identifier">area_code</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;area_code&quot;</span>) { <span class="ruby-keyword kw">false</span> }
+18:         <span class="ruby-identifier">delimiter</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;delimiter&quot;</span>) { <span class="ruby-value str">&quot;-&quot;</span> }
+19:         <span class="ruby-identifier">extension</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;extension&quot;</span>) { <span class="ruby-value str">&quot;&quot;</span> }
+20:         <span class="ruby-keyword kw">begin</span>
+21:           <span class="ruby-identifier">str</span> = <span class="ruby-identifier">area_code</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/([0-9]{3})([0-9]{3})([0-9]{4})/</span>,<span class="ruby-node">&quot;(\\1) \\2#{delimiter}\\3&quot;</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/([0-9]{3})([0-9]{3})([0-9]{4})/</span>,<span class="ruby-node">&quot;\\1#{delimiter}\\2#{delimiter}\\3&quot;</span>)
+22:           <span class="ruby-identifier">extension</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span><span class="ruby-identifier">str</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{str} x #{extension.to_s.strip}&quot;</span>
+23:         <span class="ruby-keyword kw">rescue</span>
+24:           <span class="ruby-identifier">number</span>
+25:         <span class="ruby-keyword kw">end</span>
+26:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000451"></a><b>number_with_delimiter</b>(number, delimiter=&quot;,&quot;)
+  </div>
+  <div class="description">
+  <p>
+Formats a <tt>number</tt> with a <tt>delimiter</tt>. Example:
+</p>
+<pre>
+   number_with_delimiter(12345678) =&gt; 12,345,678
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000451_source')" id="l_M000451_source">show source</a> ]</p>
+  <div id="M000451_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 75</span>
+75:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_with_delimiter</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">delimiter</span>=<span class="ruby-value str">&quot;,&quot;</span>)
+76:         <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/(\d)(?=(\d\d\d)+(?!\d))/</span>, <span class="ruby-node">&quot;\\1#{delimiter}&quot;</span>)
+77:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000454"></a><b>number_with_precision</b>(number, precision=3)
+  </div>
+  <div class="description">
+  <p>
+Formats a <tt>number</tt> with a level of <tt>precision</tt>. Example:
+</p>
+<pre>
+   number_with_precision(111.2345) =&gt; 111.235
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000454_source')" id="l_M000454_source">show source</a> ]</p>
+  <div id="M000454_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/number_helper.rb, line 104</span>
+104:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">number_with_precision</span>(<span class="ruby-identifier">number</span>, <span class="ruby-identifier">precision</span>=<span class="ruby-value">3</span>)
+105:         <span class="ruby-identifier">sprintf</span>(<span class="ruby-node">&quot;%01.#{precision}f&quot;</span>, <span class="ruby-identifier">number</span>)
+106:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionController::Flash::FlashHash</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionController::Flash::FlashHash</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_controller/flash_rb.html">vendor/rails/actionpack/lib/action_controller/flash.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Hash
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000144">discard</a></li>
+  <li><a href="#M000143">keep</a></li>
+  <li><a href="#M000142">now</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000144"></a><b>discard</b>(k=nil)
+  </div>
+  <div class="description">
+  <p>
+Marks the entire flash or a single flash entry to be discarded by the end
+of the current action
+</p>
+<pre>
+    flash.keep                 # keep entire flash available for the next action
+    flash.discard(:warning)    # discard the &quot;warning&quot; entry (it'll still be available for the current action)
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000144_source')" id="l_M000144_source">show source</a> ]</p>
+  <div id="M000144_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/flash.rb, line 105</span>
+105:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">discard</span>(<span class="ruby-identifier">k</span>=<span class="ruby-keyword kw">nil</span>)
+106:         <span class="ruby-identifier">use</span>(<span class="ruby-identifier">k</span>)
+107:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000143"></a><b>keep</b>(k=nil)
+  </div>
+  <div class="description">
+  <p>
+Keeps either the entire current flash or a specific flash entry available
+for the next action:
+</p>
+<pre>
+   flash.keep            # keeps the entire flash
+   flash.keep(:notice)   # keeps only the &quot;notice&quot; entry, the rest of the flash is discarded
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000143_source')" id="l_M000143_source">show source</a> ]</p>
+  <div id="M000143_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/flash.rb, line 97</span>
+97:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">keep</span>(<span class="ruby-identifier">k</span>=<span class="ruby-keyword kw">nil</span>)
+98:         <span class="ruby-identifier">use</span>(<span class="ruby-identifier">k</span>, <span class="ruby-keyword kw">false</span>)
+99:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000142"></a><b>now</b>()
+  </div>
+  <div class="description">
+  <p>
+Sets a flash that will not be available to the next action, only to the
+current.
+</p>
+<pre>
+    flash.now[:message] = &quot;Hello current action&quot;
+</pre>
+<p>
+This method enables you to use the flash as a central messaging system in
+your app. When you need to pass an object to the next action, you use the
+standard flash assign (<tt>[]=</tt>). When you need to pass an object to
+the current action, you use <tt>now</tt>, and your object will vanish when
+the current action is done.
+</p>
+<p>
+Entries set via <tt>now</tt> are accessed the same way as standard entries:
+<tt>flash[&#8216;my-key&#8217;]</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000142_source')" id="l_M000142_source">show source</a> ]</p>
+  <div id="M000142_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/flash.rb, line 89</span>
+89:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">now</span>
+90:         <span class="ruby-constant">FlashNow</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword kw">self</span>
+91:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

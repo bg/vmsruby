@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Rescue</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Rescue</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionpack/lib/action_controller/rescue_rb.html">vendor/rails/actionpack/lib/action_controller/rescue.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Actions that fail to perform as expected throw exceptions. These exceptions
+can either be rescued for the public view (with a nice user-friendly
+explanation) or for the developers view (with tons of debugging
+information). The developers view is already implemented by the Action
+Controller, but the public view should be tailored to your specific
+application. So too could the decision on whether something is a public or
+a developer request.
+</p>
+<p>
+You can tailor the rescuing behavior and appearance by overwriting the
+following two stub methods.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000070">local_request?</a></li>
+  <li><a href="#M000068">log_error</a></li>
+  <li><a href="#M000067">rescue_action</a></li>
+  <li><a href="#M000069">rescue_action_in_public</a></li>
+  <li><a href="#M000071">rescue_action_locally</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Protected Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000070"></a><b>local_request?</b>(
+  </div>
+  <div class="description">
+  <p>
+Overwrite to expand the meaning of a local request in order to show local
+rescues on other occurrences than the remote IP being 127.0.0.1. For
+example, this could include the IP of the developer machine when debugging
+remotely.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000070_source')" id="l_M000070_source">show source</a> ]</p>
+  <div id="M000070_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/rescue.rb, line 62</span>
+62:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">local_request?</span> <span class="ruby-comment cmt">#:doc:</span>
+63:         [<span class="ruby-ivar">@request</span>.<span class="ruby-identifier">remote_addr</span>, <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">remote_ip</span>] <span class="ruby-operator">==</span> [<span class="ruby-value str">&quot;127.0.0.1&quot;</span>] <span class="ruby-operator">*</span> <span class="ruby-value">2</span>
+64:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000068"></a><b>log_error</b>(exception)
+  </div>
+  <div class="description">
+  <p>
+Overwrite to implement custom logging of errors. By default logs as fatal.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000068_source')" id="l_M000068_source">show source</a> ]</p>
+  <div id="M000068_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/rescue.rb, line 38</span>
+38:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">log_error</span>(<span class="ruby-identifier">exception</span>) <span class="ruby-comment cmt">#:doc:</span>
+39:         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ActionView</span><span class="ruby-operator">::</span><span class="ruby-constant">TemplateError</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">exception</span>
+40:           <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">fatal</span>(<span class="ruby-identifier">exception</span>.<span class="ruby-identifier">to_s</span>)
+41:         <span class="ruby-keyword kw">else</span>
+42:           <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">fatal</span>(
+43:             <span class="ruby-node">&quot;\n\n#{exception.class} (#{exception.message}):\n    &quot;</span> <span class="ruby-operator">+</span> 
+44:             <span class="ruby-identifier">clean_backtrace</span>(<span class="ruby-identifier">exception</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n    &quot;</span>) <span class="ruby-operator">+</span> 
+45:             <span class="ruby-value str">&quot;\n\n&quot;</span>
+46:           )
+47:         <span class="ruby-keyword kw">end</span>
+48:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000067"></a><b>rescue_action</b>(exception)
+  </div>
+  <div class="description">
+  <p>
+Exception handler called when the performance of an action raises an
+exception.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000067_source')" id="l_M000067_source">show source</a> ]</p>
+  <div id="M000067_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/rescue.rb, line 26</span>
+26:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rescue_action</span>(<span class="ruby-identifier">exception</span>)
+27:         <span class="ruby-identifier">log_error</span>(<span class="ruby-identifier">exception</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">logger</span>
+28:         <span class="ruby-identifier">erase_results</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">performed?</span>
+29: 
+30:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">consider_all_requests_local</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">local_request?</span>
+31:           <span class="ruby-identifier">rescue_action_locally</span>(<span class="ruby-identifier">exception</span>)
+32:         <span class="ruby-keyword kw">else</span>
+33:           <span class="ruby-identifier">rescue_action_in_public</span>(<span class="ruby-identifier">exception</span>)
+34:         <span class="ruby-keyword kw">end</span>
+35:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000069"></a><b>rescue_action_in_public</b>(exception)
+  </div>
+  <div class="description">
+  <p>
+Overwrite to implement public exception handling (for requests answering
+false to <tt><a href="Rescue.html#M000070">local_request?</a></tt>).
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000069_source')" id="l_M000069_source">show source</a> ]</p>
+  <div id="M000069_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/rescue.rb, line 51</span>
+51:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rescue_action_in_public</span>(<span class="ruby-identifier">exception</span>) <span class="ruby-comment cmt">#:doc:</span>
+52:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">exception</span>
+53:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">RoutingError</span>, <span class="ruby-constant">UnknownAction</span> <span class="ruby-keyword kw">then</span>
+54:             <span class="ruby-identifier">render_text</span>(<span class="ruby-constant">IO</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">RAILS_ROOT</span>, <span class="ruby-value str">'public'</span>, <span class="ruby-value str">'404.html'</span>)), <span class="ruby-value str">&quot;404 Not Found&quot;</span>)
+55:           <span class="ruby-keyword kw">else</span> <span class="ruby-identifier">render_text</span> <span class="ruby-value str">&quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Application error (Rails)&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+56:         <span class="ruby-keyword kw">end</span>
+57:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000071"></a><b>rescue_action_locally</b>(exception)
+  </div>
+  <div class="description">
+  <p>
+Renders a detailed diagnostics screen on action exceptions.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000071_source')" id="l_M000071_source">show source</a> ]</p>
+  <div id="M000071_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/rescue.rb, line 67</span>
+67:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rescue_action_locally</span>(<span class="ruby-identifier">exception</span>)
+68:         <span class="ruby-identifier">add_variables_to_assigns</span>
+69:         <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value str">&quot;@exception&quot;</span>, <span class="ruby-identifier">exception</span>)
+70:         <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value str">&quot;@rescues_path&quot;</span>, <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword kw">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;/templates/rescues/&quot;</span>)    
+71:         <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:assign_variables_from_controller</span>)
+72: 
+73:         <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value str">&quot;@contents&quot;</span>, <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">render_file</span>(<span class="ruby-identifier">template_path_for_local_rescue</span>(<span class="ruby-identifier">exception</span>), <span class="ruby-keyword kw">false</span>))
+74:     
+75:         <span class="ruby-ivar">@headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-value str">&quot;text/html&quot;</span>
+76:         <span class="ruby-identifier">render_file</span>(<span class="ruby-identifier">rescues_path</span>(<span class="ruby-value str">&quot;layout&quot;</span>), <span class="ruby-identifier">response_code_for_rescue</span>(<span class="ruby-identifier">exception</span>))
+77:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

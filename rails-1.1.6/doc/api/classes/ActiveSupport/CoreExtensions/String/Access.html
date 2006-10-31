@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveSupport::CoreExtensions::String::Access</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveSupport::CoreExtensions::String::Access</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activesupport/lib/active_support/core_ext/string/access_rb.html">vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Makes it easier to access parts of a string, such as specific characters
+and substrings.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000331">at</a></li>
+  <li><a href="#M000334">first</a></li>
+  <li><a href="#M000332">from</a></li>
+  <li><a href="#M000335">last</a></li>
+  <li><a href="#M000333">to</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000331"></a><b>at</b>(position)
+  </div>
+  <div class="description">
+  <p>
+Returns the character at the <tt>position</tt> treating the string as an
+array (where 0 is the first character).
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  &quot;hello&quot;.at(0)  # =&gt; &quot;h&quot;
+  &quot;hello&quot;.at(4)  # =&gt; &quot;o&quot;
+  &quot;hello&quot;.at(10) # =&gt; nil
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000331_source')" id="l_M000331_source">show source</a> ]</p>
+  <div id="M000331_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb, line 12</span>
+12:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">at</span>(<span class="ruby-identifier">position</span>)
+13:           <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">position</span>, <span class="ruby-value">1</span>]
+14:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000334"></a><b>first</b>(limit = 1)
+  </div>
+  <div class="description">
+  <p>
+Returns the first character of the string or the first <tt>limit</tt>
+characters.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  &quot;hello&quot;.first     # =&gt; &quot;h&quot;
+  &quot;hello&quot;.first(2)  # =&gt; &quot;he&quot;
+  &quot;hello&quot;.first(10) # =&gt; &quot;hello&quot;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000334_source')" id="l_M000334_source">show source</a> ]</p>
+  <div id="M000334_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb, line 42</span>
+42:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first</span>(<span class="ruby-identifier">limit</span> = <span class="ruby-value">1</span>)
+43:           <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span>(<span class="ruby-identifier">limit</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)]
+44:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000332"></a><b>from</b>(position)
+  </div>
+  <div class="description">
+  <p>
+Returns the remaining of the string from the <tt>position</tt> treating the
+string as an array (where 0 is the first character).
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  &quot;hello&quot;.from(0)  # =&gt; &quot;hello&quot;
+  &quot;hello&quot;.from(2)  # =&gt; &quot;llo&quot;
+  &quot;hello&quot;.from(10) # =&gt; nil
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000332_source')" id="l_M000332_source">show source</a> ]</p>
+  <div id="M000332_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb, line 22</span>
+22:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">from</span>(<span class="ruby-identifier">position</span>)
+23:           <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">position</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+24:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000335"></a><b>last</b>(limit = 1)
+  </div>
+  <div class="description">
+  <p>
+Returns the last character of the string or the last <tt>limit</tt>
+characters.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  &quot;hello&quot;.last     # =&gt; &quot;o&quot;
+  &quot;hello&quot;.last(2)  # =&gt; &quot;lo&quot;
+  &quot;hello&quot;.last(10) # =&gt; &quot;hello&quot;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000335_source')" id="l_M000335_source">show source</a> ]</p>
+  <div id="M000335_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb, line 52</span>
+52:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last</span>(<span class="ruby-identifier">limit</span> = <span class="ruby-value">1</span>)
+53:           <span class="ruby-keyword kw">self</span>[(<span class="ruby-operator">-</span><span class="ruby-identifier">limit</span>)<span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>
+54:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000333"></a><b>to</b>(position)
+  </div>
+  <div class="description">
+  <p>
+Returns the beginning of the string up to the <tt>position</tt> treating
+the string as an array (where 0 is the first character).
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  &quot;hello&quot;.to(0)  # =&gt; &quot;h&quot;
+  &quot;hello&quot;.to(2)  # =&gt; &quot;hel&quot;
+  &quot;hello&quot;.to(10) # =&gt; &quot;hello&quot;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000333_source')" id="l_M000333_source">show source</a> ]</p>
+  <div id="M000333_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/core_ext/string/access.rb, line 32</span>
+32:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to</span>(<span class="ruby-identifier">position</span>)
+33:           <span class="ruby-keyword kw">self</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">position</span>]
+34:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

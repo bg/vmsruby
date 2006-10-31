@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: TimeZone</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />TimeZone</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../files/vendor/rails/activesupport/lib/active_support/values/time_zone_rb.html">vendor/rails/activesupport/lib/active_support/values/time_zone.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+A value object representing a time zone. A time zone is simply a named
+offset (in seconds) from GMT. Note that two time zone objects are only
+equivalent if they have both the same offset, and the same name.
+</p>
+<p>
+A <a href="TimeZone.html">TimeZone</a> instance may be used to convert a
+Time value to the corresponding time zone.
+</p>
+<p>
+The class also includes <a href="TimeZone.html#M000018">all</a>, which
+returns a list of all <a href="TimeZone.html">TimeZone</a> objects.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000014">&lt;=&gt;</a></li>
+  <li><a href="#M000019">[]</a></li>
+  <li><a href="#M000012">adjust</a></li>
+  <li><a href="#M000018">all</a></li>
+  <li><a href="#M000016">create</a></li>
+  <li><a href="#M000009">formatted_offset</a></li>
+  <li><a href="#M000008">new</a></li>
+  <li><a href="#M000017">new</a></li>
+  <li><a href="#M000010">now</a></li>
+  <li><a href="#M000015">to_s</a></li>
+  <li><a href="#M000011">today</a></li>
+  <li><a href="#M000013">unadjust</a></li>
+  <li><a href="#M000020">us_zones</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li>Comparable</li>
+</ul>
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">US_ZONES</td>
+    <td>=</td>
+    <td class="attr-value">/US|Arizona|Indiana|Hawaii|Alaska/</td>
+  </tr>
+  <tr valign='top'>
+    <td>&nbsp;</td>
+    <td colspan="2" class="attr-desc">
+A regular expression that matches the names of all time zones in the USA.
+
+</td>
+  </tr>
+  </table>
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>name</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>utc_offset</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000019"></a><b>[]</b>(arg)
+  </div>
+  <div class="description">
+  <p>
+Locate a specific time zone object. If the argument is a string, it is
+interpreted to mean the name of the timezone to locate. If it is a numeric
+value it is either the hour offset, or the second offset, of the timezone
+to find. (The first one with that offset will be returned.) Returns
+<tt>nil</tt> if no such time zone is known to the system.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000019_source')" id="l_M000019_source">show source</a> ]</p>
+  <div id="M000019_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 158</span>
+158:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">arg</span>)
+159:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">arg</span>
+160:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>
+161:           <span class="ruby-identifier">all</span>.<span class="ruby-identifier">find</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">z</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">arg</span> }
+162:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Numeric</span>
+163:           <span class="ruby-identifier">arg</span> <span class="ruby-operator">*=</span> <span class="ruby-value">3600</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">arg</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">13</span>
+164:           <span class="ruby-identifier">all</span>.<span class="ruby-identifier">find</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">z</span>.<span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">arg</span>.<span class="ruby-identifier">to_i</span> }
+165:         <span class="ruby-keyword kw">else</span>
+166:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;invalid argument to TimeZone[]: #{arg.inspect}&quot;</span>
+167:       <span class="ruby-keyword kw">end</span>
+168:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000018"></a><b>all</b>()
+  </div>
+  <div class="description">
+  <p>
+Return an array of all <a href="TimeZone.html">TimeZone</a> objects. There
+are multiple <a href="TimeZone.html">TimeZone</a> objects per time zone, in
+many cases, to make it easier for users to find their own time zone.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000018_source')" id="l_M000018_source">show source</a> ]</p>
+  <div id="M000018_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 93</span>
+ 93:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all</span>
+ 94:       <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@@zones</span>
+ 95:         <span class="ruby-ivar">@@zones</span> = []
+ 96:         [[<span class="ruby-value">-43_200</span>, <span class="ruby-value str">&quot;International Date Line West&quot;</span> ],
+ 97:          [<span class="ruby-value">-39_600</span>, <span class="ruby-value str">&quot;Midway Island&quot;</span>, <span class="ruby-value str">&quot;Samoa&quot;</span> ],
+ 98:          [<span class="ruby-value">-36_000</span>, <span class="ruby-value str">&quot;Hawaii&quot;</span> ],
+ 99:          [<span class="ruby-value">-32_400</span>, <span class="ruby-value str">&quot;Alaska&quot;</span> ],
+100:          [<span class="ruby-value">-28_800</span>, <span class="ruby-value str">&quot;Pacific Time (US &amp; Canada)&quot;</span>, <span class="ruby-value str">&quot;Tijuana&quot;</span> ],
+101:          [<span class="ruby-value">-25_200</span>, <span class="ruby-value str">&quot;Mountain Time (US &amp; Canada)&quot;</span>, <span class="ruby-value str">&quot;Chihuahua&quot;</span>, <span class="ruby-value str">&quot;La Paz&quot;</span>,
+102:                    <span class="ruby-value str">&quot;Mazatlan&quot;</span>, <span class="ruby-value str">&quot;Arizona&quot;</span> ],
+103:          [<span class="ruby-value">-21_600</span>, <span class="ruby-value str">&quot;Central Time (US &amp; Canada)&quot;</span>, <span class="ruby-value str">&quot;Saskatchewan&quot;</span>, <span class="ruby-value str">&quot;Guadalajara&quot;</span>,
+104:                    <span class="ruby-value str">&quot;Mexico City&quot;</span>, <span class="ruby-value str">&quot;Monterrey&quot;</span>, <span class="ruby-value str">&quot;Central America&quot;</span> ],
+105:          [<span class="ruby-value">-18_000</span>, <span class="ruby-value str">&quot;Eastern Time (US &amp; Canada)&quot;</span>, <span class="ruby-value str">&quot;Indiana (East)&quot;</span>, <span class="ruby-value str">&quot;Bogota&quot;</span>,
+106:                    <span class="ruby-value str">&quot;Lima&quot;</span>, <span class="ruby-value str">&quot;Quito&quot;</span> ],
+107:          [<span class="ruby-value">-14_400</span>, <span class="ruby-value str">&quot;Atlantic Time (Canada)&quot;</span>, <span class="ruby-value str">&quot;Caracas&quot;</span>, <span class="ruby-value str">&quot;La Paz&quot;</span>, <span class="ruby-value str">&quot;Santiago&quot;</span> ],
+108:          [<span class="ruby-value">-12_600</span>, <span class="ruby-value str">&quot;Newfoundland&quot;</span> ],
+109:          [<span class="ruby-value">-10_800</span>, <span class="ruby-value str">&quot;Brasilia&quot;</span>, <span class="ruby-value str">&quot;Buenos Aires&quot;</span>, <span class="ruby-value str">&quot;Georgetown&quot;</span>, <span class="ruby-value str">&quot;Greenland&quot;</span> ],
+110:          [ <span class="ruby-value">-7_200</span>, <span class="ruby-value str">&quot;Mid-Atlantic&quot;</span> ],
+111:          [ <span class="ruby-value">-3_600</span>, <span class="ruby-value str">&quot;Azores&quot;</span>, <span class="ruby-value str">&quot;Cape Verde Is.&quot;</span> ],
+112:          [      <span class="ruby-value">0</span>, <span class="ruby-value str">&quot;Dublin&quot;</span>, <span class="ruby-value str">&quot;Edinburgh&quot;</span>, <span class="ruby-value str">&quot;Lisbon&quot;</span>, <span class="ruby-value str">&quot;London&quot;</span>, <span class="ruby-value str">&quot;Casablanca&quot;</span>,
+113:                    <span class="ruby-value str">&quot;Monrovia&quot;</span> ],
+114:          [  <span class="ruby-value">3_600</span>, <span class="ruby-value str">&quot;Belgrade&quot;</span>, <span class="ruby-value str">&quot;Bratislava&quot;</span>, <span class="ruby-value str">&quot;Budapest&quot;</span>, <span class="ruby-value str">&quot;Ljubljana&quot;</span>, <span class="ruby-value str">&quot;Prague&quot;</span>,
+115:                    <span class="ruby-value str">&quot;Sarajevo&quot;</span>, <span class="ruby-value str">&quot;Skopje&quot;</span>, <span class="ruby-value str">&quot;Warsaw&quot;</span>, <span class="ruby-value str">&quot;Zagreb&quot;</span>, <span class="ruby-value str">&quot;Brussels&quot;</span>,
+116:                    <span class="ruby-value str">&quot;Copenhagen&quot;</span>, <span class="ruby-value str">&quot;Madrid&quot;</span>, <span class="ruby-value str">&quot;Paris&quot;</span>, <span class="ruby-value str">&quot;Amsterdam&quot;</span>, <span class="ruby-value str">&quot;Berlin&quot;</span>,
+117:                    <span class="ruby-value str">&quot;Bern&quot;</span>, <span class="ruby-value str">&quot;Rome&quot;</span>, <span class="ruby-value str">&quot;Stockholm&quot;</span>, <span class="ruby-value str">&quot;Vienna&quot;</span>,
+118:                    <span class="ruby-value str">&quot;West Central Africa&quot;</span> ],
+119:          [  <span class="ruby-value">7_200</span>, <span class="ruby-value str">&quot;Bucharest&quot;</span>, <span class="ruby-value str">&quot;Cairo&quot;</span>, <span class="ruby-value str">&quot;Helsinki&quot;</span>, <span class="ruby-value str">&quot;Kyev&quot;</span>, <span class="ruby-value str">&quot;Riga&quot;</span>, <span class="ruby-value str">&quot;Sofia&quot;</span>,
+120:                    <span class="ruby-value str">&quot;Tallinn&quot;</span>, <span class="ruby-value str">&quot;Vilnius&quot;</span>, <span class="ruby-value str">&quot;Athens&quot;</span>, <span class="ruby-value str">&quot;Istanbul&quot;</span>, <span class="ruby-value str">&quot;Minsk&quot;</span>,
+121:                    <span class="ruby-value str">&quot;Jerusalem&quot;</span>, <span class="ruby-value str">&quot;Harare&quot;</span>, <span class="ruby-value str">&quot;Pretoria&quot;</span> ],
+122:          [ <span class="ruby-value">10_800</span>, <span class="ruby-value str">&quot;Moscow&quot;</span>, <span class="ruby-value str">&quot;St. Petersburg&quot;</span>, <span class="ruby-value str">&quot;Volgograd&quot;</span>, <span class="ruby-value str">&quot;Kuwait&quot;</span>, <span class="ruby-value str">&quot;Riyadh&quot;</span>,
+123:                    <span class="ruby-value str">&quot;Nairobi&quot;</span>, <span class="ruby-value str">&quot;Baghdad&quot;</span> ],
+124:          [ <span class="ruby-value">12_600</span>, <span class="ruby-value str">&quot;Tehran&quot;</span> ],
+125:          [ <span class="ruby-value">14_400</span>, <span class="ruby-value str">&quot;Abu Dhabi&quot;</span>, <span class="ruby-value str">&quot;Muscat&quot;</span>, <span class="ruby-value str">&quot;Baku&quot;</span>, <span class="ruby-value str">&quot;Tbilisi&quot;</span>, <span class="ruby-value str">&quot;Yerevan&quot;</span> ],
+126:          [ <span class="ruby-value">16_200</span>, <span class="ruby-value str">&quot;Kabul&quot;</span> ],
+127:          [ <span class="ruby-value">18_000</span>, <span class="ruby-value str">&quot;Ekaterinburg&quot;</span>, <span class="ruby-value str">&quot;Islamabad&quot;</span>, <span class="ruby-value str">&quot;Karachi&quot;</span>, <span class="ruby-value str">&quot;Tashkent&quot;</span> ],
+128:          [ <span class="ruby-value">19_800</span>, <span class="ruby-value str">&quot;Chennai&quot;</span>, <span class="ruby-value str">&quot;Kolkata&quot;</span>, <span class="ruby-value str">&quot;Mumbai&quot;</span>, <span class="ruby-value str">&quot;New Delhi&quot;</span> ],
+129:          [ <span class="ruby-value">20_700</span>, <span class="ruby-value str">&quot;Kathmandu&quot;</span> ],
+130:          [ <span class="ruby-value">21_600</span>, <span class="ruby-value str">&quot;Astana&quot;</span>, <span class="ruby-value str">&quot;Dhaka&quot;</span>, <span class="ruby-value str">&quot;Sri Jayawardenepura&quot;</span>, <span class="ruby-value str">&quot;Almaty&quot;</span>,
+131:                    <span class="ruby-value str">&quot;Novosibirsk&quot;</span> ],
+132:          [ <span class="ruby-value">23_400</span>, <span class="ruby-value str">&quot;Rangoon&quot;</span> ],
+133:          [ <span class="ruby-value">25_200</span>, <span class="ruby-value str">&quot;Bangkok&quot;</span>, <span class="ruby-value str">&quot;Hanoi&quot;</span>, <span class="ruby-value str">&quot;Jakarta&quot;</span>, <span class="ruby-value str">&quot;Krasnoyarsk&quot;</span> ],
+134:          [ <span class="ruby-value">28_800</span>, <span class="ruby-value str">&quot;Beijing&quot;</span>, <span class="ruby-value str">&quot;Chongqing&quot;</span>, <span class="ruby-value str">&quot;Hong Kong&quot;</span>, <span class="ruby-value str">&quot;Urumqi&quot;</span>,
+135:                    <span class="ruby-value str">&quot;Kuala Lumpur&quot;</span>, <span class="ruby-value str">&quot;Singapore&quot;</span>, <span class="ruby-value str">&quot;Taipei&quot;</span>, <span class="ruby-value str">&quot;Perth&quot;</span>, <span class="ruby-value str">&quot;Irkutsk&quot;</span>,
+136:                    <span class="ruby-value str">&quot;Ulaan Bataar&quot;</span> ],
+137:          [ <span class="ruby-value">32_400</span>, <span class="ruby-value str">&quot;Seoul&quot;</span>, <span class="ruby-value str">&quot;Osaka&quot;</span>, <span class="ruby-value str">&quot;Sapporo&quot;</span>, <span class="ruby-value str">&quot;Tokyo&quot;</span>, <span class="ruby-value str">&quot;Yakutsk&quot;</span> ],
+138:          [ <span class="ruby-value">34_200</span>, <span class="ruby-value str">&quot;Darwin&quot;</span>, <span class="ruby-value str">&quot;Adelaide&quot;</span> ],
+139:          [ <span class="ruby-value">36_000</span>, <span class="ruby-value str">&quot;Canberra&quot;</span>, <span class="ruby-value str">&quot;Melbourne&quot;</span>, <span class="ruby-value str">&quot;Sydney&quot;</span>, <span class="ruby-value str">&quot;Brisbane&quot;</span>, <span class="ruby-value str">&quot;Hobart&quot;</span>,
+140:                    <span class="ruby-value str">&quot;Vladivostok&quot;</span>, <span class="ruby-value str">&quot;Guam&quot;</span>, <span class="ruby-value str">&quot;Port Moresby&quot;</span> ],
+141:          [ <span class="ruby-value">39_600</span>, <span class="ruby-value str">&quot;Magadan&quot;</span>, <span class="ruby-value str">&quot;Solomon Is.&quot;</span>, <span class="ruby-value str">&quot;New Caledonia&quot;</span> ],
+142:          [ <span class="ruby-value">43_200</span>, <span class="ruby-value str">&quot;Fiji&quot;</span>, <span class="ruby-value str">&quot;Kamchatka&quot;</span>, <span class="ruby-value str">&quot;Marshall Is.&quot;</span>, <span class="ruby-value str">&quot;Auckland&quot;</span>,
+143:                    <span class="ruby-value str">&quot;Wellington&quot;</span> ],
+144:          [ <span class="ruby-value">46_800</span>, <span class="ruby-value str">&quot;Nuku'alofa&quot;</span> ]].
+145:         <span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">offset</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">places</span><span class="ruby-operator">|</span>
+146:           <span class="ruby-identifier">places</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">place</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@@zones</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">place</span>, <span class="ruby-identifier">offset</span>).<span class="ruby-identifier">freeze</span> }
+147:         <span class="ruby-keyword kw">end</span>
+148:         <span class="ruby-ivar">@@zones</span>.<span class="ruby-identifier">sort!</span>
+149:       <span class="ruby-keyword kw">end</span>
+150:       <span class="ruby-ivar">@@zones</span>
+151:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000016"></a><b>create</b>(name, offset)
+  </div>
+  <div class="description">
+  <p>
+Create a new <a href="TimeZone.html">TimeZone</a> instance with the given
+name and offset.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000016_source')" id="l_M000016_source">show source</a> ]</p>
+  <div id="M000016_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 77</span>
+77:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">offset</span>)
+78:       <span class="ruby-identifier">zone</span> = <span class="ruby-identifier">allocate</span>
+79:       <span class="ruby-identifier">zone</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">:initialize</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">offset</span>
+80:       <span class="ruby-identifier">zone</span>
+81:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000008"></a><b>new</b>(name, utc_offset)
+  </div>
+  <div class="description">
+  <p>
+Create a new <a href="TimeZone.html">TimeZone</a> object with the given
+name and offset. The offset is the number of seconds that this time zone is
+offset from UTC (GMT). Seconds were chosen as the offset unit because that
+is the unit that Ruby uses to represent time zone offsets (see
+Time#utc_offset).
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000008_source')" id="l_M000008_source">show source</a> ]</p>
+  <div id="M000008_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 18</span>
+18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">utc_offset</span>)
+19:     <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
+20:     <span class="ruby-ivar">@utc_offset</span> = <span class="ruby-identifier">utc_offset</span>
+21:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000017"></a><b>new</b>(name)
+  </div>
+  <div class="description">
+  <p>
+Return a <a href="TimeZone.html">TimeZone</a> instance with the given name,
+or <tt>nil</tt> if no such <a href="TimeZone.html">TimeZone</a> instance
+exists. (This exists to support the use of this class with the composed_of
+macro.)
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000017_source')" id="l_M000017_source">show source</a> ]</p>
+  <div id="M000017_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 86</span>
+86:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>)
+87:       <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">name</span>]
+88:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000020"></a><b>us_zones</b>()
+  </div>
+  <div class="description">
+  <p>
+A convenience method for returning a collection of <a
+href="TimeZone.html">TimeZone</a> objects for time zones in the USA.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000020_source')" id="l_M000020_source">show source</a> ]</p>
+  <div id="M000020_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 176</span>
+176:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">us_zones</span>
+177:       <span class="ruby-identifier">all</span>.<span class="ruby-identifier">find_all</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">z</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">US_ZONES</span> }
+178:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000014"></a><b>&lt;=&gt;</b>(zone)
+  </div>
+  <div class="description">
+  <p>
+Compare this time zone to the parameter. The two are comapred first on
+their offsets, and then by name.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000014_source')" id="l_M000014_source">show source</a> ]</p>
+  <div id="M000014_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 62</span>
+62:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">zone</span>)
+63:     <span class="ruby-identifier">result</span> = (<span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">zone</span>.<span class="ruby-identifier">utc_offset</span>)
+64:     <span class="ruby-identifier">result</span> = (<span class="ruby-identifier">name</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">zone</span>.<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+65:     <span class="ruby-identifier">result</span>
+66:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000012"></a><b>adjust</b>(time)
+  </div>
+  <div class="description">
+  <p>
+Adjust the given time to the time zone represented by <tt>self</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000012_source')" id="l_M000012_source">show source</a> ]</p>
+  <div id="M000012_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 47</span>
+47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">adjust</span>(<span class="ruby-identifier">time</span>)
+48:     <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_time</span>
+49:     <span class="ruby-identifier">time</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">utc_offset</span>
+50:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000009"></a><b>formatted_offset</b>( colon=true )
+  </div>
+  <div class="description">
+  <p>
+Returns the offset of this time zone as a formatted string, of the format
+&quot;+HH:MM&quot;. If the offset is zero, this returns the empty string.
+If <tt>colon</tt> is false, a colon will not be inserted into the result.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000009_source')" id="l_M000009_source">show source</a> ]</p>
+  <div id="M000009_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">formatted_offset</span>( <span class="ruby-identifier">colon</span>=<span class="ruby-keyword kw">true</span> )
+28:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+29:     <span class="ruby-identifier">sign</span> = (<span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">-1</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+30:     <span class="ruby-identifier">hours</span> = <span class="ruby-identifier">utc_offset</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">/</span> <span class="ruby-value">3600</span>
+31:     <span class="ruby-identifier">minutes</span> = (<span class="ruby-identifier">utc_offset</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">%</span> <span class="ruby-value">3600</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>
+32:     <span class="ruby-value str">&quot;%+03d%s%02d&quot;</span> <span class="ruby-operator">%</span> [ <span class="ruby-identifier">hours</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">sign</span>, <span class="ruby-identifier">colon</span> <span class="ruby-value">? </span><span class="ruby-value str">&quot;:&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-identifier">minutes</span> ]
+33:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000010"></a><b>now</b>()
+  </div>
+  <div class="description">
+  <p>
+Compute and return the current time, in the time zone represented by
+<tt>self</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000010_source')" id="l_M000010_source">show source</a> ]</p>
+  <div id="M000010_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">now</span>
+38:     <span class="ruby-identifier">adjust</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+39:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000015"></a><b>to_s</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a textual representation of this time zone.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000015_source')" id="l_M000015_source">show source</a> ]</p>
+  <div id="M000015_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 69</span>
+69:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+70:     <span class="ruby-node">&quot;(GMT#{formatted_offset}) #{name}&quot;</span>
+71:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000011"></a><b>today</b>()
+  </div>
+  <div class="description">
+  <p>
+Return the current date in this time zone.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000011_source')" id="l_M000011_source">show source</a> ]</p>
+  <div id="M000011_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 42</span>
+42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">today</span>
+43:     <span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_date</span>
+44:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000013"></a><b>unadjust</b>(time)
+  </div>
+  <div class="description">
+  <p>
+Reinterprets the given time value as a time in the current time zone, and
+then adjusts it to return the corresponding time in the local time zone.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000013_source')" id="l_M000013_source">show source</a> ]</p>
+  <div id="M000013_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/values/time_zone.rb, line 55</span>
+55:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unadjust</span>(<span class="ruby-identifier">time</span>)
+56:     <span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">to_a</span>)
+57:     <span class="ruby-identifier">time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">utc_offset</span>
+58:   <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

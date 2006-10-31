@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: Inflector::Inflections</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />Inflector::Inflections</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/activesupport/lib/active_support/inflector_rb.html">vendor/rails/activesupport/lib/active_support/inflector.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+A singleton instance of this class is yielded by <a
+href="../Inflector.html#M000944">Inflector.inflections</a>, which can then
+be used to specify additional inflection rules. Examples:
+</p>
+<pre>
+  Inflector.inflections do |inflect|
+    inflect.plural /^(ox)$/i, '\1\2en'
+    inflect.singular /^(ox)en/i, '\1'
+
+    inflect.irregular 'octopus', 'octopi'
+
+    inflect.uncountable &quot;equipment&quot;
+  end
+</pre>
+<p>
+New rules are added at the top. So in the example above, the irregular rule
+for octopus will now be the first of the pluralization and singularization
+rules that is runs. This guarantees that your rules run before any of the
+rules that may already have been loaded.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000963">clear</a></li>
+  <li><a href="#M000961">irregular</a></li>
+  <li><a href="#M000958">new</a></li>
+  <li><a href="#M000959">plural</a></li>
+  <li><a href="#M000960">singular</a></li>
+  <li><a href="#M000962">uncountable</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li>Singleton</li>
+</ul>
+
+
+
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>plurals</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>singulars</td>
+    <td class='attr-desc'></td>
+  </tr>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>uncountables</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000958"></a><b>new</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000958_source')" id="l_M000958_source">show source</a> ]</p>
+  <div id="M000958_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 27</span>
+27:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
+28:       <span class="ruby-ivar">@plurals</span>, <span class="ruby-ivar">@singulars</span>, <span class="ruby-ivar">@uncountables</span> = [], [], []
+29:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000963"></a><b>clear</b>(scope = :all)
+  </div>
+  <div class="description">
+  <p>
+Clears the loaded inflections within a given scope (default is :all). Give
+the scope as a symbol of the inflection type, the options are: :plurals,
+:singulars, :uncountables
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  clear :all
+  clear :plurals
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000963_source')" id="l_M000963_source">show source</a> ]</p>
+  <div id="M000963_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 70</span>
+70:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clear</span>(<span class="ruby-identifier">scope</span> = <span class="ruby-identifier">:all</span>)
+71:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">scope</span>
+72:         <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:all</span>
+73:           <span class="ruby-ivar">@plurals</span>, <span class="ruby-ivar">@singulars</span>, <span class="ruby-ivar">@uncountables</span> = [], [], []
+74:         <span class="ruby-keyword kw">else</span>
+75:           <span class="ruby-identifier">instance_variable_set</span> <span class="ruby-node">&quot;@#{scope}&quot;</span>, []
+76:       <span class="ruby-keyword kw">end</span>
+77:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000961"></a><b>irregular</b>(singular, plural)
+  </div>
+  <div class="description">
+  <p>
+Specifies a new irregular that applies to both pluralization and
+singularization at the same time. This can only be used for strings, not
+regular expressions. You simply pass the irregular in singular and plural
+form.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  irregular 'octopus', 'octopi'
+  irregular 'person', 'people'
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000961_source')" id="l_M000961_source">show source</a> ]</p>
+  <div id="M000961_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 49</span>
+49:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">irregular</span>(<span class="ruby-identifier">singular</span>, <span class="ruby-identifier">plural</span>)
+50:       <span class="ruby-identifier">plural</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;(#{singular[0,1]})#{singular[1..-1]}$&quot;</span>, <span class="ruby-value str">&quot;i&quot;</span>), <span class="ruby-value str">'\1'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">plural</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])
+51:       <span class="ruby-identifier">singular</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;(#{plural[0,1]})#{plural[1..-1]}$&quot;</span>, <span class="ruby-value str">&quot;i&quot;</span>), <span class="ruby-value str">'\1'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">singular</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])
+52:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000959"></a><b>plural</b>(rule, replacement)
+  </div>
+  <div class="description">
+  <p>
+Specifies a new pluralization rule and its replacement. The rule can either
+be a string or a regular expression. The replacement should always be a
+string that may include references to the matched data from the rule.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000959_source')" id="l_M000959_source">show source</a> ]</p>
+  <div id="M000959_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 33</span>
+33:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">plural</span>(<span class="ruby-identifier">rule</span>, <span class="ruby-identifier">replacement</span>)
+34:       <span class="ruby-ivar">@plurals</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>, [<span class="ruby-identifier">rule</span>, <span class="ruby-identifier">replacement</span>])
+35:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000960"></a><b>singular</b>(rule, replacement)
+  </div>
+  <div class="description">
+  <p>
+Specifies a new singularization rule and its replacement. The rule can
+either be a string or a regular expression. The replacement should always
+be a string that may include references to the matched data from the rule.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000960_source')" id="l_M000960_source">show source</a> ]</p>
+  <div id="M000960_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 39</span>
+39:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">singular</span>(<span class="ruby-identifier">rule</span>, <span class="ruby-identifier">replacement</span>)
+40:       <span class="ruby-ivar">@singulars</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>, [<span class="ruby-identifier">rule</span>, <span class="ruby-identifier">replacement</span>])
+41:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000962"></a><b>uncountable</b>(*words)
+  </div>
+  <div class="description">
+  <p>
+Add uncountable words that shouldn&#8217;t be attempted inflected.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  uncountable &quot;money&quot;
+  uncountable &quot;money&quot;, &quot;information&quot;
+  uncountable %w( money information rice )
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000962_source')" id="l_M000962_source">show source</a> ]</p>
+  <div id="M000962_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/inflector.rb, line 60</span>
+60:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">uncountable</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">words</span>)
+61:       (<span class="ruby-ivar">@uncountables</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">words</span>).<span class="ruby-identifier">flatten!</span>
+62:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

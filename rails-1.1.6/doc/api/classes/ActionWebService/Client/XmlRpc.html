@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionWebService::Client::XmlRpc</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionWebService::Client::XmlRpc</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionwebservice/lib/action_web_service/client/xmlrpc_client_rb.html">vendor/rails/actionwebservice/lib/action_web_service/client/xmlrpc_client.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Base
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Implements XML-RPC client support
+</p>
+<h4>Example Usage</h4>
+<pre>
+  class BloggerAPI &lt; ActionWebService::API::Base
+    inflect_names false
+    api_method :getRecentPosts, :returns =&gt; [[Blog::Post]]
+  end
+
+  blog = ActionWebService::Client::XmlRpc.new(BloggerAPI, &quot;http://.../RPC&quot;, :handler_name =&gt; &quot;blogger&quot;)
+  posts = blog.getRecentPosts
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000355">new</a></li>
+  <li><a href="#M000356">perform_invocation</a></li>
+  <li><a href="#M000357">public_name</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000355"></a><b>new</b>(api, endpoint_uri, options={})
+  </div>
+  <div class="description">
+  <p>
+Creates a new web service client using the XML-RPC protocol.
+</p>
+<p>
+<tt>api</tt> must be an ActionWebService::API::Base derivative, and
+<tt>endpoint_uri</tt> must point at the relevant URL to which protocol
+requests will be sent with HTTP POST.
+</p>
+<p>
+Valid options:
+</p>
+<dl>
+<dt><tt>:handler_name</tt></dt><dd>If the remote server defines its services inside special handler (the
+Blogger API uses a <tt>&quot;blogger&quot;</tt> handler name for example),
+provide it here, or your method calls will fail
+
+</dd>
+</dl>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000355_source')" id="l_M000355_source">show source</a> ]</p>
+  <div id="M000355_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/client/xmlrpc_client.rb, line 30</span>
+30:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">api</span>, <span class="ruby-identifier">endpoint_uri</span>, <span class="ruby-identifier">options</span>={})
+31:         <span class="ruby-ivar">@api</span> = <span class="ruby-identifier">api</span>
+32:         <span class="ruby-ivar">@handler_name</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:handler_name</span>]
+33:         <span class="ruby-ivar">@protocol</span> = <span class="ruby-constant">ActionWebService</span><span class="ruby-operator">::</span><span class="ruby-constant">Protocol</span><span class="ruby-operator">::</span><span class="ruby-constant">XmlRpc</span><span class="ruby-operator">::</span><span class="ruby-constant">XmlRpcProtocol</span>.<span class="ruby-identifier">new</span>
+34:         <span class="ruby-ivar">@client</span> = <span class="ruby-constant">XMLRPC</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new2</span>(<span class="ruby-identifier">endpoint_uri</span>, <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:proxy</span>], <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:timeout</span>])
+35:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Protected Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000356"></a><b>perform_invocation</b>(method_name, args)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000356_source')" id="l_M000356_source">show source</a> ]</p>
+  <div id="M000356_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/client/xmlrpc_client.rb, line 38</span>
+38:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">perform_invocation</span>(<span class="ruby-identifier">method_name</span>, <span class="ruby-identifier">args</span>)
+39:           <span class="ruby-identifier">method</span> = <span class="ruby-ivar">@api</span>.<span class="ruby-identifier">api_methods</span>[<span class="ruby-identifier">method_name</span>.<span class="ruby-identifier">to_sym</span>]
+40:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">method</span>.<span class="ruby-identifier">expects</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">method</span>.<span class="ruby-identifier">expects</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">length</span>
+41:             <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;#{method.public_name}: wrong number of arguments (#{args.length} for #{method.expects.length})&quot;</span>)
+42:           <span class="ruby-keyword kw">end</span>
+43:           <span class="ruby-identifier">args</span> = <span class="ruby-identifier">method</span>.<span class="ruby-identifier">cast_expects</span>(<span class="ruby-identifier">args</span>.<span class="ruby-identifier">dup</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-identifier">args</span>
+44:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">method</span>.<span class="ruby-identifier">expects</span>
+45:             <span class="ruby-identifier">method</span>.<span class="ruby-identifier">expects</span>.<span class="ruby-identifier">each_with_index</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">type</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">args</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-ivar">@protocol</span>.<span class="ruby-identifier">value_to_xmlrpc_wire_format</span>(<span class="ruby-identifier">args</span>[<span class="ruby-identifier">i</span>], <span class="ruby-identifier">type</span>) }
+46:           <span class="ruby-keyword kw">end</span>
+47:           <span class="ruby-identifier">ok</span>, <span class="ruby-identifier">return_value</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">call2</span>(<span class="ruby-identifier">public_name</span>(<span class="ruby-identifier">method_name</span>), <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+48:           <span class="ruby-keyword kw">return</span> (<span class="ruby-identifier">method</span>.<span class="ruby-identifier">cast_returns</span>(<span class="ruby-identifier">return_value</span>.<span class="ruby-identifier">dup</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-identifier">return_value</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ok</span>
+49:           <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ClientError</span>, <span class="ruby-node">&quot;#{return_value.faultCode}: #{return_value.faultString}&quot;</span>)
+50:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000357"></a><b>public_name</b>(method_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000357_source')" id="l_M000357_source">show source</a> ]</p>
+  <div id="M000357_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/client/xmlrpc_client.rb, line 52</span>
+52:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">public_name</span>(<span class="ruby-identifier">method_name</span>)
+53:           <span class="ruby-identifier">public_name</span> = <span class="ruby-ivar">@api</span>.<span class="ruby-identifier">public_api_method_name</span>(<span class="ruby-identifier">method_name</span>)
+54:           <span class="ruby-ivar">@handler_name</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;#{@handler_name}.#{public_name}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">public_name</span>
+55:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

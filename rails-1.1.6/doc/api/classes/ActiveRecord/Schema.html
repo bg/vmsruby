@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::Schema</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::Schema</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/activerecord/lib/active_record/schema_rb.html">vendor/rails/activerecord/lib/active_record/schema.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+        <a href="Migration.html">
+Migration
+         </a>
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Allows programmers to programmatically define a schema in a portable DSL.
+This means you can define tables, indexes, etc. without using SQL directly,
+so your applications can more easily support multiple databases.
+</p>
+<p>
+Usage:
+</p>
+<pre>
+  ActiveRecord::Schema.define do
+    create_table :authors do |t|
+      t.column :name, :string, :null =&gt; false
+    end
+
+    add_index :authors, :name, :unique
+
+    create_table :posts do |t|
+      t.column :author_id, :integer, :null =&gt; false
+      t.column :subject, :string
+      t.column :body, :text
+      t.column :private, :boolean, :default =&gt; false
+    end
+
+    add_index :posts, :author_id
+  end
+</pre>
+<p>
+<a href="Schema.html">ActiveRecord::Schema</a> is only supported by
+database adapters that also support migrations, the two features being very
+similar.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000859">define</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000859"></a><b>define</b>(info={}, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Eval the given block. All methods available to the current connection
+adapter are available within the block, so you can easily use the database
+definition DSL to build up your schema (create_table, add_index, etc.).
+</p>
+<p>
+The <tt>info</tt> hash is optional, and if given is used to define metadata
+about the current schema (like the schema&#8217;s version):
+</p>
+<pre>
+  ActiveRecord::Schema.define(:version =&gt; 15) do
+    ...
+  end
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000859_source')" id="l_M000859_source">show source</a> ]</p>
+  <div id="M000859_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/schema.rb, line 42</span>
+42:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">define</span>(<span class="ruby-identifier">info</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+43:       <span class="ruby-identifier">instance_eval</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+44: 
+45:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">info</span>.<span class="ruby-identifier">empty?</span>
+46:         <span class="ruby-identifier">initialize_schema_information</span>
+47:         <span class="ruby-identifier">cols</span> = <span class="ruby-identifier">columns</span>(<span class="ruby-value str">'schema_info'</span>)
+48: 
+49:         <span class="ruby-identifier">info</span> = <span class="ruby-identifier">info</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+50:           <span class="ruby-identifier">v</span> = <span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">quote</span>(<span class="ruby-identifier">v</span>, <span class="ruby-identifier">cols</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span> })
+51:           <span class="ruby-node">&quot;#{k} = #{v}&quot;</span>
+52:         <span class="ruby-keyword kw">end</span>
+53: 
+54:         <span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">update</span> <span class="ruby-node">&quot;UPDATE #{Migrator.schema_info_table_name} SET #{info.join(&quot;, &quot;)}&quot;</span>
+55:       <span class="ruby-keyword kw">end</span>
+56:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

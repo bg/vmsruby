@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::FormOptionsHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::FormOptionsHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/form_options_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Provides a number of methods for turning different kinds of containers into
+a set of option tags.
+</p>
+<h2>Options</h2>
+<p>
+The <tt><a
+href="FormOptionsHelper.html#M000400">collection_select</a></tt>, <tt><a
+href="FormOptionsHelper.html#M000401">country_select</a></tt>,
+<tt>select</tt>, and <tt><a
+href="FormOptionsHelper.html#M000402">time_zone_select</a></tt> methods
+take an <tt>options</tt> parameter, a hash.
+</p>
+<ul>
+<li><tt>:include_blank</tt> - set to true if the first option element of the
+select element is a blank. Useful if there is not a default value required
+for the select element. For example,
+
+<p>
+select(&quot;post&quot;, &quot;category&quot;, Post::CATEGORIES,
+{:include_blank =&gt; true})
+</p>
+</li>
+</ul>
+<p>
+could become:
+</p>
+<pre>
+  &lt;select name=&quot;post[category]&quot;&gt;
+    &lt;option&gt;&lt;/option&gt;
+    &lt;option&gt;joke&lt;/option&gt;
+    &lt;option&gt;poem&lt;/option&gt;
+  &lt;/select&gt;
+</pre>
+<ul>
+<li><tt>:prompt</tt> - set to true or a prompt string. When the select element
+doesn&#8217;t have a value yet, this prepends an option with a generic
+prompt &#8212; &quot;Please select&quot; &#8212; or the given prompt
+string.
+
+</li>
+</ul>
+<p>
+Another common case is a select tag for an <tt>belongs_to</tt>-associated
+object. For example,
+</p>
+<pre>
+  select(&quot;post&quot;, &quot;person_id&quot;, Person.find_all.collect {|p| [ p.name, p.id ] })
+</pre>
+<p>
+could become:
+</p>
+<pre>
+  &lt;select name=&quot;post[person_id]&quot;&gt;
+    &lt;option value=&quot;1&quot;&gt;David&lt;/option&gt;
+    &lt;option value=&quot;2&quot;&gt;Sam&lt;/option&gt;
+    &lt;option value=&quot;3&quot;&gt;Tobias&lt;/option&gt;
+  &lt;/select&gt;
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000400">collection_select</a></li>
+  <li><a href="#M000406">country_options_for_select</a></li>
+  <li><a href="#M000401">country_select</a></li>
+  <li><a href="#M000405">option_groups_from_collection_for_select</a></li>
+  <li><a href="#M000403">options_for_select</a></li>
+  <li><a href="#M000404">options_from_collection_for_select</a></li>
+  <li><a href="#M000399">select</a></li>
+  <li><a href="#M000407">time_zone_options_for_select</a></li>
+  <li><a href="#M000402">time_zone_select</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li>ERB::Util</li>
+</ul>
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">COUNTRIES</td>
+    <td>=</td>
+    <td class="attr-value">[ &quot;Afghanistan&quot;, &quot;Albania&quot;, &quot;Algeria&quot;, &quot;American Samoa&quot;, &quot;Andorra&quot;, &quot;Angola&quot;, &quot;Anguilla&quot;,              &quot;Antarctica&quot;, &quot;Antigua And Barbuda&quot;, &quot;Argentina&quot;, &quot;Armenia&quot;, &quot;Aruba&quot;, &quot;Australia&quot;,              &quot;Austria&quot;, &quot;Azerbaijan&quot;, &quot;Bahamas&quot;, &quot;Bahrain&quot;, &quot;Bangladesh&quot;, &quot;Barbados&quot;, &quot;Belarus&quot;,              &quot;Belgium&quot;, &quot;Belize&quot;, &quot;Benin&quot;, &quot;Bermuda&quot;, &quot;Bhutan&quot;, &quot;Bolivia&quot;, &quot;Bosnia and Herzegowina&quot;,              &quot;Botswana&quot;, &quot;Bouvet Island&quot;, &quot;Brazil&quot;, &quot;British Indian Ocean Territory&quot;,              &quot;Brunei Darussalam&quot;, &quot;Bulgaria&quot;, &quot;Burkina Faso&quot;, &quot;Burma&quot;, &quot;Burundi&quot;, &quot;Cambodia&quot;,              &quot;Cameroon&quot;, &quot;Canada&quot;, &quot;Cape Verde&quot;, &quot;Cayman Islands&quot;, &quot;Central African Republic&quot;,              &quot;Chad&quot;, &quot;Chile&quot;, &quot;China&quot;, &quot;Christmas Island&quot;, &quot;Cocos (Keeling) Islands&quot;, &quot;Colombia&quot;,              &quot;Comoros&quot;, &quot;Congo&quot;, &quot;Congo, the Democratic Republic of the&quot;, &quot;Cook Islands&quot;,              &quot;Costa Rica&quot;, &quot;Cote d'Ivoire&quot;, &quot;Croatia&quot;, &quot;Cuba&quot;, &quot;Cyprus&quot;, &quot;Czech Republic&quot;, &quot;Denmark&quot;,              &quot;Djibouti&quot;, &quot;Dominica&quot;, &quot;Dominican Republic&quot;, &quot;East Timor&quot;, &quot;Ecuador&quot;, &quot;Egypt&quot;,              &quot;El Salvador&quot;, &quot;England&quot;, &quot;Equatorial Guinea&quot;, &quot;Eritrea&quot;, &quot;Espana&quot;, &quot;Estonia&quot;,              &quot;Ethiopia&quot;, &quot;Falkland Islands&quot;, &quot;Faroe Islands&quot;, &quot;Fiji&quot;, &quot;Finland&quot;, &quot;France&quot;,              &quot;French Guiana&quot;, &quot;French Polynesia&quot;, &quot;French Southern Territories&quot;, &quot;Gabon&quot;, &quot;Gambia&quot;,              &quot;Georgia&quot;, &quot;Germany&quot;, &quot;Ghana&quot;, &quot;Gibraltar&quot;, &quot;Great Britain&quot;, &quot;Greece&quot;, &quot;Greenland&quot;,              &quot;Grenada&quot;, &quot;Guadeloupe&quot;, &quot;Guam&quot;, &quot;Guatemala&quot;, &quot;Guinea&quot;, &quot;Guinea-Bissau&quot;, &quot;Guyana&quot;,              &quot;Haiti&quot;, &quot;Heard and Mc Donald Islands&quot;, &quot;Honduras&quot;, &quot;Hong Kong&quot;, &quot;Hungary&quot;, &quot;Iceland&quot;,              &quot;India&quot;, &quot;Indonesia&quot;, &quot;Ireland&quot;, &quot;Israel&quot;, &quot;Italy&quot;, &quot;Iran&quot;, &quot;Iraq&quot;, &quot;Jamaica&quot;, &quot;Japan&quot;, &quot;Jordan&quot;,              &quot;Kazakhstan&quot;, &quot;Kenya&quot;, &quot;Kiribati&quot;, &quot;Korea, Republic of&quot;, &quot;Korea (South)&quot;, &quot;Kuwait&quot;,              &quot;Kyrgyzstan&quot;, &quot;Lao People's Democratic Republic&quot;, &quot;Latvia&quot;, &quot;Lebanon&quot;, &quot;Lesotho&quot;,              &quot;Liberia&quot;, &quot;Liechtenstein&quot;, &quot;Lithuania&quot;, &quot;Luxembourg&quot;, &quot;Macau&quot;, &quot;Macedonia&quot;,              &quot;Madagascar&quot;, &quot;Malawi&quot;, &quot;Malaysia&quot;, &quot;Maldives&quot;, &quot;Mali&quot;, &quot;Malta&quot;, &quot;Marshall Islands&quot;,              &quot;Martinique&quot;, &quot;Mauritania&quot;, &quot;Mauritius&quot;, &quot;Mayotte&quot;, &quot;Mexico&quot;,              &quot;Micronesia, Federated States of&quot;, &quot;Moldova, Republic of&quot;, &quot;Monaco&quot;, &quot;Mongolia&quot;,              &quot;Montserrat&quot;, &quot;Morocco&quot;, &quot;Mozambique&quot;, &quot;Myanmar&quot;, &quot;Namibia&quot;, &quot;Nauru&quot;, &quot;Nepal&quot;,              &quot;Netherlands&quot;, &quot;Netherlands Antilles&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;Nicaragua&quot;,              &quot;Niger&quot;, &quot;Nigeria&quot;, &quot;Niue&quot;, &quot;Norfolk Island&quot;, &quot;Northern Ireland&quot;,              &quot;Northern Mariana Islands&quot;, &quot;Norway&quot;, &quot;Oman&quot;, &quot;Pakistan&quot;, &quot;Palau&quot;, &quot;Panama&quot;,              &quot;Papua New Guinea&quot;, &quot;Paraguay&quot;, &quot;Peru&quot;, &quot;Philippines&quot;, &quot;Pitcairn&quot;, &quot;Poland&quot;,              &quot;Portugal&quot;, &quot;Puerto Rico&quot;, &quot;Qatar&quot;, &quot;Reunion&quot;, &quot;Romania&quot;, &quot;Russia&quot;, &quot;Rwanda&quot;,              &quot;Saint Kitts and Nevis&quot;, &quot;Saint Lucia&quot;, &quot;Saint Vincent and the Grenadines&quot;,              &quot;Samoa (Independent)&quot;, &quot;San Marino&quot;, &quot;Sao Tome and Principe&quot;, &quot;Saudi Arabia&quot;,              &quot;Scotland&quot;, &quot;Senegal&quot;, &quot;Serbia and Montenegro&quot;, &quot;Seychelles&quot;, &quot;Sierra Leone&quot;, &quot;Singapore&quot;,              &quot;Slovakia&quot;, &quot;Slovenia&quot;, &quot;Solomon Islands&quot;, &quot;Somalia&quot;, &quot;South Africa&quot;,              &quot;South Georgia and the South Sandwich Islands&quot;, &quot;South Korea&quot;, &quot;Spain&quot;, &quot;Sri Lanka&quot;,              &quot;St. Helena&quot;, &quot;St. Pierre and Miquelon&quot;, &quot;Suriname&quot;, &quot;Svalbard and Jan Mayen Islands&quot;,              &quot;Swaziland&quot;, &quot;Sweden&quot;, &quot;Switzerland&quot;, &quot;Taiwan&quot;, &quot;Tajikistan&quot;, &quot;Tanzania&quot;, &quot;Thailand&quot;,              &quot;Togo&quot;, &quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Trinidad&quot;, &quot;Trinidad and Tobago&quot;, &quot;Tunisia&quot;, &quot;Turkey&quot;,              &quot;Turkmenistan&quot;, &quot;Turks and Caicos Islands&quot;, &quot;Tuvalu&quot;, &quot;Uganda&quot;, &quot;Ukraine&quot;,              &quot;United Arab Emirates&quot;, &quot;United Kingdom&quot;, &quot;United States&quot;,              &quot;United States Minor Outlying Islands&quot;, &quot;Uruguay&quot;, &quot;Uzbekistan&quot;, &quot;Vanuatu&quot;,              &quot;Vatican City State (Holy See)&quot;, &quot;Venezuela&quot;, &quot;Viet Nam&quot;, &quot;Virgin Islands (British)&quot;,              &quot;Virgin Islands (U.S.)&quot;, &quot;Wales&quot;, &quot;Wallis and Futuna Islands&quot;, &quot;Western Sahara&quot;,              &quot;Yemen&quot;, &quot;Zambia&quot;, &quot;Zimbabwe&quot; ] unless const_defined?(&quot;COUNTRIES&quot;)</td>
+  </tr>
+  <tr valign='top'>
+    <td>&nbsp;</td>
+    <td colspan="2" class="attr-desc">
+All the countries included in the country_options output.
+
+</td>
+  </tr>
+  </table>
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000400"></a><b>collection_select</b>(object, method, collection, value_method, text_method, options = {}, html_options = {})
+  </div>
+  <div class="description">
+  <p>
+Return select and option tags for the given object and method using <a
+href="FormOptionsHelper.html#M000404">options_from_collection_for_select</a>
+to generate the list of option tags.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000400_source')" id="l_M000400_source">show source</a> ]</p>
+  <div id="M000400_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 70</span>
+70:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">collection_select</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-identifier">collection</span>, <span class="ruby-identifier">value_method</span>, <span class="ruby-identifier">text_method</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-identifier">html_options</span> = {})
+71:         <span class="ruby-constant">InstanceTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:object</span>)).<span class="ruby-identifier">to_collection_select_tag</span>(<span class="ruby-identifier">collection</span>, <span class="ruby-identifier">value_method</span>, <span class="ruby-identifier">text_method</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">html_options</span>)
+72:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000406"></a><b>country_options_for_select</b>(selected = nil, priority_countries = nil)
+  </div>
+  <div class="description">
+  <p>
+Returns a string of option tags for pretty much any country in the world.
+Supply a country name as <tt>selected</tt> to have it marked as the
+selected option tag. You can also supply an array of countries as
+<tt>priority_countries</tt>, so that they will be listed above the rest of
+the (long) list.
+</p>
+<p>
+NOTE: Only the option tags are returned, you have to wrap this call in a
+regular HTML select tag.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000406_source')" id="l_M000406_source">show source</a> ]</p>
+  <div id="M000406_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 197</span>
+197:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">country_options_for_select</span>(<span class="ruby-identifier">selected</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">priority_countries</span> = <span class="ruby-keyword kw">nil</span>)
+198:         <span class="ruby-identifier">country_options</span> = <span class="ruby-value str">&quot;&quot;</span>
+199: 
+200:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">priority_countries</span>
+201:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">priority_countries</span>, <span class="ruby-identifier">selected</span>)
+202:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;&lt;option value=\&quot;\&quot;&gt;-------------&lt;/option&gt;\n&quot;</span>
+203:         <span class="ruby-keyword kw">end</span>
+204: 
+205:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">priority_countries</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">priority_countries</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">selected</span>)
+206:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-constant">COUNTRIES</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">priority_countries</span>, <span class="ruby-identifier">selected</span>)
+207:         <span class="ruby-keyword kw">else</span>
+208:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-constant">COUNTRIES</span>, <span class="ruby-identifier">selected</span>)
+209:         <span class="ruby-keyword kw">end</span>
+210: 
+211:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">country_options</span>
+212:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000401"></a><b>country_select</b>(object, method, priority_countries = nil, options = {}, html_options = {})
+  </div>
+  <div class="description">
+  <p>
+Return select and option tags for the given object and method, using <a
+href="FormOptionsHelper.html#M000406">country_options_for_select</a> to
+generate the list of option tags.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000401_source')" id="l_M000401_source">show source</a> ]</p>
+  <div id="M000401_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 75</span>
+75:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">country_select</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-identifier">priority_countries</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-identifier">html_options</span> = {})
+76:         <span class="ruby-constant">InstanceTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:object</span>)).<span class="ruby-identifier">to_country_select_tag</span>(<span class="ruby-identifier">priority_countries</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">html_options</span>)
+77:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000405"></a><b>option_groups_from_collection_for_select</b>(collection, group_method, group_label_method, option_key_method, option_value_method, selected_key = nil)
+  </div>
+  <div class="description">
+  <p>
+Returns a string of option tags, like <a
+href="FormOptionsHelper.html#M000404">options_from_collection_for_select</a>,
+but surrounds them with &lt;optgroup&gt; tags.
+</p>
+<p>
+An array of group objects are passed. Each group should return an array of
+options when calling group_method Each group should return its name when
+calling group_label_method.
+</p>
+<p>
+html_option_groups_from_collection(@continents, &quot;countries&quot;,
+&quot;continent_name&quot;, &quot;country_id&quot;,
+&quot;country_name&quot;, @selected_country.id)
+</p>
+<p>
+Could become:
+</p>
+<pre>
+ &lt;optgroup label=&quot;Africa&quot;&gt;
+  &lt;select&gt;Egypt&lt;/select&gt;
+  &lt;select&gt;Rwanda&lt;/select&gt;
+  ...
+ &lt;/optgroup&gt;
+ &lt;optgroup label=&quot;Asia&quot;&gt;
+  &lt;select&gt;China&lt;/select&gt;
+  &lt;select&gt;India&lt;/select&gt;
+  &lt;select&gt;Japan&lt;/select&gt;
+  ...
+ &lt;/optgroup&gt;
+</pre>
+<p>
+with objects of the following classes: class Continent
+</p>
+<pre>
+  def initialize(p_name, p_countries) @continent_name = p_name; @countries = p_countries; end
+  def continent_name() @continent_name; end
+  def countries() @countries; end
+</pre>
+<p>
+end class Country
+</p>
+<pre>
+  def initialize(id, name) @id = id; @name = name end
+  def country_id() @id; end
+  def country_name() @name; end
+</pre>
+<p>
+end
+</p>
+<p>
+NOTE: Only the option tags are returned, you have to wrap this call in a
+regular HTML select tag.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000405_source')" id="l_M000405_source">show source</a> ]</p>
+  <div id="M000405_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 182</span>
+182:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">option_groups_from_collection_for_select</span>(<span class="ruby-identifier">collection</span>, <span class="ruby-identifier">group_method</span>, <span class="ruby-identifier">group_label_method</span>,
+183:             <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span> = <span class="ruby-keyword kw">nil</span>)
+184:         <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options_for_select</span>, <span class="ruby-identifier">group</span><span class="ruby-operator">|</span>
+185:           <span class="ruby-identifier">group_label_string</span> = <span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;group.#{group_label_method}&quot;</span>)
+186:           <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;&lt;optgroup label=\&quot;#{html_escape(group_label_string)}\&quot;&gt;&quot;</span>
+187:           <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_from_collection_for_select</span>(<span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;group.#{group_method}&quot;</span>), <span class="ruby-identifier">option_key_method</span>, <span class="ruby-identifier">option_value_method</span>, <span class="ruby-identifier">selected_key</span>)
+188:           <span class="ruby-identifier">options_for_select</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">'&lt;/optgroup&gt;'</span>
+189:         <span class="ruby-keyword kw">end</span>
+190:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000403"></a><b>options_for_select</b>(container, selected = nil)
+  </div>
+  <div class="description">
+  <p>
+Accepts a container (hash, array, enumerable, your type) and returns a
+string of option tags. Given a container where the elements respond to
+first and last (such as a two-element array), the &quot;lasts&quot; serve
+as option values and the &quot;firsts&quot; as option text. Hashes are
+turned into this form automatically, so the keys become &quot;firsts&quot;
+and values become lasts. If <tt>selected</tt> is specified, the matching
+&quot;last&quot; or element will get the selected option-tag.
+<tt>Selected</tt> may also be an array of values to be selected when using
+a multiple select.
+</p>
+<p>
+Examples (call, result):
+</p>
+<pre>
+  options_for_select([[&quot;Dollar&quot;, &quot;$&quot;], [&quot;Kroner&quot;, &quot;DKK&quot;]])
+    &lt;option value=&quot;$&quot;&gt;Dollar&lt;/option&gt;\n&lt;option value=&quot;DKK&quot;&gt;Kroner&lt;/option&gt;
+
+  options_for_select([ &quot;VISA&quot;, &quot;MasterCard&quot; ], &quot;MasterCard&quot;)
+    &lt;option&gt;VISA&lt;/option&gt;\n&lt;option selected=&quot;selected&quot;&gt;MasterCard&lt;/option&gt;
+
+  options_for_select({ &quot;Basic&quot; =&gt; &quot;$20&quot;, &quot;Plus&quot; =&gt; &quot;$40&quot; }, &quot;$40&quot;)
+    &lt;option value=&quot;$20&quot;&gt;Basic&lt;/option&gt;\n&lt;option value=&quot;$40&quot; selected=&quot;selected&quot;&gt;Plus&lt;/option&gt;
+
+  options_for_select([ &quot;VISA&quot;, &quot;MasterCard&quot;, &quot;Discover&quot; ], [&quot;VISA&quot;, &quot;Discover&quot;])
+    &lt;option selected=&quot;selected&quot;&gt;VISA&lt;/option&gt;\n&lt;option&gt;MasterCard&lt;/option&gt;\n&lt;option selected=&quot;selected&quot;&gt;Discover&lt;/option&gt;
+</pre>
+<p>
+NOTE: Only the option tags are returned, you have to wrap this call in a
+regular HTML select tag.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000403_source')" id="l_M000403_source">show source</a> ]</p>
+  <div id="M000403_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 111</span>
+111:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">container</span>, <span class="ruby-identifier">selected</span> = <span class="ruby-keyword kw">nil</span>)
+112:         <span class="ruby-identifier">container</span> = <span class="ruby-identifier">container</span>.<span class="ruby-identifier">to_a</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Hash</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">container</span>
+113: 
+114:         <span class="ruby-identifier">options_for_select</span> = <span class="ruby-identifier">container</span>.<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">options</span>, <span class="ruby-identifier">element</span><span class="ruby-operator">|</span>
+115:           <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">element</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">element</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:first</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">element</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:last</span>)
+116:             <span class="ruby-identifier">is_selected</span> = ( (<span class="ruby-identifier">selected</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:include?</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">selected</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">element</span>.<span class="ruby-identifier">last</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">element</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">selected</span>) )
+117:             <span class="ruby-identifier">is_selected</span> = ( (<span class="ruby-identifier">selected</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:include?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">selected</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">selected</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">element</span>.<span class="ruby-identifier">last</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">element</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">selected</span>) )
+118:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">is_selected</span>
+119:               <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;option value=\&quot;#{html_escape(element.last.to_s)}\&quot; selected=\&quot;selected\&quot;&gt;#{html_escape(element.first.to_s)}&lt;/option&gt;&quot;</span>
+120:             <span class="ruby-keyword kw">else</span>
+121:               <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;option value=\&quot;#{html_escape(element.last.to_s)}\&quot;&gt;#{html_escape(element.first.to_s)}&lt;/option&gt;&quot;</span>
+122:             <span class="ruby-keyword kw">end</span>
+123:           <span class="ruby-keyword kw">else</span>
+124:             <span class="ruby-identifier">is_selected</span> = ( (<span class="ruby-identifier">selected</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:include?</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">selected</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">element</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">element</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">selected</span>) )
+125:             <span class="ruby-identifier">is_selected</span> = ( (<span class="ruby-identifier">selected</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:include?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">selected</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">selected</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">element</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">element</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">selected</span>) )
+126:             <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> ((<span class="ruby-identifier">is_selected</span>) <span class="ruby-operator">?</span> <span class="ruby-node">&quot;&lt;option value=\&quot;#{html_escape(element.to_s)}\&quot; selected=\&quot;selected\&quot;&gt;#{html_escape(element.to_s)}&lt;/option&gt;&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;&lt;option value=\&quot;#{html_escape(element.to_s)}\&quot;&gt;#{html_escape(element.to_s)}&lt;/option&gt;&quot;</span>)
+127:           <span class="ruby-keyword kw">end</span>
+128:         <span class="ruby-keyword kw">end</span>
+129: 
+130:         <span class="ruby-identifier">options_for_select</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+131:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000404"></a><b>options_from_collection_for_select</b>(collection, value_method, text_method, selected_value = nil)
+  </div>
+  <div class="description">
+  <p>
+Returns a string of option tags that have been compiled by iterating over
+the <tt>collection</tt> and assigning the the result of a call to the
+<tt>value_method</tt> as the option value and the <tt>text_method</tt> as
+the option text. If <tt>selected_value</tt> is specified, the element
+returning a match on <tt>value_method</tt> will get the selected option
+tag.
+</p>
+<p>
+Example (call, result). Imagine a loop iterating over each <tt>person</tt>
+in <tt>@project.people</tt> to generate an input tag:
+</p>
+<pre>
+  options_from_collection_for_select(@project.people, &quot;id&quot;, &quot;name&quot;)
+    &lt;option value=&quot;#{person.id}&quot;&gt;#{person.name}&lt;/option&gt;
+</pre>
+<p>
+NOTE: Only the option tags are returned, you have to wrap this call in a
+regular HTML select tag.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000404_source')" id="l_M000404_source">show source</a> ]</p>
+  <div id="M000404_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 142</span>
+142:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">options_from_collection_for_select</span>(<span class="ruby-identifier">collection</span>, <span class="ruby-identifier">value_method</span>, <span class="ruby-identifier">text_method</span>, <span class="ruby-identifier">selected_value</span> = <span class="ruby-keyword kw">nil</span>)
+143:         <span class="ruby-identifier">options_for_select</span>(
+144:           <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">inject</span>([]) { <span class="ruby-operator">|</span><span class="ruby-identifier">options</span>, <span class="ruby-identifier">object</span><span class="ruby-operator">|</span> <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">object</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">text_method</span>), <span class="ruby-identifier">object</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">value_method</span>) ] },
+145:           <span class="ruby-identifier">selected_value</span>
+146:         )
+147:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000399"></a><b>select</b>(object, method, choices, options = {}, html_options = {})
+  </div>
+  <div class="description">
+  <p>
+Create a select tag and a series of contained option tags for the provided
+object and method. The option currently held by the object will be
+selected, provided that the object is available. See <a
+href="FormOptionsHelper.html#M000403">options_for_select</a> for the
+required format of the choices parameter.
+</p>
+<p>
+Example with @post.person_id =&gt; 1:
+</p>
+<pre>
+  select(&quot;post&quot;, &quot;person_id&quot;, Person.find_all.collect {|p| [ p.name, p.id ] }, { :include_blank =&gt; true })
+</pre>
+<p>
+could become:
+</p>
+<pre>
+  &lt;select name=&quot;post[person_id]&quot;&gt;
+    &lt;option&gt;&lt;/option&gt;
+    &lt;option value=&quot;1&quot; selected=&quot;selected&quot;&gt;David&lt;/option&gt;
+    &lt;option value=&quot;2&quot;&gt;Sam&lt;/option&gt;
+    &lt;option value=&quot;3&quot;&gt;Tobias&lt;/option&gt;
+  &lt;/select&gt;
+</pre>
+<p>
+This can be used to provide a default set of options in the standard way:
+before rendering the create form, a new model instance is assigned the
+default options and bound to @model_name. Usually this model is not saved
+to the database. Instead, a second model object is created when the create
+request is received. This allows the user to submit a form page more than
+once with the expected results of creating multiple records. In addition,
+this allows a single partial to be used to generate form inputs for both
+edit and create forms.
+</p>
+<p>
+By default, post.person_id is the selected option. Specify :selected =&gt;
+value to use a different selection or :selected =&gt; nil to leave all
+options unselected.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000399_source')" id="l_M000399_source">show source</a> ]</p>
+  <div id="M000399_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 65</span>
+65:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-identifier">choices</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-identifier">html_options</span> = {})
+66:         <span class="ruby-constant">InstanceTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:object</span>)).<span class="ruby-identifier">to_select_tag</span>(<span class="ruby-identifier">choices</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">html_options</span>)
+67:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000407"></a><b>time_zone_options_for_select</b>(selected = nil, priority_zones = nil, model = TimeZone)
+  </div>
+  <div class="description">
+  <p>
+Returns a string of option tags for pretty much any time zone in the world.
+Supply a <a href="../../TimeZone.html">TimeZone</a> name as
+<tt>selected</tt> to have it marked as the selected option tag. You can
+also supply an array of <a href="../../TimeZone.html">TimeZone</a> objects
+as <tt>priority_zones</tt>, so that they will be listed above the rest of
+the (long) list. (You can use <a
+href="../../TimeZone.html#M000020">TimeZone.us_zones</a> as a convenience
+for obtaining a list of the US time zones.)
+</p>
+<p>
+The <tt>selected</tt> parameter must be either <tt>nil</tt>, or a string
+that names a <a href="../../TimeZone.html">TimeZone</a>.
+</p>
+<p>
+By default, <tt>model</tt> is the <a
+href="../../TimeZone.html">TimeZone</a> constant (which can be obtained in
+ActiveRecord as a value object). The only requirement is that the
+<tt>model</tt> parameter be an object that responds to all, and returns an
+array of objects that represent time zones.
+</p>
+<p>
+NOTE: Only the option tags are returned, you have to wrap this call in a
+regular HTML select tag.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000407_source')" id="l_M000407_source">show source</a> ]</p>
+  <div id="M000407_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 231</span>
+231:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">time_zone_options_for_select</span>(<span class="ruby-identifier">selected</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">priority_zones</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">model</span> = <span class="ruby-constant">TimeZone</span>)
+232:         <span class="ruby-identifier">zone_options</span> = <span class="ruby-value str">&quot;&quot;</span>
+233: 
+234:         <span class="ruby-identifier">zones</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">all</span>
+235:         <span class="ruby-identifier">convert_zones</span> = <span class="ruby-identifier">lambda</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">list</span><span class="ruby-operator">|</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> [ <span class="ruby-identifier">z</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">z</span>.<span class="ruby-identifier">name</span> ] } }
+236: 
+237:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">priority_zones</span>
+238:           <span class="ruby-identifier">zone_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">convert_zones</span>[<span class="ruby-identifier">priority_zones</span>], <span class="ruby-identifier">selected</span>)
+239:           <span class="ruby-identifier">zone_options</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;&lt;option value=\&quot;\&quot;&gt;-------------&lt;/option&gt;\n&quot;</span>
+240: 
+241:           <span class="ruby-identifier">zones</span> = <span class="ruby-identifier">zones</span>.<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">priority_zones</span>.<span class="ruby-identifier">include?</span>( <span class="ruby-identifier">z</span> ) }
+242:         <span class="ruby-keyword kw">end</span>
+243: 
+244:         <span class="ruby-identifier">zone_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">convert_zones</span>[<span class="ruby-identifier">zones</span>], <span class="ruby-identifier">selected</span>)
+245:         <span class="ruby-identifier">zone_options</span>
+246:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000402"></a><b>time_zone_select</b>(object, method, priority_zones = nil, options = {}, html_options = {})
+  </div>
+  <div class="description">
+  <p>
+Return select and option tags for the given object and method, using <a
+href="FormOptionsHelper.html#M000407">time_zone_options_for_select</a> to
+generate the list of option tags.
+</p>
+<p>
+In addition to the <tt>:include_blank</tt> option documented above, this
+method also supports a <tt>:model</tt> option, which defaults to <a
+href="../../TimeZone.html">TimeZone</a>. This may be used by users to
+specify a different time zone model object. (See <a
+href="FormOptionsHelper.html#M000407">time_zone_options_for_select</a> for
+more information.)
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000402_source')" id="l_M000402_source">show source</a> ]</p>
+  <div id="M000402_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/form_options_helper.rb, line 87</span>
+87:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">time_zone_select</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-identifier">priority_zones</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-identifier">html_options</span> = {})
+88:         <span class="ruby-constant">InstanceTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">method</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:object</span>)).<span class="ruby-identifier">to_time_zone_select_tag</span>(<span class="ruby-identifier">priority_zones</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">html_options</span>)
+89:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

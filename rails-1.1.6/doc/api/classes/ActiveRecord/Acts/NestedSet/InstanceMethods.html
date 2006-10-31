@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveRecord::Acts::NestedSet::InstanceMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveRecord::Acts::NestedSet::InstanceMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activerecord/lib/active_record/acts/nested_set_rb.html">vendor/rails/activerecord/lib/active_record/acts/nested_set.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000560">add_child</a></li>
+  <li><a href="#M000563">all_children</a></li>
+  <li><a href="#M000565">before_destroy</a></li>
+  <li><a href="#M000558">child?</a></li>
+  <li><a href="#M000561">children_count</a></li>
+  <li><a href="#M000564">direct_children</a></li>
+  <li><a href="#M000562">full_set</a></li>
+  <li><a href="#M000557">root?</a></li>
+  <li><a href="#M000559">unknown?</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000560"></a><b>add_child</b>( child )
+  </div>
+  <div class="description">
+  <p>
+Adds a child to this object in the tree. If this object hasn&#8217;t been
+initialized, it gets set up as a root node. Otherwise, this method will
+update all of the other elements in the tree and shift them to the right,
+keeping everything balanced.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000560_source')" id="l_M000560_source">show source</a> ]</p>
+  <div id="M000560_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 142</span>
+142:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_child</span>( <span class="ruby-identifier">child</span> )     
+143:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reload</span>
+144:           <span class="ruby-identifier">child</span>.<span class="ruby-identifier">reload</span>
+145: 
+146:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">root?</span>
+147:             <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;Adding sub-tree isn\'t currently supported&quot;</span>
+148:           <span class="ruby-keyword kw">else</span>
+149:             <span class="ruby-keyword kw">if</span> ( (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>) <span class="ruby-operator">||</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>) )
+150:               <span class="ruby-comment cmt"># Looks like we're now the root node!  Woo</span>
+151:               <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] = <span class="ruby-value">1</span>
+152:               <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] = <span class="ruby-value">4</span>
+153:               
+154:               <span class="ruby-comment cmt"># What do to do about validation?</span>
+155:               <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+156:               
+157:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">parent_column</span>] = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>
+158:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">left_col_name</span>] = <span class="ruby-value">2</span>
+159:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">right_col_name</span>]= <span class="ruby-value">3</span>
+160:               <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">save</span>
+161:             <span class="ruby-keyword kw">else</span>
+162:               <span class="ruby-comment cmt"># OK, we need to add and shift everything else to the right</span>
+163:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">parent_column</span>] = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>
+164:               <span class="ruby-identifier">right_bound</span> = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>]
+165:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">left_col_name</span>] = <span class="ruby-identifier">right_bound</span>
+166:               <span class="ruby-identifier">child</span>[<span class="ruby-identifier">right_col_name</span>] = <span class="ruby-identifier">right_bound</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+167:               <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">2</span>
+168:               <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">transaction</span> {
+169:                 <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">update_all</span>( <span class="ruby-node">&quot;#{left_col_name} = (#{left_col_name} + 2)&quot;</span>,  <span class="ruby-node">&quot;#{scope_condition} AND #{left_col_name} &gt;= #{right_bound}&quot;</span> )
+170:                 <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">update_all</span>( <span class="ruby-node">&quot;#{right_col_name} = (#{right_col_name} + 2)&quot;</span>,  <span class="ruby-node">&quot;#{scope_condition} AND #{right_col_name} &gt;= #{right_bound}&quot;</span> )
+171:                 <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+172:                 <span class="ruby-identifier">child</span>.<span class="ruby-identifier">save</span>
+173:               }
+174:             <span class="ruby-keyword kw">end</span>
+175:           <span class="ruby-keyword kw">end</span>                                   
+176:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000563"></a><b>all_children</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a set of all of its children and nested children
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000563_source')" id="l_M000563_source">show source</a> ]</p>
+  <div id="M000563_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 189</span>
+189:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_children</span>
+190:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{scope_condition} AND (#{left_col_name} &gt; #{self[left_col_name]}) and (#{right_col_name} &lt; #{self[right_col_name]})&quot;</span> )
+191:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000565"></a><b>before_destroy</b>()
+  </div>
+  <div class="description">
+  <p>
+Prunes a branch off of the tree, shifting all of the elements on the right
+back to the left so the counts still work.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000565_source')" id="l_M000565_source">show source</a> ]</p>
+  <div id="M000565_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 200</span>
+200:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_destroy</span>
+201:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>].<span class="ruby-identifier">nil?</span>
+202:           <span class="ruby-identifier">dif</span> = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">-</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+203: 
+204:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">transaction</span> {
+205:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">delete_all</span>( <span class="ruby-node">&quot;#{scope_condition} and #{left_col_name} &gt; #{self[left_col_name]} and #{right_col_name} &lt; #{self[right_col_name]}&quot;</span> )
+206:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">update_all</span>( <span class="ruby-node">&quot;#{left_col_name} = (#{left_col_name} - #{dif})&quot;</span>,  <span class="ruby-node">&quot;#{scope_condition} AND #{left_col_name} &gt;= #{self[right_col_name]}&quot;</span> )
+207:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">update_all</span>( <span class="ruby-node">&quot;#{right_col_name} = (#{right_col_name} - #{dif} )&quot;</span>,  <span class="ruby-node">&quot;#{scope_condition} AND #{right_col_name} &gt;= #{self[right_col_name]}&quot;</span> )
+208:           }
+209:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000558"></a><b>child?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true is this is a child node
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000558_source')" id="l_M000558_source">show source</a> ]</p>
+  <div id="M000558_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 127</span>
+127:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">child?</span>                          
+128:           <span class="ruby-identifier">parent_id</span> = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">parent_column</span>]
+129:           <span class="ruby-operator">!</span>(<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">parent_id</span>.<span class="ruby-identifier">nil?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>])
+130:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000561"></a><b>children_count</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns the number of nested children of this object.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000561_source')" id="l_M000561_source">show source</a> ]</p>
+  <div id="M000561_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 179</span>
+179:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">children_count</span>
+180:           <span class="ruby-keyword kw">return</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">-</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)<span class="ruby-operator">/</span><span class="ruby-value">2</span>
+181:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000564"></a><b>direct_children</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a set of only this entry&#8217;s immediate children
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000564_source')" id="l_M000564_source">show source</a> ]</p>
+  <div id="M000564_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 194</span>
+194:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">direct_children</span>
+195:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{scope_condition} and #{parent_column} = #{self.id}&quot;</span>)
+196:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000562"></a><b>full_set</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns a set of itself and all of its nested children
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000562_source')" id="l_M000562_source">show source</a> ]</p>
+  <div id="M000562_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 184</span>
+184:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_set</span>
+185:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{scope_condition} AND (#{left_col_name} BETWEEN #{self[left_col_name]} and #{self[right_col_name]})&quot;</span> )
+186:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000557"></a><b>root?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true is this is a root node.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000557_source')" id="l_M000557_source">show source</a> ]</p>
+  <div id="M000557_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 121</span>
+121:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root?</span>
+122:           <span class="ruby-identifier">parent_id</span> = <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">parent_column</span>]
+123:           (<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">parent_id</span>.<span class="ruby-identifier">nil?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">right_col_name</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">left_col_name</span>])
+124:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000559"></a><b>unknown?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true if we have no idea what this is
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000559_source')" id="l_M000559_source">show source</a> ]</p>
+  <div id="M000559_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 133</span>
+133:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unknown?</span>
+134:           <span class="ruby-operator">!</span><span class="ruby-identifier">root?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">child?</span>
+135:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

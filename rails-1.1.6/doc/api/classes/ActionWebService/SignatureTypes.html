@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionWebService::SignatureTypes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionWebService::SignatureTypes</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionwebservice/lib/action_web_service/support/signature_types_rb.html">vendor/rails/actionwebservice/lib/action_web_service/support/signature_types.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Action Web Service supports the following base types in a signature:
+</p>
+<dl>
+<dt><tt>:int</tt></dt><dd>Represents an integer value, will be cast to an integer using
+<tt>Integer(value)</tt>
+
+</dd>
+<dt><tt>:string</tt></dt><dd>Represents a string value, will be cast to an string using the
+<tt>to_s</tt> method on an object
+
+</dd>
+<dt><tt>:base64</tt></dt><dd>Represents a <a href="Base.html">Base</a> 64 value, will contain the binary
+bytes of a <a href="Base.html">Base</a> 64 value sent by the caller
+
+</dd>
+<dt><tt>:bool</tt></dt><dd>Represents a boolean value, whatever is passed will be cast to boolean
+(<tt>true</tt>, &#8216;1&#8217;, &#8216;true&#8217;, &#8216;y&#8217;,
+&#8216;yes&#8217; are taken to represent true; <tt>false</tt>,
+&#8216;0&#8217;, &#8216;false&#8217;, &#8216;n&#8217;, &#8216;no&#8217; and
+<tt>nil</tt> represent false)
+
+</dd>
+<dt><tt>:float</tt></dt><dd>Represents a floating point value, will be cast to a float using
+<tt>Float(value)</tt>
+
+</dd>
+<dt><tt>:time</tt></dt><dd>Represents a timestamp, will be cast to a <tt>Time</tt> object
+
+</dd>
+<dt><tt>:datetime</tt></dt><dd>Represents a timestamp, will be cast to a <tt>DateTime</tt> object
+
+</dd>
+<dt><tt>:date</tt></dt><dd>Represents a date, will be cast to a <tt>Date</tt> object
+
+</dd>
+</dl>
+<p>
+For structured types, you&#8217;ll need to pass in the Class objects of <a
+href="Struct.html">ActionWebService::Struct</a> and <a
+href="../ActiveRecord/Base.html">ActiveRecord::Base</a> derivatives.
+</p>
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+  </div>
+
+    </body>
+</html>

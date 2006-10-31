@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::SybaseAdapterContext</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::SybaseAdapterContext</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+SybSQLContext
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000723">cltmsgCB</a></li>
+  <li><a href="#M000720">deadlocked?</a></li>
+  <li><a href="#M000721">failed?</a></li>
+  <li><a href="#M000718">init</a></li>
+  <li><a href="#M000722">reset</a></li>
+  <li><a href="#M000719">srvmsgCB</a></li>
+  </ul>
+
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">DEADLOCK</td>
+    <td>=</td>
+    <td class="attr-value">1205</td>
+  </tr>
+  </table>
+
+  <div class="sectiontitle">Attributes</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class='attr-rw'>
+[R]
+    </td>
+    <td class='attr-name'>message</td>
+    <td class='attr-desc'></td>
+  </tr>
+  </table>
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000723"></a><b>cltmsgCB</b>(con, msg)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000723_source')" id="l_M000723_source">show source</a> ]</p>
+  <div id="M000723_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 634</span>
+634:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cltmsgCB</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">msg</span>)
+635:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">unless</span> ( <span class="ruby-identifier">msg</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Hash</span>) )
+636:         <span class="ruby-keyword kw">unless</span> ( <span class="ruby-identifier">msg</span>[ <span class="ruby-value str">&quot;severity&quot;</span> ] ) <span class="ruby-keyword kw">then</span>
+637:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+638:         <span class="ruby-keyword kw">end</span>
+639: 
+640:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@logger</span>
+641:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-value str">&quot;** SybSQLContext Client-Message: **&quot;</span>
+642:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Message number: LAYER=#{msg[ 'layer' ]} ORIGIN=#{msg[ 'origin' ]} SEVERITY=#{msg[ 'severity' ]} NUMBER=#{msg[ 'number' ]}&quot;</span>
+643:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Message String: #{msg['msgstring']}&quot;</span>
+644:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  OS Error: #{msg['osstring']}&quot;</span>
+645: 
+646:           <span class="ruby-ivar">@message</span> = <span class="ruby-identifier">msg</span>[<span class="ruby-value str">'msgstring'</span>]
+647:         <span class="ruby-keyword kw">end</span>
+648: 
+649:         <span class="ruby-ivar">@failed</span> = <span class="ruby-keyword kw">true</span>
+650: 
+651:         <span class="ruby-comment cmt"># Not retry , CS_CV_RETRY_FAIL( probability TimeOut ) </span>
+652:         <span class="ruby-keyword kw">if</span>( <span class="ruby-identifier">msg</span>[ <span class="ruby-value str">'severity'</span> ] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;RETRY_FAIL&quot;</span> ) <span class="ruby-keyword kw">then</span>
+653:           <span class="ruby-ivar">@timeout_p</span> = <span class="ruby-keyword kw">true</span>
+654:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+655:         <span class="ruby-keyword kw">end</span>
+656: 
+657:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+658:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000720"></a><b>deadlocked?</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000720_source')" id="l_M000720_source">show source</a> ]</p>
+  <div id="M000720_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 620</span>
+620:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">deadlocked?</span>
+621:         <span class="ruby-ivar">@deadlocked</span>
+622:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000721"></a><b>failed?</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000721_source')" id="l_M000721_source">show source</a> ]</p>
+  <div id="M000721_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 624</span>
+624:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">failed?</span>
+625:         <span class="ruby-ivar">@failed</span>
+626:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000718"></a><b>init</b>(logger = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000718_source')" id="l_M000718_source">show source</a> ]</p>
+  <div id="M000718_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 587</span>
+587:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">init</span>(<span class="ruby-identifier">logger</span> = <span class="ruby-keyword kw">nil</span>)
+588:         <span class="ruby-ivar">@deadlocked</span> = <span class="ruby-keyword kw">false</span>
+589:         <span class="ruby-ivar">@failed</span> = <span class="ruby-keyword kw">false</span>
+590:         <span class="ruby-ivar">@logger</span> = <span class="ruby-identifier">logger</span>
+591:         <span class="ruby-ivar">@message</span> = <span class="ruby-keyword kw">nil</span>
+592:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000722"></a><b>reset</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000722_source')" id="l_M000722_source">show source</a> ]</p>
+  <div id="M000722_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 628</span>
+628:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset</span>
+629:         <span class="ruby-ivar">@deadlocked</span> = <span class="ruby-keyword kw">false</span>
+630:         <span class="ruby-ivar">@failed</span> = <span class="ruby-keyword kw">false</span>
+631:         <span class="ruby-ivar">@message</span> = <span class="ruby-keyword kw">nil</span>
+632:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000719"></a><b>srvmsgCB</b>(con, msg)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000719_source')" id="l_M000719_source">show source</a> ]</p>
+  <div id="M000719_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sybase_adapter.rb, line 594</span>
+594:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">srvmsgCB</span>(<span class="ruby-identifier">con</span>, <span class="ruby-identifier">msg</span>)
+595:         <span class="ruby-comment cmt"># Do not log change of context messages.</span>
+596:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">msg</span>[<span class="ruby-value str">'severity'</span>] <span class="ruby-operator">==</span> <span class="ruby-value">10</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">msg</span>[<span class="ruby-value str">'severity'</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+597:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+598:         <span class="ruby-keyword kw">end</span>
+599: 
+600:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">msg</span>[<span class="ruby-value str">'msgnumber'</span>] <span class="ruby-operator">==</span> <span class="ruby-constant">DEADLOCK</span>
+601:           <span class="ruby-ivar">@deadlocked</span> = <span class="ruby-keyword kw">true</span>
+602:         <span class="ruby-keyword kw">else</span>
+603:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-value str">&quot;SQL Command failed!&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@logger</span>
+604:           <span class="ruby-ivar">@failed</span> = <span class="ruby-keyword kw">true</span>
+605:         <span class="ruby-keyword kw">end</span>
+606: 
+607:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@logger</span>
+608:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-value str">&quot;** SybSQLContext Server Message: **&quot;</span>
+609:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Message number #{msg['msgnumber']} Severity #{msg['severity']} State #{msg['state']} Line #{msg['line']}&quot;</span>
+610:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Server #{msg['srvname']}&quot;</span>
+611:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Procedure #{msg['proc']}&quot;</span>
+612:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  Message String:  #{msg['text']}&quot;</span>
+613:         <span class="ruby-keyword kw">end</span>
+614: 
+615:         <span class="ruby-ivar">@message</span> = <span class="ruby-identifier">msg</span>[<span class="ruby-value str">'text'</span>]
+616: 
+617:         <span class="ruby-keyword kw">true</span>
+618:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

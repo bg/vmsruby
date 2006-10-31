@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActionWebService::Struct</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActionWebService::Struct</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionwebservice/lib/action_web_service/struct_rb.html">vendor/rails/actionwebservice/lib/action_web_service/struct.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+To send structured types across the wire, derive from <a
+href="Struct.html">ActionWebService::Struct</a>, and use <tt>member</tt> to
+declare structure members.
+</p>
+<p>
+<a href="Struct.html">ActionWebService::Struct</a> should be used in method
+signatures when you want to accept or return structured types that have no
+Active Record model class representations, or you don&#8217;t want to
+expose your entire Active Record model to remote callers.
+</p>
+<h3>Example</h3>
+<pre>
+  class Person &lt; ActionWebService::Struct
+    member :id,         :int
+    member :firstnames, [:string]
+    member :lastname,   :string
+    member :email,      :string
+  end
+  person = Person.new(:id =&gt; 5, :firstname =&gt; 'john', :lastname =&gt; 'doe')
+</pre>
+<p>
+Active Record model classes are already implicitly supported in method
+signatures.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000374">[]</a></li>
+  <li><a href="#M000375">each_pair</a></li>
+  <li><a href="#M000376">member</a></li>
+  <li><a href="#M000373">new</a></li>
+  </ul>
+
+<div class="sectiontitle">Included Modules</div>
+<ul>
+  <li><a href="../Reloadable/Subclasses.html">Reloadable::Subclasses</a></li>
+</ul>
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000376"></a><b>member</b>(name, type)
+  </div>
+  <div class="description">
+  <p>
+Creates a structure member with the specified <tt>name</tt> and
+<tt>type</tt>. Generates accessor methods for reading and writing the
+member value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000376_source')" id="l_M000376_source">show source</a> ]</p>
+  <div id="M000376_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/struct.rb, line 49</span>
+49:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">member</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span>)
+50:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>
+51:         <span class="ruby-identifier">type</span> = <span class="ruby-constant">ActionWebService</span><span class="ruby-operator">::</span><span class="ruby-constant">SignatureTypes</span>.<span class="ruby-identifier">canonical_signature_entry</span>({ <span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type</span> }, <span class="ruby-value">0</span>)
+52:         <span class="ruby-identifier">write_inheritable_hash</span>(<span class="ruby-value str">&quot;struct_members&quot;</span>, <span class="ruby-identifier">name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type</span>)
+53:         <span class="ruby-identifier">class_eval</span> <span class="ruby-value str">&quot;def \#{name}; @\#{name}; end\ndef \#{name}=(value); @\#{name} = value; end\n&quot;</span>
+54:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000373"></a><b>new</b>(values={})
+  </div>
+  <div class="description">
+  <p>
+If a Hash is given as argument to an <a
+href="Struct.html">ActionWebService::Struct</a> constructor, it can contain
+initial values for the structure member.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000373_source')" id="l_M000373_source">show source</a> ]</p>
+  <div id="M000373_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/struct.rb, line 28</span>
+28:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">values</span>={})
+29:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+30:         <span class="ruby-identifier">values</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">__send__</span>(<span class="ruby-value str">'%s='</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">v</span>)}
+31:       <span class="ruby-keyword kw">end</span>
+32:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000374"></a><b>[]</b>(name)
+  </div>
+  <div class="description">
+  <p>
+The member with the given name
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000374_source')" id="l_M000374_source">show source</a> ]</p>
+  <div id="M000374_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/struct.rb, line 35</span>
+35:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">name</span>)
+36:       <span class="ruby-identifier">send</span>(<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>)
+37:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000375"></a><b>each_pair</b>() {|name, self.__send__(name)| ...}
+  </div>
+  <div class="description">
+  <p>
+Iterates through each member
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000375_source')" id="l_M000375_source">show source</a> ]</p>
+  <div id="M000375_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionwebservice/lib/action_web_service/struct.rb, line 40</span>
+40:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">each_pair</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+41:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">members</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">|</span>
+42:         <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">__send__</span>(<span class="ruby-identifier">name</span>)
+43:       <span class="ruby-keyword kw">end</span>
+44:     <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveRecord::Acts::NestedSet::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveRecord::Acts::NestedSet::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../../files/vendor/rails/activerecord/lib/active_record/acts/nested_set_rb.html">vendor/rails/activerecord/lib/active_record/acts/nested_set.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+This acts provides Nested Set functionality. Nested Set is similiar to
+Tree, but with the added feature that you can select the children and all
+of their descendents with a single query. A good use case for this is a
+threaded post system, where you want to display every reply to a comment
+without multiple selects.
+</p>
+<p>
+A google search for &quot;Nested Set&quot; should point you in the
+direction to explain the database theory. I figured out a bunch of this
+from <a
+href="http://threebit.net/tutorials/nestedset/tutorial1.html">threebit.net/tutorials/nestedset/tutorial1.html</a>
+</p>
+<p>
+Instead of picturing a leaf node structure with children pointing back to
+their parent, the best way to imagine how this works is to think of the
+parent entity surrounding all of its children, and its parent surrounding
+it, etc. Assuming that they are lined up horizontally, we store the left
+and right boundries in the database.
+</p>
+<p>
+Imagine:
+</p>
+<pre>
+  root
+    |_ Child 1
+      |_ Child 1.1
+      |_ Child 1.2
+    |_ Child 2
+      |_ Child 2.1
+      |_ Child 2.2
+</pre>
+<p>
+If my cirlces in circles description didn&#8217;t make sense, check out
+this sweet ASCII art:
+</p>
+<pre>
+    ___________________________________________________________________
+   |  Root                                                             |
+   |    ____________________________    ____________________________   |
+   |   |  Child 1                  |   |  Child 2                  |   |
+   |   |   __________   _________  |   |   __________   _________  |   |
+   |   |  |  C 1.1  |  |  C 1.2 |  |   |  |  C 2.1  |  |  C 2.2 |  |   |
+   1   2  3_________4  5________6  7   8  9_________10 11_______12 13  14
+   |   |___________________________|   |___________________________|   |
+   |___________________________________________________________________|
+</pre>
+<p>
+The numbers represent the left and right boundries. The table then might
+look like this:
+</p>
+<pre>
+   ID | PARENT | LEFT | RIGHT | DATA
+    1 |      0 |    1 |    14 | root
+    2 |      1 |    2 |     7 | Child 1
+    3 |      2 |    3 |     4 | Child 1.1
+    4 |      2 |    5 |     6 | Child 1.2
+    5 |      1 |    8 |    13 | Child 2
+    6 |      5 |    9 |    10 | Child 2.1
+    7 |      5 |   11 |    12 | Child 2.2
+</pre>
+<p>
+So, to get all children of an entry, you
+</p>
+<pre>
+    SELECT * WHERE CHILD.LEFT IS BETWEEN PARENT.LEFT AND PARENT.RIGHT
+</pre>
+<p>
+To get the count, it&#8217;s (LEFT - RIGHT + 1)/2, etc.
+</p>
+<p>
+To get the direct parent, it falls back to using the PARENT_ID field.
+</p>
+<p>
+There are instance methods for all of these.
+</p>
+<p>
+The structure is good if you need to group things together; the downside is
+that keeping data integrity is a pain, and both adding and removing an
+entry require a full table write.
+</p>
+<p>
+This sets up a before_destroy trigger to prune the tree correctly if one of
+its elements gets deleted.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000556">acts_as_nested_set</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000556"></a><b>acts_as_nested_set</b>(options = {})
+  </div>
+  <div class="description">
+  <p>
+Configuration options are:
+</p>
+<ul>
+<li><tt>parent_column</tt> - specifies the column name to use for keeping the
+position integer (default: parent_id)
+
+</li>
+<li><tt>left_column</tt> - column name for left boundry data, default
+&quot;lft&quot;
+
+</li>
+<li><tt>right_column</tt> - column name for right boundry data, default
+&quot;rgt&quot;
+
+</li>
+<li><tt>scope</tt> - restricts what is to be considered a list. Given a symbol,
+it&#8217;ll attach &quot;_id&quot; (if that hasn&#8217;t been already) and
+use that as the foreign key restriction. It&#8217;s also possible to give
+it an entire string that is interpolated if you need a tighter scope than
+just a foreign key. Example: <tt>acts_as_list :scope =&gt;
+&#8216;todo_list_id = #{todo_list_id} AND completed = 0&#8217;</tt>
+
+</li>
+</ul>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000556_source')" id="l_M000556_source">show source</a> ]</p>
+  <div id="M000556_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/acts/nested_set.rb, line 82</span>
+ 82:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">acts_as_nested_set</span>(<span class="ruby-identifier">options</span> = {})
+ 83:           <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:parent_column</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;parent_id&quot;</span>, <span class="ruby-identifier">:left_column</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;lft&quot;</span>, <span class="ruby-identifier">:right_column</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;rgt&quot;</span>, <span class="ruby-identifier">:scope</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;1 = 1&quot;</span> }
+ 84:           
+ 85:           <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+ 86:           
+ 87:           <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:scope</span>] = <span class="ruby-node">&quot;#{configuration[:scope]}_id&quot;</span>.<span class="ruby-identifier">intern</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:scope</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:scope</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp re">/_id$/</span>
+ 88:           
+ 89:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:scope</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+ 90:             <span class="ruby-identifier">scope_condition_method</span> = <span class="ruby-node">%(
+ 91:               def scope_condition
+ 92:                 if #{configuration[:scope].to_s}.nil?
+ 93:                   &quot;#{configuration[:scope].to_s} IS NULL&quot;
+ 94:                 else
+ 95:                   &quot;#{configuration[:scope].to_s} = \#{#{configuration[:scope].to_s}}&quot;
+ 96:                 end
+ 97:               end
+ 98:             )</span>
+ 99:           <span class="ruby-keyword kw">else</span>
+100:             <span class="ruby-identifier">scope_condition_method</span> = <span class="ruby-node">&quot;def scope_condition() \&quot;#{configuration[:scope]}\&quot; end&quot;</span>
+101:           <span class="ruby-keyword kw">end</span>
+102:         
+103:           <span class="ruby-identifier">class_eval</span> <span class="ruby-value str">&quot;include ActiveRecord::Acts::NestedSet::InstanceMethods\n\n\#{scope_condition_method}\n\ndef left_col_name() \&quot;\#{configuration[:left_column]}\&quot; end\n\ndef right_col_name() \&quot;\#{configuration[:right_column]}\&quot; end\n\ndef parent_column() \&quot;\#{configuration[:parent_column]}\&quot; end\n\n&quot;</span>
+104:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

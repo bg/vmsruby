@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Verification::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Verification::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_controller/verification_rb.html">vendor/rails/actionpack/lib/action_controller/verification.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+This module provides a class-level method for specifying that certain
+actions are guarded against being called without certain prerequisites
+being met. This is essentially a special kind of before_filter.
+</p>
+<p>
+An action may be guarded against being invoked without certain request
+parameters being set, or without certain session values existing.
+</p>
+<p>
+When a verification is violated, values may be inserted into the flash, and
+a specified redirection is triggered.
+</p>
+<p>
+Usage:
+</p>
+<pre>
+  class GlobalController &lt; ActionController::Base
+    # prevent the #update_settings action from being invoked unless
+    # the 'admin_privileges' request parameter exists.
+    verify :params =&gt; &quot;admin_privileges&quot;, :only =&gt; :update_post,
+           :redirect_to =&gt; { :action =&gt; &quot;settings&quot; }
+
+    # disallow a post from being updated if there was no information
+    # submitted with the post, and if there is no active post in the
+    # session, and if there is no &quot;note&quot; key in the flash.
+    verify :params =&gt; &quot;post&quot;, :session =&gt; &quot;post&quot;, &quot;flash&quot; =&gt; &quot;note&quot;,
+           :only =&gt; :update_post,
+           :add_flash =&gt; { &quot;alert&quot; =&gt; &quot;Failed to create your message&quot; },
+           :redirect_to =&gt; :category_url
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000149">verify</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000149"></a><b>verify</b>(options={})
+  </div>
+  <div class="description">
+  <p>
+Verify the given actions so that if certain prerequisites are not met, the
+user is redirected to a different action. The <tt>options</tt> parameter is
+a hash consisting of the following key/value pairs:
+</p>
+<ul>
+<li><tt>:params</tt>: a single key or an array of keys that must be in the
+<tt>params</tt> hash in order for the action(s) to be safely called.
+
+</li>
+<li><tt>:session</tt>: a single key or an array of keys that must be in the
+@session in order for the action(s) to be safely called.
+
+</li>
+<li><tt>:flash</tt>: a single key or an array of keys that must be in the flash
+in order for the action(s) to be safely called.
+
+</li>
+<li><tt>:method</tt>: a single key or an array of keys&#8212;any one of which
+must match the current request method in order for the action(s) to be
+safely called. (The key should be a symbol: <tt>:get</tt> or
+<tt>:post</tt>, for example.)
+
+</li>
+<li><tt>:xhr</tt>: true/false option to ensure that the request is coming from
+an Ajax call or not.
+
+</li>
+<li><tt>:add_flash</tt>: a hash of name/value pairs that should be merged into
+the session&#8217;s flash if the prerequisites cannot be satisfied.
+
+</li>
+<li><tt>:redirect_to</tt>: the redirection parameters to be used when
+redirecting if the prerequisites cannot be satisfied.
+
+</li>
+<li><tt>:render</tt>: the render parameters to be used when the prerequisites
+cannot be satisfied.
+
+</li>
+<li><tt>:only</tt>: only apply this verification to the actions specified in
+the associated array (may also be a single value).
+
+</li>
+<li><tt>:except</tt>: do not apply this verification to the actions specified
+in the associated array (may also be a single value).
+
+</li>
+</ul>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000149_source')" id="l_M000149_source">show source</a> ]</p>
+  <div id="M000149_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/verification.rb, line 62</span>
+62:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">verify</span>(<span class="ruby-identifier">options</span>={})
+63:         <span class="ruby-identifier">filter_opts</span> = { <span class="ruby-identifier">:only</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:only</span>], <span class="ruby-identifier">:except</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] }
+64:         <span class="ruby-identifier">before_filter</span>(<span class="ruby-identifier">filter_opts</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+65:           <span class="ruby-identifier">c</span>.<span class="ruby-identifier">send</span> <span class="ruby-identifier">:verify_action</span>, <span class="ruby-identifier">options</span>
+66:         <span class="ruby-keyword kw">end</span>
+67:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionController::Scaffolding::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionController::Scaffolding::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_controller/scaffolding_rb.html">vendor/rails/actionpack/lib/action_controller/scaffolding.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Scaffolding is a way to quickly put an Active Record class online by
+providing a series of standardized actions for listing, showing, creating,
+updating, and destroying objects of the class. These standardized actions
+come with both controller logic and default templates that through
+introspection already know which fields to display and which input types to
+use. Example:
+</p>
+<pre>
+ class WeblogController &lt; ActionController::Base
+   scaffold :entry
+ end
+</pre>
+<p>
+This tiny piece of code will add all of the following methods to the
+controller:
+</p>
+<pre>
+ class WeblogController &lt; ActionController::Base
+   verify :method =&gt; :post, :only =&gt; [ :destroy, :create, :update ],
+          :redirect_to =&gt; { :action =&gt; :list }
+
+   def index
+     list
+   end
+
+   def list
+     @entries = Entry.find_all
+     render_scaffold &quot;list&quot;
+   end
+
+   def show
+     @entry = Entry.find(params[:id])
+     render_scaffold
+   end
+
+   def destroy
+     Entry.find(params[:id]).destroy
+     redirect_to :action =&gt; &quot;list&quot;
+   end
+
+   def new
+     @entry = Entry.new
+     render_scaffold
+   end
+
+   def create
+     @entry = Entry.new(params[:entry])
+     if @entry.save
+       flash[:notice] = &quot;Entry was successfully created&quot;
+       redirect_to :action =&gt; &quot;list&quot;
+     else
+       render_scaffold('new')
+     end
+   end
+
+   def edit
+     @entry = Entry.find(params[:id])
+     render_scaffold
+   end
+
+   def update
+     @entry = Entry.find(params[:id])
+     @entry.attributes = params[:entry]
+
+     if @entry.save
+       flash[:notice] = &quot;Entry was successfully updated&quot;
+       redirect_to :action =&gt; &quot;show&quot;, :id =&gt; @entry
+     else
+       render_scaffold('edit')
+     end
+   end
+ end
+</pre>
+<p>
+The <tt>render_scaffold</tt> method will first check to see if you&#8217;ve
+made your own template (like &quot;weblog/show.rhtml&quot; for the show
+action) and if not, then render the generic template for that action. This
+gives you the possibility of using the scaffold while you&#8217;re building
+your specific application. Start out with a totally generic setup, then
+replace one template and one action at a time while relying on the rest of
+the scaffolded templates and actions.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000137">scaffold</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000137"></a><b>scaffold</b>(model_id, options = {})
+  </div>
+  <div class="description">
+  <p>
+Adds a swath of generic CRUD actions to the controller. The
+<tt>model_id</tt> is automatically converted into a class name unless one
+is specifically provide through <tt>options[:class_name]</tt>. So
+<tt>scaffold :post</tt> would use Post as the class and @post/@posts for
+the instance variables.
+</p>
+<p>
+It&#8217;s possible to use more than one scaffold in a single controller by
+specifying <tt>options[:suffix] = true</tt>. This will make <tt>scaffold
+:post, :suffix =&gt; true</tt> use method names like list_post, show_post,
+and create_post instead of just list, show, and post. If suffix is used,
+then no index method is added.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000137_source')" id="l_M000137_source">show source</a> ]</p>
+  <div id="M000137_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_controller/scaffolding.rb, line 87</span>
+ 87:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">scaffold</span>(<span class="ruby-identifier">model_id</span>, <span class="ruby-identifier">options</span> = {})
+ 88:         <span class="ruby-identifier">options</span>.<span class="ruby-identifier">assert_valid_keys</span>(<span class="ruby-identifier">:class_name</span>, <span class="ruby-identifier">:suffix</span>)
+ 89: 
+ 90:         <span class="ruby-identifier">singular_name</span> = <span class="ruby-identifier">model_id</span>.<span class="ruby-identifier">to_s</span>
+ 91:         <span class="ruby-identifier">class_name</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:class_name</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">singular_name</span>.<span class="ruby-identifier">camelize</span>
+ 92:         <span class="ruby-identifier">plural_name</span>   = <span class="ruby-identifier">singular_name</span>.<span class="ruby-identifier">pluralize</span>
+ 93:         <span class="ruby-identifier">suffix</span>        = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:suffix</span>] <span class="ruby-operator">?</span> <span class="ruby-node">&quot;_#{singular_name}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>
+ 94: 
+ 95:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:suffix</span>]
+ 96:           <span class="ruby-identifier">module_eval</span> <span class="ruby-value str">&quot;def index\nlist\nend\n&quot;</span>, <span class="ruby-keyword kw">__FILE__</span>, <span class="ruby-keyword kw">__LINE__</span>
+ 97:         <span class="ruby-keyword kw">end</span>
+ 98:         
+ 99:         <span class="ruby-identifier">module_eval</span> <span class="ruby-value str">&quot;\nverify :method =&gt; :post, :only =&gt; [ :destroy\#{suffix}, :create\#{suffix}, :update\#{suffix} ],\n:redirect_to =&gt; { :action =&gt; :list\#{suffix} }\n\n\ndef list\#{suffix}\n@\#{singular_name}_pages, @\#{plural_name} = paginate :\#{plural_name}, :per_page =&gt; 10\nrender\#{suffix}_scaffold \&quot;list\#{suffix}\&quot;\nend\n\ndef show\#{suffix}\n@\#{singular_name} = \#{class_name}.find(params[:id])\nrender\#{suffix}_scaffold\nend\n\ndef destroy\#{suffix}\n\#{class_name}.find(params[:id]).destroy\nredirect_to :action =&gt; \&quot;list\#{suffix}\&quot;\nend\n\ndef new\#{suffix}\n@\#{singular_name} = \#{class_name}.new\nrender\#{suffix}_scaffold\nend\n\ndef create\#{suffix}\n@\#{singular_name} = \#{class_name}.new(params[:\#{singular_name}])\nif @\#{singular_name}.save\nflash[:notice] = \&quot;\#{class_name} was successfully created\&quot;\nredirect_to :action =&gt; \&quot;list\#{suffix}\&quot;\nelse\nrender\#{suffix}_scaffold('new')\nend\nend\n\ndef edit\#{suffix}\n@\#{singular_name} = \#{class_name}.find(params[:id])\nrender\#{suffix}_scaffold\nend\n\ndef update\#{suffix}\n@\#{singular_name} = \#{class_name}.find(params[:id])\n@\#{singular_name}.attributes = params[:\#{singular_name}]\n\nif @\#{singular_name}.save\nflash[:notice] = \&quot;\#{class_name} was successfully updated\&quot;\nredirect_to :action =&gt; \&quot;show\#{suffix}\&quot;, :id =&gt; @\#{singular_name}\nelse\nrender\#{suffix}_scaffold('edit')\nend\nend\n\nprivate\ndef render\#{suffix}_scaffold(action=nil)\naction ||= caller_method_name(caller)\n# logger.info (\&quot;testing template:\&quot; + \&quot;\\\#{self.class.controller_path}/\\\#{action}\&quot;) if logger\n\nif template_exists?(\&quot;\\\#{self.class.controller_path}/\\\#{action}\&quot;)\nrender_action(action)\nelse\n@scaffold_class = \#{class_name}\n@scaffold_singular_name, @scaffold_plural_name = \&quot;\#{singular_name}\&quot;, \&quot;\#{plural_name}\&quot;\n@scaffold_suffix = \&quot;\#{suffix}\&quot;\nadd_instance_variables_to_assigns\n\n@template.instance_variable_set(\&quot;@content_for_layout\&quot;, @template.render_file(scaffold_path(action.sub(/\#{suffix}$/, \&quot;\&quot;)), false))\n\nif !active_layout.nil?\nrender_file(active_layout, nil, true)\nelse\nrender_file(scaffold_path(\&quot;layout\&quot;))\nend\nend\nend\n\ndef scaffold_path(template_name)\nFile.dirname(__FILE__) + \&quot;/templates/scaffolds/\&quot; + template_name + \&quot;.rhtml\&quot;\nend\n\ndef caller_method_name(caller)\ncaller.first.scan(/`(.*)'/).first.first # ' ruby-mode\nend\n&quot;</span>, <span class="ruby-keyword kw">__FILE__</span>, <span class="ruby-keyword kw">__LINE__</span>
+100:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

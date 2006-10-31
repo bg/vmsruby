@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::TextHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::TextHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/text_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Provides a set of methods for working with text strings that can help
+unburden the level of inline Ruby code in the templates. In the example
+below we iterate over a collection of posts provided to the template and
+print each title after making sure it doesn&#8217;t run longer than 20
+characters:
+</p>
+<pre>
+  &lt;% for post in @posts %&gt;
+    Title: &lt;%= truncate(post.title, 20) %&gt;
+  &lt;% end %&gt;
+</pre>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000514">auto_link</a></li>
+  <li><a href="#M000504">concat</a></li>
+  <li><a href="#M000518">cycle</a></li>
+  <li><a href="#M000507">excerpt</a></li>
+  <li><a href="#M000506">highlight</a></li>
+  <li><a href="#M000512">markdown</a></li>
+  <li><a href="#M000508">pluralize</a></li>
+  <li><a href="#M000519">reset_cycle</a></li>
+  <li><a href="#M000516">sanitize</a></li>
+  <li><a href="#M000513">simple_format</a></li>
+  <li><a href="#M000515">strip_links</a></li>
+  <li><a href="#M000517">strip_tags</a></li>
+  <li><a href="#M000510">textilize</a></li>
+  <li><a href="#M000511">textilize_without_paragraph</a></li>
+  <li><a href="#M000505">truncate</a></li>
+  <li><a href="#M000509">word_wrap</a></li>
+  </ul>
+
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">VERBOTEN_TAGS</td>
+    <td>=</td>
+    <td class="attr-value">%w(form script) unless defined?(VERBOTEN_TAGS)</td>
+  </tr>
+  <tr valign='top'>
+    <td class="attr-name">VERBOTEN_ATTRS</td>
+    <td>=</td>
+    <td class="attr-value">/^on/i unless defined?(VERBOTEN_ATTRS)</td>
+  </tr>
+  <tr valign='top'>
+    <td class="attr-name">AUTO_LINK_RE</td>
+    <td>=</td>
+    <td class="attr-value">/                         (                       # leading text                           &lt;\w+.*?&gt;|             #   leading HTML tag, or                           [^=!:'&quot;\/]|           #   leading punctuation, or                            ^                     #   beginning of line                         )                         (                           (?:http[s]?:\/\/)|    # protocol spec, or                           (?:www\.)             # www.*                         )                          (                           ([\w]+:?[=?&amp;\/.-]?)*    # url segment                           \w+[\/]?              # url tail                           (?:\#\w*)?            # trailing anchor                         )                         ([[:punct:]]|\s|&lt;|$)    # trailing text                        /x unless const_defined?(:AUTO_LINK_RE)</td>
+  </tr>
+  </table>
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000514"></a><b>auto_link</b>(text, link = :all, href_options = {}, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Turns all urls and email addresses into clickable links. The <tt>link</tt>
+parameter can limit what should be linked. Options are <tt>:all</tt>
+(default), <tt>:email_addresses</tt>, and <tt>:urls</tt>.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  auto_link(&quot;Go to http://www.rubyonrails.com and say hello to david@loudthinking.com&quot;) =&gt;
+    Go to &lt;a href=&quot;http://www.rubyonrails.com&quot;&gt;http://www.rubyonrails.com&lt;/a&gt; and
+    say hello to &lt;a href=&quot;mailto:david@loudthinking.com&quot;&gt;david@loudthinking.com&lt;/a&gt;
+</pre>
+<p>
+If a block is given, each url and email address is yielded and the result
+is used as the link text. Example:
+</p>
+<pre>
+  auto_link(post.body, :all, :target =&gt; '_blank') do |text|
+    truncate(text, 15)
+  end
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000514_source')" id="l_M000514_source">show source</a> ]</p>
+  <div id="M000514_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 144</span>
+144:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_link</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">link</span> = <span class="ruby-identifier">:all</span>, <span class="ruby-identifier">href_options</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+145:         <span class="ruby-keyword kw">return</span> <span class="ruby-value str">''</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">blank?</span>
+146:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">link</span>
+147:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:all</span>             <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">auto_link_urls</span>(<span class="ruby-identifier">auto_link_email_addresses</span>(<span class="ruby-identifier">text</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>), <span class="ruby-identifier">href_options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+148:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:email_addresses</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">auto_link_email_addresses</span>(<span class="ruby-identifier">text</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+149:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:urls</span>            <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">auto_link_urls</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">href_options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+150:         <span class="ruby-keyword kw">end</span>
+151:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000504"></a><b>concat</b>(string, binding)
+  </div>
+  <div class="description">
+  <p>
+The regular puts and print are outlawed in eRuby. It&#8217;s recommended to
+use the &lt;%= &quot;hello&quot; %&gt; form instead of print
+&quot;hello&quot;. If you absolutely must use a method-based output, you
+can use concat. It&#8217;s used like this: &lt;% concat &quot;hello&quot;,
+binding %&gt;. Notice that it doesn&#8217;t have an equal sign in front.
+Using &lt;%= concat &quot;hello&quot; %&gt; would result in a double hello.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000504_source')" id="l_M000504_source">show source</a> ]</p>
+  <div id="M000504_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 15</span>
+15:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">concat</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">binding</span>)
+16:         <span class="ruby-identifier">eval</span>(<span class="ruby-value str">&quot;_erbout&quot;</span>, <span class="ruby-identifier">binding</span>).<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">string</span>)
+17:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000518"></a><b>cycle</b>(first_value, *values)
+  </div>
+  <div class="description">
+  <p>
+Returns a Cycle object whose to_s value cycles through items of an array
+every time it is called. This can be used to alternate classes for table
+rows:
+</p>
+<pre>
+  &lt;%- for item in @items do -%&gt;
+    &lt;tr class=&quot;&lt;%= cycle(&quot;even&quot;, &quot;odd&quot;) %&gt;&quot;&gt;
+      ... use item ...
+    &lt;/tr&gt;
+  &lt;%- end -%&gt;
+</pre>
+<p>
+You can use named cycles to prevent clashes in nested loops. You&#8216;ll
+have to reset the inner cycle, manually:
+</p>
+<pre>
+  &lt;%- for item in @items do -%&gt;
+    &lt;tr class=&quot;&lt;%= cycle(&quot;even&quot;, &quot;odd&quot;, :name =&gt; &quot;row_class&quot;)
+      &lt;td&gt;
+        &lt;%- for value in item.values do -%&gt;
+          &lt;span style=&quot;color:'&lt;%= cycle(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;
+                                        :name =&gt; &quot;colors&quot;) %&gt;'&quot;&gt;
+            item
+          &lt;/span&gt;
+        &lt;%- end -%&gt;
+        &lt;%- reset_cycle(&quot;colors&quot;) -%&gt;
+      &lt;/td&gt;
+   &lt;/tr&gt;
+ &lt;%- end -%&gt;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000518_source')" id="l_M000518_source">show source</a> ]</p>
+  <div id="M000518_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 260</span>
+260:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cycle</span>(<span class="ruby-identifier">first_value</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+261:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">values</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">instance_of?</span> <span class="ruby-constant">Hash</span>)
+262:           <span class="ruby-identifier">params</span> = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">pop</span>
+263:           <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>]
+264:         <span class="ruby-keyword kw">else</span>
+265:           <span class="ruby-identifier">name</span> = <span class="ruby-value str">&quot;default&quot;</span>
+266:         <span class="ruby-keyword kw">end</span>
+267:         <span class="ruby-identifier">values</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">first_value</span>)
+268: 
+269:         <span class="ruby-identifier">cycle</span> = <span class="ruby-identifier">get_cycle</span>(<span class="ruby-identifier">name</span>)
+270:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">cycle</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">cycle</span>.<span class="ruby-identifier">values</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">values</span>)
+271:           <span class="ruby-identifier">cycle</span> = <span class="ruby-identifier">set_cycle</span>(<span class="ruby-identifier">name</span>, <span class="ruby-constant">Cycle</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>))
+272:         <span class="ruby-keyword kw">end</span>
+273:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">cycle</span>.<span class="ruby-identifier">to_s</span>
+274:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000507"></a><b>excerpt</b>(text, phrase, radius = 100, excerpt_string = &quot;...&quot;)
+  </div>
+  <div class="description">
+  <p>
+Extracts an excerpt from the <tt>text</tt> surrounding the <tt>phrase</tt>
+with a number of characters on each side determined by <tt>radius</tt>. If
+the phrase isn&#8217;t found, nil is returned. Ex:
+</p>
+<pre>
+  excerpt(&quot;hello my world&quot;, &quot;my&quot;, 3) =&gt; &quot;...lo my wo...&quot;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000507_source')" id="l_M000507_source">show source</a> ]</p>
+  <div id="M000507_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 44</span>
+44:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">excerpt</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">phrase</span>, <span class="ruby-identifier">radius</span> = <span class="ruby-value">100</span>, <span class="ruby-identifier">excerpt_string</span> = <span class="ruby-value str">&quot;...&quot;</span>)
+45:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">phrase</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">end</span>
+46:         <span class="ruby-identifier">phrase</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">phrase</span>)
+47: 
+48:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">found_pos</span> = <span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/(#{phrase})/i</span>
+49:           <span class="ruby-identifier">start_pos</span> = [ <span class="ruby-identifier">found_pos</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">radius</span>, <span class="ruby-value">0</span> ].<span class="ruby-identifier">max</span>
+50:           <span class="ruby-identifier">end_pos</span>   = [ <span class="ruby-identifier">found_pos</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">phrase</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">radius</span>, <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span> ].<span class="ruby-identifier">min</span>
+51: 
+52:           <span class="ruby-identifier">prefix</span>  = <span class="ruby-identifier">start_pos</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">excerpt_string</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>
+53:           <span class="ruby-identifier">postfix</span> = <span class="ruby-identifier">end_pos</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span> <span class="ruby-value">? </span><span class="ruby-identifier">excerpt_string</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>
+54: 
+55:           <span class="ruby-identifier">prefix</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">text</span>[<span class="ruby-identifier">start_pos</span><span class="ruby-operator">..</span><span class="ruby-identifier">end_pos</span>].<span class="ruby-identifier">strip</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">postfix</span>
+56:         <span class="ruby-keyword kw">else</span>
+57:           <span class="ruby-keyword kw">nil</span>
+58:         <span class="ruby-keyword kw">end</span>
+59:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000506"></a><b>highlight</b>(text, phrase, highlighter = '&lt;strong class=&quot;highlight&quot;&gt;\1&lt;/strong&gt;')
+  </div>
+  <div class="description">
+  <p>
+Highlights the <tt>phrase</tt> where it is found in the <tt>text</tt> by
+surrounding it like &lt;strong class=&quot;highlight&quot;&gt;I&#8217;m a
+highlight phrase&lt;/strong&gt;. The highlighter can be specialized by
+passing <tt>highlighter</tt> as single-quoted string with \1 where the
+phrase is supposed to be inserted. N.B.: The <tt>phrase</tt> is sanitized
+to include only letters, digits, and spaces before use.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000506_source')" id="l_M000506_source">show source</a> ]</p>
+  <div id="M000506_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 36</span>
+36:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">phrase</span>, <span class="ruby-identifier">highlighter</span> = <span class="ruby-value str">'&lt;strong class=&quot;highlight&quot;&gt;\1&lt;/strong&gt;'</span>)
+37:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">phrase</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">text</span> <span class="ruby-keyword kw">end</span>
+38:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(#{Regexp.escape(phrase)})/i</span>, <span class="ruby-identifier">highlighter</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">nil?</span>
+39:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000512"></a><b>markdown</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Returns the text with all the Markdown codes turned into HTML-tags.
+<em>This method is only available if BlueCloth can be required</em>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000512_source')" id="l_M000512_source">show source</a> ]</p>
+  <div id="M000512_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 111</span>
+111:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">markdown</span>(<span class="ruby-identifier">text</span>)
+112:           <span class="ruby-identifier">text</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-value">? </span><span class="ruby-value str">&quot;&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-constant">BlueCloth</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">text</span>).<span class="ruby-identifier">to_html</span>
+113:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000508"></a><b>pluralize</b>(count, singular, plural = nil)
+  </div>
+  <div class="description">
+  <p>
+Attempts to pluralize the <tt>singular</tt> word unless <tt>count</tt> is
+1. See source for pluralization rules.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000508_source')" id="l_M000508_source">show source</a> ]</p>
+  <div id="M000508_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 62</span>
+62:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pluralize</span>(<span class="ruby-identifier">count</span>, <span class="ruby-identifier">singular</span>, <span class="ruby-identifier">plural</span> = <span class="ruby-keyword kw">nil</span>)
+63:          <span class="ruby-node">&quot;#{count} &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+64:           <span class="ruby-identifier">singular</span>
+65:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">plural</span>
+66:           <span class="ruby-identifier">plural</span>
+67:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">Object</span>.<span class="ruby-identifier">const_defined?</span>(<span class="ruby-value str">&quot;Inflector&quot;</span>)
+68:           <span class="ruby-constant">Inflector</span>.<span class="ruby-identifier">pluralize</span>(<span class="ruby-identifier">singular</span>)
+69:         <span class="ruby-keyword kw">else</span>
+70:           <span class="ruby-identifier">singular</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;s&quot;</span>
+71:         <span class="ruby-keyword kw">end</span>
+72:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000519"></a><b>reset_cycle</b>(name = &quot;default&quot;)
+  </div>
+  <div class="description">
+  <p>
+Resets a cycle so that it starts from the first element in the array the
+next time it is used.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000519_source')" id="l_M000519_source">show source</a> ]</p>
+  <div id="M000519_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 278</span>
+278:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset_cycle</span>(<span class="ruby-identifier">name</span> = <span class="ruby-value str">&quot;default&quot;</span>)
+279:         <span class="ruby-identifier">cycle</span> = <span class="ruby-identifier">get_cycle</span>(<span class="ruby-identifier">name</span>)
+280:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cycle</span>.<span class="ruby-identifier">nil?</span>
+281:         <span class="ruby-identifier">cycle</span>.<span class="ruby-identifier">reset</span>
+282:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000516"></a><b>sanitize</b>(html)
+  </div>
+  <div class="description">
+  <p>
+Sanitizes the given HTML by making form and script tags into regular text,
+and removing all &quot;onxxx&quot; attributes (so that arbitrary Javascript
+cannot be executed). Also removes href attributes that start with
+&quot;javascript:&quot;.
+</p>
+<p>
+Returns the sanitized text.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000516_source')" id="l_M000516_source">show source</a> ]</p>
+  <div id="M000516_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 180</span>
+180:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sanitize</span>(<span class="ruby-identifier">html</span>)
+181:         <span class="ruby-comment cmt"># only do this if absolutely necessary</span>
+182:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">html</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value str">&quot;&lt;&quot;</span>)
+183:           <span class="ruby-identifier">tokenizer</span> = <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Tokenizer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">html</span>)
+184:           <span class="ruby-identifier">new_text</span> = <span class="ruby-value str">&quot;&quot;</span>
+185: 
+186:           <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">token</span> = <span class="ruby-identifier">tokenizer</span>.<span class="ruby-identifier">next</span>
+187:             <span class="ruby-identifier">node</span> = <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Node</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-value">0</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">token</span>, <span class="ruby-keyword kw">false</span>)
+188:             <span class="ruby-identifier">new_text</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">node</span>
+189:               <span class="ruby-keyword kw">when</span> <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Tag</span>
+190:                 <span class="ruby-keyword kw">if</span> <span class="ruby-constant">VERBOTEN_TAGS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">name</span>)
+191:                   <span class="ruby-identifier">node</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;/</span>, <span class="ruby-value str">&quot;&amp;lt;&quot;</span>)
+192:                 <span class="ruby-keyword kw">else</span>
+193:                   <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">closing</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">:close</span>
+194:                     <span class="ruby-identifier">node</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">delete_if</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">attr</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">attr</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">VERBOTEN_ATTRS</span> }
+195:                     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">&quot;href&quot;</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^javascript:/i</span>
+196:                       <span class="ruby-identifier">node</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">delete</span> <span class="ruby-value str">&quot;href&quot;</span>
+197:                     <span class="ruby-keyword kw">end</span>
+198:                   <span class="ruby-keyword kw">end</span>
+199:                   <span class="ruby-identifier">node</span>.<span class="ruby-identifier">to_s</span>
+200:                 <span class="ruby-keyword kw">end</span>
+201:               <span class="ruby-keyword kw">else</span>
+202:                 <span class="ruby-identifier">node</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;/</span>, <span class="ruby-value str">&quot;&amp;lt;&quot;</span>)
+203:             <span class="ruby-keyword kw">end</span>
+204:           <span class="ruby-keyword kw">end</span>
+205: 
+206:           <span class="ruby-identifier">html</span> = <span class="ruby-identifier">new_text</span>
+207:         <span class="ruby-keyword kw">end</span>
+208: 
+209:         <span class="ruby-identifier">html</span>
+210:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000513"></a><b>simple_format</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Returns <tt>text</tt> transformed into HTML using very simple formatting
+rules Surrounds paragraphs with <tt>&lt;p&gt;</tt> tags, and converts line
+breaks into <tt>&lt;br/&gt;</tt> Two consecutive newlines(<tt>\n\n</tt>)
+are considered as a paragraph, one newline (<tt>\n</tt>) is considered a
+linebreak, three or more consecutive newlines are turned into two newlines
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000513_source')" id="l_M000513_source">show source</a> ]</p>
+  <div id="M000513_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 122</span>
+122:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">simple_format</span>(<span class="ruby-identifier">text</span>)
+123:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/(\r\n|\n|\r)/</span>, <span class="ruby-value str">&quot;\n&quot;</span>) <span class="ruby-comment cmt"># lets make them newlines crossplatform</span>
+124:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\n\n+/</span>, <span class="ruby-value str">&quot;\n\n&quot;</span>) <span class="ruby-comment cmt"># zap dupes</span>
+125:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\n\n/</span>, <span class="ruby-value str">'&lt;/p&gt;\0&lt;p&gt;'</span>) <span class="ruby-comment cmt"># turn two newlines into paragraph</span>
+126:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/([^\n])(\n)([^\n])/</span>, <span class="ruby-value str">'\1\2&lt;br /&gt;\3'</span>) <span class="ruby-comment cmt"># turn single newline into &lt;br /&gt;</span>
+127:         
+128:         <span class="ruby-identifier">content_tag</span>(<span class="ruby-value str">&quot;p&quot;</span>, <span class="ruby-identifier">text</span>)
+129:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000515"></a><b>strip_links</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Turns all links into words, like &quot;&lt;a
+href=&quot;something&quot;&gt;else&lt;/a&gt;&quot; to &quot;else&quot;.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000515_source')" id="l_M000515_source">show source</a> ]</p>
+  <div id="M000515_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 154</span>
+154:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">strip_links</span>(<span class="ruby-identifier">text</span>)
+155:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;a.*&gt;(.*)&lt;\/a&gt;/</span><span class="ruby-identifier">m</span>, <span class="ruby-value str">'\1'</span>)
+156:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000517"></a><b>strip_tags</b>(html)
+  </div>
+  <div class="description">
+  <p>
+Strips all HTML tags from the input, including comments. This uses the
+html-scanner tokenizer and so it&#8217;s HTML parsing ability is limited by
+that of html-scanner.
+</p>
+<p>
+Returns the tag free text.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000517_source')" id="l_M000517_source">show source</a> ]</p>
+  <div id="M000517_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 216</span>
+216:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">strip_tags</span>(<span class="ruby-identifier">html</span>)
+217:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">html</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value str">&quot;&lt;&quot;</span>)
+218:           <span class="ruby-identifier">text</span> = <span class="ruby-value str">&quot;&quot;</span>
+219:           <span class="ruby-identifier">tokenizer</span> = <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Tokenizer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">html</span>)
+220: 
+221:           <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">token</span> = <span class="ruby-identifier">tokenizer</span>.<span class="ruby-identifier">next</span>
+222:             <span class="ruby-identifier">node</span> = <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Node</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-value">0</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">token</span>, <span class="ruby-keyword kw">false</span>)
+223:             <span class="ruby-comment cmt"># result is only the content of any Text nodes</span>
+224:             <span class="ruby-identifier">text</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">HTML</span><span class="ruby-operator">::</span><span class="ruby-constant">Text</span>  
+225:           <span class="ruby-keyword kw">end</span>
+226:           <span class="ruby-comment cmt"># strip any comments, and if they have a newline at the end (ie. line with</span>
+227:           <span class="ruby-comment cmt"># only a comment) strip that too</span>
+228:           <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;!--(.*?)--&gt;[\n]?/</span><span class="ruby-identifier">m</span>, <span class="ruby-value str">&quot;&quot;</span>) 
+229:         <span class="ruby-keyword kw">else</span>
+230:           <span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># already plain text</span>
+231:         <span class="ruby-keyword kw">end</span> 
+232:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000510"></a><b>textilize</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Returns the text with all the Textile codes turned into HTML-tags. <em>This
+method is only available if RedCloth can be required</em>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000510_source')" id="l_M000510_source">show source</a> ]</p>
+  <div id="M000510_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 84</span>
+84:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">textilize</span>(<span class="ruby-identifier">text</span>)
+85:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">blank?</span>
+86:             <span class="ruby-value str">&quot;&quot;</span>
+87:           <span class="ruby-keyword kw">else</span>
+88:             <span class="ruby-identifier">textilized</span> = <span class="ruby-constant">RedCloth</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">text</span>, [ <span class="ruby-identifier">:hard_breaks</span> ])
+89:             <span class="ruby-identifier">textilized</span>.<span class="ruby-identifier">hard_breaks</span> = <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">textilized</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;hard_breaks=&quot;</span>)
+90:             <span class="ruby-identifier">textilized</span>.<span class="ruby-identifier">to_html</span>
+91:           <span class="ruby-keyword kw">end</span>
+92:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000511"></a><b>textilize_without_paragraph</b>(text)
+  </div>
+  <div class="description">
+  <p>
+Returns the text with all the Textile codes turned into HTML-tags, but
+without the regular bounding &lt;p&gt; tag. <em>This method is only
+available if RedCloth can be required</em>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000511_source')" id="l_M000511_source">show source</a> ]</p>
+  <div id="M000511_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 96</span>
+ 96:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">textilize_without_paragraph</span>(<span class="ruby-identifier">text</span>)
+ 97:           <span class="ruby-identifier">textiled</span> = <span class="ruby-identifier">textilize</span>(<span class="ruby-identifier">text</span>)
+ 98:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">textiled</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">2</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&lt;p&gt;&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">textiled</span> = <span class="ruby-identifier">textiled</span>[<span class="ruby-value">3</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-keyword kw">end</span>
+ 99:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">textiled</span>[<span class="ruby-value">-4</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&lt;/p&gt;&quot;</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">textiled</span> = <span class="ruby-identifier">textiled</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-5</span>] <span class="ruby-keyword kw">end</span>
+100:           <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">textiled</span>
+101:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000505"></a><b>truncate</b>(text, length = 30, truncate_string = &quot;...&quot;)
+  </div>
+  <div class="description">
+  <p>
+Truncates <tt>text</tt> to the length of <tt>length</tt> and replaces the
+last three characters with the <tt>truncate_string</tt> if the
+<tt>text</tt> is longer than <tt>length</tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000505_source')" id="l_M000505_source">show source</a> ]</p>
+  <div id="M000505_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 21</span>
+21:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">truncate</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">length</span> = <span class="ruby-value">30</span>, <span class="ruby-identifier">truncate_string</span> = <span class="ruby-value str">&quot;...&quot;</span>)
+22:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">end</span>
+23:         <span class="ruby-identifier">l</span> = <span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">truncate_string</span>.<span class="ruby-identifier">length</span>
+24:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">$KCODE</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;NONE&quot;</span>
+25:           <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">length</span> <span class="ruby-value">? </span><span class="ruby-identifier">text</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">l</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">truncate_string</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">text</span>
+26:         <span class="ruby-keyword kw">else</span>
+27:           <span class="ruby-identifier">chars</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">//</span>)
+28:           <span class="ruby-identifier">chars</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">length</span> <span class="ruby-value">? </span><span class="ruby-identifier">chars</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">l</span>].<span class="ruby-identifier">join</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">truncate_string</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">text</span>
+29:         <span class="ruby-keyword kw">end</span>
+30:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000509"></a><b>word_wrap</b>(text, line_width = 80)
+  </div>
+  <div class="description">
+  <p>
+Word wrap long lines to line_width.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000509_source')" id="l_M000509_source">show source</a> ]</p>
+  <div id="M000509_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/text_helper.rb, line 75</span>
+75:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">word_wrap</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">line_width</span> = <span class="ruby-value">80</span>)
+76:         <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\n/</span>, <span class="ruby-value str">&quot;\n\n&quot;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(.{1,#{line_width}})(\s+|$)/</span>, <span class="ruby-value str">&quot;\\1\n&quot;</span>).<span class="ruby-identifier">strip</span>
+77:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

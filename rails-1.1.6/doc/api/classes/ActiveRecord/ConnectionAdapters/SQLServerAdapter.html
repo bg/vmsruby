@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::SQLServerAdapter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::SQLServerAdapter</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+        <a href="AbstractAdapter.html">
+AbstractAdapter
+         </a>
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+In ADO mode, this adapter will ONLY work on Windows systems, since it
+relies on Win32OLE, which, to my knowledge, is only available on Windows.
+</p>
+<p>
+This mode also relies on the ADO support in the DBI module. If you are
+using the one-click installer of Ruby, then you already have DBI installed,
+but the ADO module is <b>NOT</b> installed. You will need to get the latest
+source distribution of Ruby-DBI from <a
+href="http://ruby-dbi.sourceforge.net">ruby-dbi.sourceforge.net</a>/ unzip
+it, and copy the file <tt>src/lib/dbd_ado/ADO.rb</tt> to
+<tt>X:/Ruby/lib/ruby/site_ruby/1.8/DBD/ADO/ADO.rb</tt> (you will more than
+likely need to create the ADO directory). Once you&#8217;ve installed that
+file, you are ready to go.
+</p>
+<p>
+In ODBC mode, the adapter requires the ODBC support in the DBI module which
+requires the Ruby ODBC module. Ruby ODBC 0.996 was used in development and
+testing, and it is available at <a
+href="http://www.ch-werner.de/rubyodbc">www.ch-werner.de/rubyodbc</a>/
+</p>
+<p>
+Options:
+</p>
+<ul>
+<li><tt>:mode</tt> &#8212; ADO or ODBC. Defaults to ADO.
+
+</li>
+<li><tt>:username</tt> &#8212; Defaults to sa.
+
+</li>
+<li><tt>:password</tt> &#8212; Defaults to empty string.
+
+</li>
+</ul>
+<p>
+ADO specific options:
+</p>
+<ul>
+<li><tt>:host</tt> &#8212; Defaults to localhost.
+
+</li>
+<li><tt>:database</tt> &#8212; The name of the database. No default, must be
+provided.
+
+</li>
+</ul>
+<p>
+ODBC specific options:
+</p>
+<ul>
+<li><tt>:dsn</tt> &#8212; Defaults to nothing.
+
+</li>
+</ul>
+<p>
+ADO code tested on Windows 2000 and higher systems, running ruby 1.8.2
+(2004-07-29) [i386-mswin32], and SQL Server 2000 SP3.
+</p>
+<p>
+ODBC code tested on a Fedora Core 4 system, running FreeTDS 0.63, unixODBC
+2.2.11, Ruby ODBC 0.996, Ruby DBI 0.0.23 and Ruby 1.8.2. [Linux strongmad
+2.6.11-1.1369_FC4 1 Thu Jun 2 22:55:56 EDT 2005 i686 i686 i386 GNU/Linux]
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000664">active?</a></li>
+  <li><a href="#M000663">adapter_name</a></li>
+  <li><a href="#M000682">add_limit_offset!</a></li>
+  <li><a href="#M000674">begin_db_transaction</a></li>
+  <li><a href="#M000669">columns</a></li>
+  <li><a href="#M000675">commit_db_transaction</a></li>
+  <li><a href="#M000685">create_database</a></li>
+  <li><a href="#M000686">current_database</a></li>
+  <li><a href="#M000673">delete</a></li>
+  <li><a href="#M000666">disconnect!</a></li>
+  <li><a href="#M000684">drop_database</a></li>
+  <li><a href="#M000671">execute</a></li>
+  <li><a href="#M000688">indexes</a></li>
+  <li><a href="#M000670">insert</a></li>
+  <li><a href="#M000662">native_database_types</a></li>
+  <li><a href="#M000661">new</a></li>
+  <li><a href="#M000677">quote</a></li>
+  <li><a href="#M000681">quote_column_name</a></li>
+  <li><a href="#M000678">quote_string</a></li>
+  <li><a href="#M000680">quoted_false</a></li>
+  <li><a href="#M000679">quoted_true</a></li>
+  <li><a href="#M000665">reconnect!</a></li>
+  <li><a href="#M000683">recreate_database</a></li>
+  <li><a href="#M000692">remove_column</a></li>
+  <li><a href="#M000690">remove_column</a></li>
+  <li><a href="#M000693">remove_default_constraint</a></li>
+  <li><a href="#M000694">remove_index</a></li>
+  <li><a href="#M000691">rename_column</a></li>
+  <li><a href="#M000689">rename_table</a></li>
+  <li><a href="#M000676">rollback_db_transaction</a></li>
+  <li><a href="#M000667">select_all</a></li>
+  <li><a href="#M000668">select_one</a></li>
+  <li><a href="#M000687">tables</a></li>
+  <li><a href="#M000672">update</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000661"></a><b>new</b>(connection, logger, connection_options=nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000661_source')" id="l_M000661_source">show source</a> ]</p>
+  <div id="M000661_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 178</span>
+178:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">connection</span>, <span class="ruby-identifier">logger</span>, <span class="ruby-identifier">connection_options</span>=<span class="ruby-keyword kw">nil</span>)
+179:         <span class="ruby-keyword kw">super</span>(<span class="ruby-identifier">connection</span>, <span class="ruby-identifier">logger</span>)
+180:         <span class="ruby-ivar">@connection_options</span> = <span class="ruby-identifier">connection_options</span>
+181:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000664"></a><b>active?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true if the connection is active.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000664_source')" id="l_M000664_source">show source</a> ]</p>
+  <div id="M000664_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 210</span>
+210:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">active?</span>
+211:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value str">&quot;SELECT 1&quot;</span>) { }
+212:         <span class="ruby-keyword kw">true</span>
+213:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">DBI</span><span class="ruby-operator">::</span><span class="ruby-constant">DatabaseError</span>, <span class="ruby-constant">DBI</span><span class="ruby-operator">::</span><span class="ruby-constant">InterfaceError</span>
+214:         <span class="ruby-keyword kw">false</span>
+215:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000663"></a><b>adapter_name</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000663_source')" id="l_M000663_source">show source</a> ]</p>
+  <div id="M000663_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 199</span>
+199:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">adapter_name</span>
+200:         <span class="ruby-value str">'SQLServer'</span>
+201:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000682"></a><b>add_limit_offset!</b>(sql, options)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000682_source')" id="l_M000682_source">show source</a> ]</p>
+  <div id="M000682_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 364</span>
+364:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_limit_offset!</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">options</span>)
+365:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>]
+366:           <span class="ruby-identifier">total_rows</span> = <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">select_all</span>(<span class="ruby-node">&quot;SELECT count(*) as TotalRows from (#{sql.gsub(/\bSELECT\b/i, &quot;SELECT TOP 1000000000&quot;)}) tally&quot;</span>)[<span class="ruby-value">0</span>][<span class="ruby-identifier">:TotalRows</span>].<span class="ruby-identifier">to_i</span>
+367:           <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>]) <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">total_rows</span>
+368:             <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] = (<span class="ruby-identifier">total_rows</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">total_rows</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>]) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+369:           <span class="ruby-keyword kw">end</span>
+370:           <span class="ruby-identifier">sql</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-regexp re">/^\s*SELECT/i</span>, <span class="ruby-node">&quot;SELECT * FROM (SELECT TOP #{options[:limit]} * FROM (SELECT TOP #{options[:limit] + options[:offset]} &quot;</span>)
+371:           <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;) AS tmp1&quot;</span>
+372:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:order</span>]
+373:             <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:order</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:order</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span>
+374:               <span class="ruby-identifier">parts</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot; &quot;</span>)
+375:               <span class="ruby-identifier">tc</span> = <span class="ruby-identifier">parts</span>[<span class="ruby-value">0</span>]
+376:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sql</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/\.\[/</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">tc</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/\./</span> <span class="ruby-comment cmt"># if column quoting used in query</span>
+377:                 <span class="ruby-identifier">tc</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\./</span>, <span class="ruby-value str">'\\.\\['</span>)
+378:                 <span class="ruby-identifier">tc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'\\]'</span>
+379:               <span class="ruby-keyword kw">end</span>
+380:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sql</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/#{tc} AS (t\d_r\d\d?)/</span>
+381:                   <span class="ruby-identifier">parts</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">$1</span>
+382:               <span class="ruby-keyword kw">end</span>
+383:               <span class="ruby-identifier">parts</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' '</span>)
+384:             <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+385:             <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; ORDER BY #{change_order_direction(options[:order])}) AS tmp2 ORDER BY #{options[:order]}&quot;</span>
+386:           <span class="ruby-keyword kw">else</span>
+387:             <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot; ) AS tmp2&quot;</span>
+388:           <span class="ruby-keyword kw">end</span>
+389:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">sql</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp re">/^\s*SELECT (@@|COUNT\()/i</span>
+390:           <span class="ruby-identifier">sql</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-regexp re">/^\s*SELECT([\s]*distinct)?/i</span>) <span class="ruby-keyword kw">do</span>
+391:             <span class="ruby-node">&quot;SELECT#{$1} TOP #{options[:limit]}&quot;</span>
+392:           <span class="ruby-keyword kw">end</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>].<span class="ruby-identifier">nil?</span>
+393:         <span class="ruby-keyword kw">end</span>
+394:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000674"></a><b>begin_db_transaction</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000674_source')" id="l_M000674_source">show source</a> ]</p>
+  <div id="M000674_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 312</span>
+312:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">begin_db_transaction</span>
+313:         <span class="ruby-ivar">@connection</span>[<span class="ruby-value str">&quot;AutoCommit&quot;</span>] = <span class="ruby-keyword kw">false</span>
+314:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+315:         <span class="ruby-ivar">@connection</span>[<span class="ruby-value str">&quot;AutoCommit&quot;</span>] = <span class="ruby-keyword kw">true</span>
+316:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000669"></a><b>columns</b>(table_name, name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000669_source')" id="l_M000669_source">show source</a> ]</p>
+  <div id="M000669_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 242</span>
+242:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">columns</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+243:         <span class="ruby-keyword kw">return</span> [] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">blank?</span>
+244:         <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)
+245:         <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'.'</span>)[<span class="ruby-value">-1</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">table_name</span>.<span class="ruby-identifier">nil?</span>
+246:         <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT COLUMN_NAME as ColName, COLUMN_DEFAULT as DefaultValue, DATA_TYPE as ColType, IS_NULLABLE As IsNullable, COL_LENGTH('#{table_name}', COLUMN_NAME) as Length, COLUMNPROPERTY(OBJECT_ID('#{table_name}'), COLUMN_NAME, 'IsIdentity') as IsIdentity, NUMERIC_SCALE as Scale FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '#{table_name}'&quot;</span>
+247:         <span class="ruby-comment cmt"># Comment out if you want to have the Columns select statment logged.</span>
+248:         <span class="ruby-comment cmt"># Personally, I think it adds unnecessary bloat to the log. </span>
+249:         <span class="ruby-comment cmt"># If you do comment it out, make sure to un-comment the &quot;result&quot; line that follows</span>
+250:         <span class="ruby-identifier">result</span> = <span class="ruby-identifier">log</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>) { <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">select_all</span>(<span class="ruby-identifier">sql</span>) }
+251:         <span class="ruby-comment cmt">#result = @connection.select_all(sql)</span>
+252:         <span class="ruby-identifier">columns</span> = []
+253:         <span class="ruby-identifier">result</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span>
+254:           <span class="ruby-identifier">default</span> = <span class="ruby-identifier">field</span>[<span class="ruby-identifier">:DefaultValue</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/[()\']/</span>,<span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/null/</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">field</span>[<span class="ruby-identifier">:DefaultValue</span>]
+255:           <span class="ruby-identifier">type</span> = <span class="ruby-node">&quot;#{field[:ColType]}(#{field[:Length]})&quot;</span>
+256:           <span class="ruby-identifier">is_identity</span> = <span class="ruby-identifier">field</span>[<span class="ruby-identifier">:IsIdentity</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+257:           <span class="ruby-identifier">is_nullable</span> = <span class="ruby-identifier">field</span>[<span class="ruby-identifier">:IsNullable</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'YES'</span>
+258:           <span class="ruby-identifier">columns</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ColumnWithIdentity</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">field</span>[<span class="ruby-identifier">:ColName</span>], <span class="ruby-identifier">default</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">is_identity</span>, <span class="ruby-identifier">is_nullable</span>, <span class="ruby-identifier">field</span>[<span class="ruby-identifier">:Scale</span>])
+259:         <span class="ruby-keyword kw">end</span>
+260:         <span class="ruby-identifier">columns</span>
+261:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000675"></a><b>commit_db_transaction</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000675_source')" id="l_M000675_source">show source</a> ]</p>
+  <div id="M000675_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 318</span>
+318:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">commit_db_transaction</span>
+319:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">commit</span>
+320:       <span class="ruby-keyword kw">ensure</span>
+321:         <span class="ruby-ivar">@connection</span>[<span class="ruby-value str">&quot;AutoCommit&quot;</span>] = <span class="ruby-keyword kw">true</span>
+322:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000685"></a><b>create_database</b>(name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000685_source')" id="l_M000685_source">show source</a> ]</p>
+  <div id="M000685_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 405</span>
+405:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_database</span>(<span class="ruby-identifier">name</span>)
+406:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;CREATE DATABASE #{name}&quot;</span>
+407:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000686"></a><b>current_database</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000686_source')" id="l_M000686_source">show source</a> ]</p>
+  <div id="M000686_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 409</span>
+409:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_database</span>
+410:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">select_one</span>(<span class="ruby-value str">&quot;select DB_NAME()&quot;</span>)[<span class="ruby-value">0</span>]
+411:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000673"></a><b>delete</b>(sql, name = nil)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="SQLServerAdapter.html#M000672">update</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000666"></a><b>disconnect!</b>()
+  </div>
+  <div class="description">
+  <p>
+Disconnects from the database
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000666_source')" id="l_M000666_source">show source</a> ]</p>
+  <div id="M000666_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 228</span>
+228:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">disconnect!</span>
+229:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">disconnect</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+230:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000684"></a><b>drop_database</b>(name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000684_source')" id="l_M000684_source">show source</a> ]</p>
+  <div id="M000684_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 401</span>
+401:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_database</span>(<span class="ruby-identifier">name</span>)
+402:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;DROP DATABASE #{name}&quot;</span>
+403:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000671"></a><b>execute</b>(sql, name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000671_source')" id="l_M000671_source">show source</a> ]</p>
+  <div id="M000671_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 294</span>
+294:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+295:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sql</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\s*INSERT/i</span>
+296:           <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>)
+297:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">sql</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\s*UPDATE|^\s*DELETE/i</span>
+298:           <span class="ruby-identifier">log</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span>
+299:             <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>)
+300:             <span class="ruby-identifier">retVal</span> = <span class="ruby-identifier">select_one</span>(<span class="ruby-value str">&quot;SELECT @@ROWCOUNT AS AffectedRows&quot;</span>)[<span class="ruby-value str">&quot;AffectedRows&quot;</span>]
+301:           <span class="ruby-keyword kw">end</span>
+302:         <span class="ruby-keyword kw">else</span>
+303:           <span class="ruby-identifier">log</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>) { <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>) }
+304:         <span class="ruby-keyword kw">end</span>
+305:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000688"></a><b>indexes</b>(table_name, name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000688_source')" id="l_M000688_source">show source</a> ]</p>
+  <div id="M000688_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 421</span>
+421:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">indexes</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+422:         <span class="ruby-identifier">indexes</span> = []
+423:         <span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;EXEC sp_helpindex #{table_name}&quot;</span>, <span class="ruby-identifier">name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span> 
+424:           <span class="ruby-identifier">unique</span> = <span class="ruby-identifier">index</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/unique/</span>
+425:           <span class="ruby-identifier">primary</span> = <span class="ruby-identifier">index</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/primary key/</span>
+426:           <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">primary</span>
+427:             <span class="ruby-identifier">indexes</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">IndexDefinition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">index</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">unique</span>, <span class="ruby-identifier">index</span>[<span class="ruby-value">2</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;, &quot;</span>))
+428:           <span class="ruby-keyword kw">end</span>
+429:         <span class="ruby-keyword kw">end</span>
+430:         <span class="ruby-identifier">indexes</span>
+431:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000670"></a><b>insert</b>(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000670_source')" id="l_M000670_source">show source</a> ]</p>
+  <div id="M000670_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 263</span>
+263:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">pk</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">id_value</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">sequence_name</span> = <span class="ruby-keyword kw">nil</span>)
+264:         <span class="ruby-keyword kw">begin</span>
+265:           <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">get_table_name</span>(<span class="ruby-identifier">sql</span>)
+266:           <span class="ruby-identifier">col</span> = <span class="ruby-identifier">get_identity_column</span>(<span class="ruby-identifier">table_name</span>)
+267:           <span class="ruby-identifier">ii_enabled</span> = <span class="ruby-keyword kw">false</span>
+268: 
+269:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
+270:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">query_contains_identity_column</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">col</span>)
+271:               <span class="ruby-keyword kw">begin</span>
+272:                 <span class="ruby-identifier">execute</span> <span class="ruby-identifier">enable_identity_insert</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-keyword kw">true</span>)
+273:                 <span class="ruby-identifier">ii_enabled</span> = <span class="ruby-keyword kw">true</span>
+274:               <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+275:                 <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActiveRecordError</span>, <span class="ruby-value str">&quot;IDENTITY_INSERT could not be turned ON&quot;</span>
+276:               <span class="ruby-keyword kw">end</span>
+277:             <span class="ruby-keyword kw">end</span>
+278:           <span class="ruby-keyword kw">end</span>
+279:           <span class="ruby-identifier">log</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span>
+280:             <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>)
+281:             <span class="ruby-identifier">id_value</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">select_one</span>(<span class="ruby-value str">&quot;SELECT @@IDENTITY AS Ident&quot;</span>)[<span class="ruby-value str">&quot;Ident&quot;</span>]
+282:           <span class="ruby-keyword kw">end</span>
+283:         <span class="ruby-keyword kw">ensure</span>
+284:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ii_enabled</span>
+285:             <span class="ruby-keyword kw">begin</span>
+286:               <span class="ruby-identifier">execute</span> <span class="ruby-identifier">enable_identity_insert</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-keyword kw">false</span>)
+287:             <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+288:               <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActiveRecordError</span>, <span class="ruby-value str">&quot;IDENTITY_INSERT could not be turned OFF&quot;</span>
+289:             <span class="ruby-keyword kw">end</span>
+290:           <span class="ruby-keyword kw">end</span>
+291:         <span class="ruby-keyword kw">end</span>
+292:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000662"></a><b>native_database_types</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000662_source')" id="l_M000662_source">show source</a> ]</p>
+  <div id="M000662_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 183</span>
+183:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">native_database_types</span>
+184:         {
+185:           <span class="ruby-identifier">:primary_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;int NOT NULL IDENTITY(1, 1) PRIMARY KEY&quot;</span>,
+186:           <span class="ruby-identifier">:string</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;varchar&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">255</span>  },
+187:           <span class="ruby-identifier">:text</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;text&quot;</span> },
+188:           <span class="ruby-identifier">:integer</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;int&quot;</span> },
+189:           <span class="ruby-identifier">:float</span>       =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;float&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">8</span> },
+190:           <span class="ruby-identifier">:datetime</span>    =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;datetime&quot;</span> },
+191:           <span class="ruby-identifier">:timestamp</span>   =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;datetime&quot;</span> },
+192:           <span class="ruby-identifier">:time</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;datetime&quot;</span> },
+193:           <span class="ruby-identifier">:date</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;datetime&quot;</span> },
+194:           <span class="ruby-identifier">:binary</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;image&quot;</span>},
+195:           <span class="ruby-identifier">:boolean</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;bit&quot;</span>}
+196:         }
+197:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000677"></a><b>quote</b>(value, column = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000677_source')" id="l_M000677_source">show source</a> ]</p>
+  <div id="M000677_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 330</span>
+330:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">column</span> = <span class="ruby-keyword kw">nil</span>)
+331:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">value</span>
+332:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>                
+333:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">column</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:binary</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:string_to_binary</span>)
+334:               <span class="ruby-node">&quot;'#{quote_string(column.class.string_to_binary(value))}'&quot;</span>
+335:             <span class="ruby-keyword kw">else</span>
+336:               <span class="ruby-node">&quot;'#{quote_string(value)}'&quot;</span>
+337:             <span class="ruby-keyword kw">end</span>
+338:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">NilClass</span>              <span class="ruby-keyword kw">then</span> <span class="ruby-value str">&quot;NULL&quot;</span>
+339:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">TrueClass</span>             <span class="ruby-keyword kw">then</span> <span class="ruby-value str">'1'</span>
+340:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">FalseClass</span>            <span class="ruby-keyword kw">then</span> <span class="ruby-value str">'0'</span>
+341:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Float</span>, <span class="ruby-constant">Fixnum</span>, <span class="ruby-constant">Bignum</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>
+342:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Date</span>                  <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;'#{value.to_s}'&quot;</span> 
+343:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Time</span>, <span class="ruby-constant">DateTime</span>        <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;'#{value.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)}'&quot;</span>
+344:           <span class="ruby-keyword kw">else</span>                            <span class="ruby-node">&quot;'#{quote_string(value.to_yaml)}'&quot;</span>
+345:         <span class="ruby-keyword kw">end</span>
+346:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000681"></a><b>quote_column_name</b>(name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000681_source')" id="l_M000681_source">show source</a> ]</p>
+  <div id="M000681_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 360</span>
+360:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote_column_name</span>(<span class="ruby-identifier">name</span>)
+361:         <span class="ruby-node">&quot;[#{name}]&quot;</span>
+362:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000678"></a><b>quote_string</b>(string)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000678_source')" id="l_M000678_source">show source</a> ]</p>
+  <div id="M000678_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 348</span>
+348:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote_string</span>(<span class="ruby-identifier">string</span>)
+349:         <span class="ruby-identifier">string</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\'/</span>, <span class="ruby-value str">&quot;''&quot;</span>)
+350:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000680"></a><b>quoted_false</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000680_source')" id="l_M000680_source">show source</a> ]</p>
+  <div id="M000680_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 356</span>
+356:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quoted_false</span>
+357:         <span class="ruby-value str">&quot;0&quot;</span>
+358:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000679"></a><b>quoted_true</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000679_source')" id="l_M000679_source">show source</a> ]</p>
+  <div id="M000679_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 352</span>
+352:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quoted_true</span>
+353:         <span class="ruby-value str">&quot;1&quot;</span>
+354:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000665"></a><b>reconnect!</b>()
+  </div>
+  <div class="description">
+  <p>
+Reconnects to the database, returns false if no connection could be made.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000665_source')" id="l_M000665_source">show source</a> ]</p>
+  <div id="M000665_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 218</span>
+218:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reconnect!</span>
+219:         <span class="ruby-identifier">disconnect!</span>
+220:         <span class="ruby-ivar">@connection</span> = <span class="ruby-constant">DBI</span>.<span class="ruby-identifier">connect</span>(<span class="ruby-operator">*</span><span class="ruby-ivar">@connection_options</span>)
+221:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">DBI</span><span class="ruby-operator">::</span><span class="ruby-constant">DatabaseError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+222:         <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;#{adapter_name} reconnection failed: #{e.message}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@logger</span>
+223:         <span class="ruby-keyword kw">false</span>
+224:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000683"></a><b>recreate_database</b>(name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000683_source')" id="l_M000683_source">show source</a> ]</p>
+  <div id="M000683_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 396</span>
+396:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recreate_database</span>(<span class="ruby-identifier">name</span>)
+397:         <span class="ruby-identifier">drop_database</span>(<span class="ruby-identifier">name</span>)
+398:         <span class="ruby-identifier">create_database</span>(<span class="ruby-identifier">name</span>)
+399:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000692"></a><b>remove_column</b>(table_name, column_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000692_source')" id="l_M000692_source">show source</a> ]</p>
+  <div id="M000692_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 456</span>
+456:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_column</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column_name</span>)
+457:         <span class="ruby-identifier">remove_default_constraint</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column_name</span>)
+458:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;ALTER TABLE #{table_name} DROP COLUMN #{column_name}&quot;</span>
+459:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000690"></a><b>remove_column</b>(table_name, column_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000690_source')" id="l_M000690_source">show source</a> ]</p>
+  <div id="M000690_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 437</span>
+437:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_column</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column_name</span>)
+438:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;ALTER TABLE #{table_name} DROP COLUMN #{column_name}&quot;</span>
+439:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000693"></a><b>remove_default_constraint</b>(table_name, column_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000693_source')" id="l_M000693_source">show source</a> ]</p>
+  <div id="M000693_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 461</span>
+461:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_default_constraint</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column_name</span>)
+462:         <span class="ruby-identifier">defaults</span> = <span class="ruby-identifier">select</span> <span class="ruby-node">&quot;select def.name from sysobjects def, syscolumns col, sysobjects tab where col.cdefault = def.id and col.name = '#{column_name}' and tab.name = '#{table_name}' and col.id = tab.id&quot;</span>
+463:         <span class="ruby-identifier">defaults</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">constraint</span><span class="ruby-operator">|</span>
+464:           <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;ALTER TABLE #{table_name} DROP CONSTRAINT #{constraint[&quot;name&quot;]}&quot;</span>
+465:         }
+466:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000694"></a><b>remove_index</b>(table_name, options = {})
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000694_source')" id="l_M000694_source">show source</a> ]</p>
+  <div id="M000694_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 468</span>
+468:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_index</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">options</span> = {})
+469:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;DROP INDEX #{table_name}.#{index_name(table_name, options)}&quot;</span>
+470:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000691"></a><b>rename_column</b>(table, column, new_column_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000691_source')" id="l_M000691_source">show source</a> ]</p>
+  <div id="M000691_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 441</span>
+441:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename_column</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">new_column_name</span>)
+442:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;EXEC sp_rename '#{table}.#{column}', '#{new_column_name}'&quot;</span>
+443:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000689"></a><b>rename_table</b>(name, new_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000689_source')" id="l_M000689_source">show source</a> ]</p>
+  <div id="M000689_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 433</span>
+433:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename_table</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">new_name</span>)
+434:         <span class="ruby-identifier">execute</span> <span class="ruby-node">&quot;EXEC sp_rename '#{name}', '#{new_name}'&quot;</span>
+435:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000676"></a><b>rollback_db_transaction</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000676_source')" id="l_M000676_source">show source</a> ]</p>
+  <div id="M000676_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 324</span>
+324:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rollback_db_transaction</span>
+325:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">rollback</span>
+326:       <span class="ruby-keyword kw">ensure</span>
+327:         <span class="ruby-ivar">@connection</span>[<span class="ruby-value str">&quot;AutoCommit&quot;</span>] = <span class="ruby-keyword kw">true</span>
+328:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000667"></a><b>select_all</b>(sql, name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000667_source')" id="l_M000667_source">show source</a> ]</p>
+  <div id="M000667_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 232</span>
+232:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_all</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+233:         <span class="ruby-identifier">select</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>)
+234:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000668"></a><b>select_one</b>(sql, name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000668_source')" id="l_M000668_source">show source</a> ]</p>
+  <div id="M000668_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 236</span>
+236:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_one</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+237:         <span class="ruby-identifier">add_limit!</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)
+238:         <span class="ruby-identifier">result</span> = <span class="ruby-identifier">select</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>)
+239:         <span class="ruby-identifier">result</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">first</span>
+240:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000687"></a><b>tables</b>(name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000687_source')" id="l_M000687_source">show source</a> ]</p>
+  <div id="M000687_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 413</span>
+413:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tables</span>(<span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+414:         <span class="ruby-identifier">execute</span>(<span class="ruby-value str">&quot;SELECT table_name from information_schema.tables WHERE table_type = 'BASE TABLE'&quot;</span>, <span class="ruby-identifier">name</span>).<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tables</span>, <span class="ruby-identifier">field</span><span class="ruby-operator">|</span>
+415:           <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">field</span>[<span class="ruby-value">0</span>]
+416:           <span class="ruby-identifier">tables</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">table_name</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">table_name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'dtproperties'</span>
+417:           <span class="ruby-identifier">tables</span>
+418:         <span class="ruby-keyword kw">end</span>
+419:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000672"></a><b>update</b>(sql, name = nil)
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="SQLServerAdapter.html#M000673">delete</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000672_source')" id="l_M000672_source">show source</a> ]</p>
+  <div id="M000672_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/sqlserver_adapter.rb, line 307</span>
+307:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword kw">nil</span>)
+308:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">name</span>)
+309:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

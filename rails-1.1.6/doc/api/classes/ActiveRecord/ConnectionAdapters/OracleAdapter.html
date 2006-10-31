@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::OracleAdapter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::OracleAdapter</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+        <a href="AbstractAdapter.html">
+AbstractAdapter
+         </a>
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+This is an Oracle/OCI adapter for the ActiveRecord persistence framework.
+It relies upon the OCI8 driver, which works with Oracle 8i and above. Most
+recent development has been on Debian Linux against a 10g database,
+ActiveRecord 1.12.1 and OCI8 0.1.13. See: <a
+href="http://rubyforge.org/projects/ruby-oci8">rubyforge.org/projects/ruby-oci8</a>/
+</p>
+<p>
+Usage notes:
+</p>
+<ul>
+<li>Key generation assumes a &quot;${table_name}_seq&quot; sequence is
+available for all tables; the sequence name can be changed using <a
+href="../Base.html#M000883">ActiveRecord::Base.set_sequence_name</a>. When
+using Migrations, these sequences are created automatically.
+
+</li>
+<li>Oracle uses DATE or TIMESTAMP datatypes for both dates and times.
+Consequently some hacks are employed to map data back to Date or Time in
+Ruby. If the column_name ends in _time it&#8217;s created as a Ruby Time.
+Else if the hours/minutes/seconds are 0, I make it a Ruby Date. Else
+it&#8217;s a Ruby Time. This is a bit nasty - but if you use Duck Typing
+you&#8217;ll probably not care very much. In 9i and up it&#8217;s tempting
+to map DATE to Date and TIMESTAMP to Time, but too many databases use DATE
+for both. Timezones and sub-second precision on timestamps are not
+supported.
+
+</li>
+<li>Default values that are functions (such as &quot;SYSDATE&quot;) are not
+supported. This is a restriction of the way ActiveRecord supports default
+values.
+
+</li>
+<li>Support for Oracle8 is limited by Rails&#8217; use of ANSI join syntax,
+which is supported in Oracle9i and later. You will need to use finder_sql
+for has_and_belongs_to_many associations to run against Oracle8.
+
+</li>
+</ul>
+<p>
+Required parameters:
+</p>
+<ul>
+<li><tt>:username</tt>
+
+</li>
+<li><tt>:password</tt>
+
+</li>
+<li><tt>:database</tt>
+
+</li>
+</ul>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000745">active?</a></li>
+  <li><a href="#M000747">disconnect!</a></li>
+  <li><a href="#M000743">native_database_types</a></li>
+  <li><a href="#M000746">reconnect!</a></li>
+  <li><a href="#M000744">table_alias_length</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000745"></a><b>active?</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns true if the connection is active.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000745_source')" id="l_M000745_source">show source</a> ]</p>
+  <div id="M000745_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 233</span>
+233:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">active?</span>
+234:           <span class="ruby-comment cmt"># Pings the connection to check if it's still good. Note that an</span>
+235:           <span class="ruby-comment cmt"># #active? method is also available, but that simply returns the </span>
+236:           <span class="ruby-comment cmt"># last known state, which isn't good enough if the connection has</span>
+237:           <span class="ruby-comment cmt"># gone stale since the last use.</span>
+238:           <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">ping</span>
+239:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">OCIException</span>
+240:           <span class="ruby-keyword kw">false</span>
+241:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000747"></a><b>disconnect!</b>()
+  </div>
+  <div class="description">
+  <p>
+Disconnects from the database.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000747_source')" id="l_M000747_source">show source</a> ]</p>
+  <div id="M000747_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 251</span>
+251:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">disconnect!</span>
+252:           <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">logoff</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+253:           <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">active</span> = <span class="ruby-keyword kw">false</span>
+254:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000743"></a><b>native_database_types</b>(
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000743_source')" id="l_M000743_source">show source</a> ]</p>
+  <div id="M000743_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 178</span>
+178:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">native_database_types</span> <span class="ruby-comment cmt">#:nodoc</span>
+179:           {
+180:             <span class="ruby-identifier">:primary_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;NUMBER(38) NOT NULL PRIMARY KEY&quot;</span>,
+181:             <span class="ruby-identifier">:string</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;VARCHAR2&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">255</span> },
+182:             <span class="ruby-identifier">:text</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;CLOB&quot;</span> },
+183:             <span class="ruby-identifier">:integer</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;NUMBER&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">38</span> },
+184:             <span class="ruby-identifier">:float</span>       =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;NUMBER&quot;</span> },
+185:             <span class="ruby-identifier">:datetime</span>    =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;DATE&quot;</span> },
+186:             <span class="ruby-identifier">:timestamp</span>   =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;DATE&quot;</span> },
+187:             <span class="ruby-identifier">:time</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;DATE&quot;</span> },
+188:             <span class="ruby-identifier">:date</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;DATE&quot;</span> },
+189:             <span class="ruby-identifier">:binary</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;BLOB&quot;</span> },
+190:             <span class="ruby-identifier">:boolean</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;NUMBER&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> }
+191:           }
+192:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000746"></a><b>reconnect!</b>()
+  </div>
+  <div class="description">
+  <p>
+Reconnects to the database.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000746_source')" id="l_M000746_source">show source</a> ]</p>
+  <div id="M000746_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 244</span>
+244:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reconnect!</span>
+245:           <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">reset!</span>
+246:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">OCIException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+247:           <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;#{adapter_name} automatic reconnection failed: #{e.message}&quot;</span>
+248:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000744"></a><b>table_alias_length</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000744_source')" id="l_M000744_source">show source</a> ]</p>
+  <div id="M000744_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/oracle_adapter.rb, line 194</span>
+194:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table_alias_length</span>
+195:           <span class="ruby-value">30</span>
+196:         <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

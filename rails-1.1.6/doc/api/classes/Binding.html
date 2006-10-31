@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: Binding</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />Binding</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../files/vendor/rails/activesupport/lib/active_support/binding_of_caller_rb.html">vendor/rails/activesupport/lib/active_support/binding_of_caller.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+Object
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000033">of_caller</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Class methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000033"></a><b>of_caller</b>() {|result| ...}
+  </div>
+  <div class="description">
+  <p>
+This method returns the binding of the method that called your method. It
+will raise an Exception when you&#8217;re not inside a method.
+</p>
+<p>
+It&#8217;s used like this:
+</p>
+<pre>
+  def inc_counter(amount = 1)
+    Binding.of_caller do |binding|
+      # Create a lambda that will increase the variable 'counter'
+      # in the caller of this method when called.
+      inc = eval(&quot;lambda { |arg| counter += arg }&quot;, binding)
+      # We can refer to amount from inside this block safely.
+      inc.call(amount)
+    end
+    # No other statements can go here. Put them inside the block.
+  end
+  counter = 0
+  2.times { inc_counter }
+  counter # =&gt; 2
+</pre>
+<p>
+<a href="Binding.html#M000033">Binding.of_caller</a> must be the last
+statement in the method. This means that you will have to put everything
+you want to do after the call to <a
+href="Binding.html#M000033">Binding.of_caller</a> into the block of it.
+This should be no problem however, because Ruby has closures. If you
+don&#8217;t do this an Exception will be raised. Because of the way that <a
+href="Binding.html#M000033">Binding.of_caller</a> is implemented it has to
+be done this way.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000033_source')" id="l_M000033_source">show source</a> ]</p>
+  <div id="M000033_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activesupport/lib/active_support/binding_of_caller.rb, line 39</span>
+39: <span class="ruby-keyword kw">def</span> <span class="ruby-constant">Binding</span>.<span class="ruby-identifier">of_caller</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+40:   <span class="ruby-identifier">old_critical</span> = <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">critical</span>
+41:   <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">critical</span> = <span class="ruby-keyword kw">true</span>
+42:   <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+43:   <span class="ruby-identifier">cc</span>, <span class="ruby-identifier">result</span>, <span class="ruby-identifier">error</span>, <span class="ruby-identifier">extra_data</span> = <span class="ruby-constant">Continuation</span>.<span class="ruby-identifier">create</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>)
+44:   <span class="ruby-identifier">error</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">error</span>
+45: 
+46:   <span class="ruby-identifier">tracer</span> = <span class="ruby-identifier">lambda</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">args</span><span class="ruby-operator">|</span>
+47:     <span class="ruby-identifier">type</span>, <span class="ruby-identifier">context</span>, <span class="ruby-identifier">extra_data</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">args</span>[<span class="ruby-value">4</span>], <span class="ruby-identifier">args</span>
+48:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;return&quot;</span>
+49:       <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+50:       <span class="ruby-comment cmt"># First this method and then calling one will return --</span>
+51:       <span class="ruby-comment cmt"># the trace event of the second event gets the context</span>
+52:       <span class="ruby-comment cmt"># of the method which called the method that called this</span>
+53:       <span class="ruby-comment cmt"># method.</span>
+54:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+55:         <span class="ruby-comment cmt"># It would be nice if we could restore the trace_func</span>
+56:         <span class="ruby-comment cmt"># that was set before we swapped in our own one, but</span>
+57:         <span class="ruby-comment cmt"># this is impossible without overloading set_trace_func</span>
+58:         <span class="ruby-comment cmt"># in current Ruby.</span>
+59:         <span class="ruby-identifier">set_trace_func</span>(<span class="ruby-keyword kw">nil</span>)
+60:         <span class="ruby-identifier">cc</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">eval</span>(<span class="ruby-value str">&quot;binding&quot;</span>, <span class="ruby-identifier">context</span>), <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">extra_data</span>)
+61:       <span class="ruby-keyword kw">end</span>
+62:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;line&quot;</span> <span class="ruby-keyword kw">then</span>
+63:       <span class="ruby-keyword kw">nil</span>
+64:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;c-return&quot;</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">extra_data</span>[<span class="ruby-value">3</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">:set_trace_func</span> <span class="ruby-keyword kw">then</span>
+65:       <span class="ruby-keyword kw">nil</span>
+66:     <span class="ruby-keyword kw">else</span>
+67:       <span class="ruby-identifier">set_trace_func</span>(<span class="ruby-keyword kw">nil</span>)
+68:       <span class="ruby-identifier">error_msg</span> = <span class="ruby-value str">&quot;Binding.of_caller used in non-method context or &quot;</span> <span class="ruby-operator">+</span>
+69:         <span class="ruby-value str">&quot;trailing statements of method using it aren't in the block.&quot;</span>
+70:       <span class="ruby-identifier">cc</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">lambda</span> { <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-identifier">error_msg</span>) }, <span class="ruby-keyword kw">nil</span>)
+71:     <span class="ruby-keyword kw">end</span>
+72:   <span class="ruby-keyword kw">end</span>
+73: 
+74:   <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">result</span>
+75:     <span class="ruby-identifier">set_trace_func</span>(<span class="ruby-identifier">tracer</span>)
+76:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span>
+77:   <span class="ruby-keyword kw">else</span>
+78:     <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">critical</span> = <span class="ruby-identifier">old_critical</span>
+79:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">arity</span>
+80:       <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">result</span>)
+81:       <span class="ruby-keyword kw">else</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">extra_data</span>)        
+82:     <span class="ruby-keyword kw">end</span>
+83:   <span class="ruby-keyword kw">end</span>
+84: <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

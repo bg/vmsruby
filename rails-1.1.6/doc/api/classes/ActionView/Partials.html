@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Partials</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Partials</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../files/vendor/rails/actionpack/lib/action_view/partials_rb.html">vendor/rails/actionpack/lib/action_view/partials.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+There&#8217;s also a convenience method for rendering sub templates within
+the current controller that depends on a single object (we call this kind
+of sub templates for partials). It relies on the fact that partials should
+follow the naming convention of being prefixed with an underscore &#8212;
+as to separate them from regular templates that could be rendered on their
+own.
+</p>
+<p>
+In a template for Advertiser#account:
+</p>
+<pre>
+ &lt;%= render :partial =&gt; &quot;account&quot; %&gt;
+</pre>
+<p>
+This would render &quot;advertiser/_account.rhtml&quot; and pass the
+instance variable @account in as a local variable <tt>account</tt> to the
+template for display.
+</p>
+<p>
+In another template for Advertiser#buy, we could have:
+</p>
+<pre>
+  &lt;%= render :partial =&gt; &quot;account&quot;, :locals =&gt; { :account =&gt; @buyer } %&gt;
+
+  &lt;% for ad in @advertisements %&gt;
+    &lt;%= render :partial =&gt; &quot;ad&quot;, :locals =&gt; { :ad =&gt; ad } %&gt;
+  &lt;% end %&gt;
+</pre>
+<p>
+This would first render &quot;advertiser/_account.rhtml&quot; with @buyer
+passed in as the local variable <tt>account</tt>, then render
+&quot;advertiser/_ad.rhtml&quot; and pass the local variable <tt>ad</tt> to
+the template for display.
+</p>
+<h2>Rendering a collection of partials</h2>
+<p>
+The example of partial use describes a familiar pattern where a template
+needs to iterate over an array and render a sub template for each of the
+elements. This pattern has been implemented as a single method that accepts
+an array and renders a partial by the same name as the elements contained
+within. So the three-lined example in &quot;Using partials&quot; can be
+rewritten with a single line:
+</p>
+<pre>
+  &lt;%= render :partial =&gt; &quot;ad&quot;, :collection =&gt; @advertisements %&gt;
+</pre>
+<p>
+This will render &quot;advertiser/_ad.rhtml&quot; and pass the local
+variable <tt>ad</tt> to the template for display. An iteration counter will
+automatically be made available to the template with a name of the form
+<tt>partial_name_counter</tt>. In the case of the example above, the
+template would be fed <tt>ad_counter</tt>.
+</p>
+<p>
+NOTE: Due to backwards compatibility concerns, the collection can&#8217;t
+be one of hashes. Normally you&#8217;d also just keep domain objects, like
+Active Records, in there.
+</p>
+<h2>Rendering shared partials</h2>
+<p>
+Two controllers can share a set of partials and render them like this:
+</p>
+<pre>
+  &lt;%= render :partial =&gt; &quot;advertisement/ad&quot;, :locals =&gt; { :ad =&gt; @advertisement } %&gt;
+</pre>
+<p>
+This will render the partial &quot;advertisement/_ad.rhtml&quot; regardless
+of which controller this is being called from.
+</p>
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+  </div>
+
+    </body>
+</html>

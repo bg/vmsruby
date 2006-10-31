@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActionView::Helpers::PrototypeHelper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActionView::Helpers::PrototypeHelper</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/actionpack/lib/action_view/helpers/prototype_helper_rb.html">vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+Provides a set of helpers for calling Prototype JavaScript functions,
+including functionality to call remote methods using <a
+href="http://www.adaptivepath.com/publications/essays/archives/000385.php">Ajax</a>.
+This means that you can call actions in your controllers without reloading
+the page, but still update certain parts of it using injections into the
+DOM. The common use case is having a form that adds a new element to a list
+without reloading the page.
+</p>
+<p>
+To be able to use these helpers, you must include the Prototype JavaScript
+framework in your pages. See the documentation for <a
+href="JavaScriptHelper.html">ActionView::Helpers::JavaScriptHelper</a> for
+more information on including the necessary JavaScript.
+</p>
+<p>
+See <a href="PrototypeHelper.html#M000412">link_to_remote</a> for
+documentation of options common to all Ajax helpers.
+</p>
+<p>
+See also <a
+href="ScriptaculousHelper.html">ActionView::Helpers::ScriptaculousHelper</a>
+for helpers which work with the Scriptaculous controls and visual effects
+library.
+</p>
+<p>
+See JavaScriptGenerator for information on updating multiple elements on
+the page in an Ajax response.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000428">build_callbacks</a></li>
+  <li><a href="#M000427">build_observer</a></li>
+  <li><a href="#M000419">evaluate_remote_response</a></li>
+  <li><a href="#M000416">form_remote_for</a></li>
+  <li><a href="#M000414">form_remote_tag</a></li>
+  <li><a href="#M000412">link_to_remote</a></li>
+  <li><a href="#M000426">method_option_to_s</a></li>
+  <li><a href="#M000421">observe_field</a></li>
+  <li><a href="#M000422">observe_form</a></li>
+  <li><a href="#M000425">options_for_ajax</a></li>
+  <li><a href="#M000413">periodically_call_remote</a></li>
+  <li><a href="#M000415">remote_form_for</a></li>
+  <li><a href="#M000420">remote_function</a></li>
+  <li><a href="#M000417">submit_to_remote</a></li>
+  <li><a href="#M000418">update_element_function</a></li>
+  <li><a href="#M000423">update_page</a></li>
+  <li><a href="#M000424">update_page_tag</a></li>
+  </ul>
+
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">CALLBACKS</td>
+    <td>=</td>
+    <td class="attr-value">Set.new([ :uninitialized, :loading, :loaded,                          :interactive, :complete, :failure, :success ] +                          (100..599).to_a)</td>
+  </tr>
+  <tr valign='top'>
+    <td class="attr-name">AJAX_OPTIONS</td>
+    <td>=</td>
+    <td class="attr-value">Set.new([ :before, :after, :condition, :url,                          :asynchronous, :method, :insertion, :position,                          :form, :with, :update, :script ]).merge(CALLBACKS)</td>
+  </tr>
+  </table>
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000419"></a><b>evaluate_remote_response</b>()
+  </div>
+  <div class="description">
+  <p>
+Returns &#8216;eval(request.responseText)&#8217; which is the JavaScript
+function that <a href="PrototypeHelper.html#M000414">form_remote_tag</a>
+can call in :complete to evaluate a multiple update return document using
+<a href="PrototypeHelper.html#M000418">update_element_function</a> calls.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000419_source')" id="l_M000419_source">show source</a> ]</p>
+  <div id="M000419_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 275</span>
+275:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">evaluate_remote_response</span>
+276:         <span class="ruby-value str">&quot;eval(request.responseText)&quot;</span>
+277:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000416"></a><b>form_remote_for</b>(object_name, *args, &amp;proc)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="PrototypeHelper.html#M000415">remote_form_for</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000414"></a><b>form_remote_tag</b>(options = {})
+  </div>
+  <div class="description">
+  <p>
+Returns a form tag that will submit using XMLHttpRequest in the background
+instead of the regular reloading POST arrangement. Even though it&#8217;s
+using JavaScript to serialize the form elements, the form submission will
+work just like a regular submission as viewed by the receiving side (all
+elements available in <tt>params</tt>). The options for specifying the
+target with :url and defining callbacks is the same as <a
+href="PrototypeHelper.html#M000412">link_to_remote</a>.
+</p>
+<p>
+A &quot;fall-through&quot; target for browsers that doesn&#8217;t do
+JavaScript can be specified with the :action/:method options on :html.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  form_remote_tag :html =&gt; { :action =&gt;
+    url_for(:controller =&gt; &quot;some&quot;, :action =&gt; &quot;place&quot;) }
+</pre>
+<p>
+The Hash passed to the :html key is equivalent to the options (2nd)
+argument in the <a
+href="FormTagHelper.html#M000491">FormTagHelper.form_tag</a> method.
+</p>
+<p>
+By default the fall-through action is the same as the one specified in the
+:url (and the default method is :post).
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000414_source')" id="l_M000414_source">show source</a> ]</p>
+  <div id="M000414_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 162</span>
+162:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">form_remote_tag</span>(<span class="ruby-identifier">options</span> = {})
+163:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:form</span>] = <span class="ruby-keyword kw">true</span>
+164: 
+165:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>] <span class="ruby-operator">||=</span> {}
+166:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:onsubmit</span>] = <span class="ruby-node">&quot;#{remote_function(options)}; return false;&quot;</span>
+167:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:action</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:action</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:url</span>])
+168:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:method</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:method</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;post&quot;</span>
+169: 
+170:         <span class="ruby-identifier">tag</span>(<span class="ruby-value str">&quot;form&quot;</span>, <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>], <span class="ruby-keyword kw">true</span>)
+171:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000412"></a><b>link_to_remote</b>(name, options = {}, html_options = {})
+  </div>
+  <div class="description">
+  <p>
+Returns a link to a remote action defined by <tt>options[:url]</tt> (using
+the url_for format) that&#8217;s called in the background using
+XMLHttpRequest. The result of that request can then be inserted into a DOM
+object whose id can be specified with <tt>options[:update]</tt>. Usually,
+the result would be a partial prepared by the controller with either
+render_partial or render_partial_collection.
+</p>
+<p>
+Examples:
+</p>
+<pre>
+  link_to_remote &quot;Delete this post&quot;, :update =&gt; &quot;posts&quot;,
+    :url =&gt; { :action =&gt; &quot;destroy&quot;, :id =&gt; post.id }
+  link_to_remote(image_tag(&quot;refresh&quot;), :update =&gt; &quot;emails&quot;,
+    :url =&gt; { :action =&gt; &quot;list_emails&quot; })
+</pre>
+<p>
+You can also specify a hash for <tt>options[:update]</tt> to allow for easy
+redirection of output to an other DOM element if a server-side error
+occurs:
+</p>
+<p>
+Example:
+</p>
+<pre>
+  link_to_remote &quot;Delete this post&quot;,
+    :url =&gt; { :action =&gt; &quot;destroy&quot;, :id =&gt; post.id },
+    :update =&gt; { :success =&gt; &quot;posts&quot;, :failure =&gt; &quot;error&quot; }
+</pre>
+<p>
+Optionally, you can use the <tt>options[:position]</tt> parameter to
+influence how the target DOM element is updated. It must be one of
+<tt>:before</tt>, <tt>:top</tt>, <tt>:bottom</tt>, or <tt>:after</tt>.
+</p>
+<p>
+By default, these remote requests are processed asynchronous during which
+various JavaScript callbacks can be triggered (for progress indicators and
+the likes). All callbacks get access to the <tt>request</tt> object, which
+holds the underlying XMLHttpRequest.
+</p>
+<p>
+To access the server response, use <tt>request.responseText</tt>, to find
+out the HTTP status, use <tt>request.status</tt>.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  link_to_remote word,
+    :url =&gt; { :action =&gt; &quot;undo&quot;, :n =&gt; word_counter },
+    :complete =&gt; &quot;undoRequestCompleted(request)&quot;
+</pre>
+<p>
+The callbacks that may be specified are (in order):
+</p>
+<table>
+<tr><td valign="top"><tt>:loading</tt>:</td><td>Called when the remote document is being loaded with data by the browser.
+
+</td></tr>
+<tr><td valign="top"><tt>:loaded</tt>:</td><td>Called when the browser has finished loading the remote document.
+
+</td></tr>
+<tr><td valign="top"><tt>:interactive</tt>:</td><td>Called when the user can interact with the remote document, even though it
+has not finished loading.
+
+</td></tr>
+<tr><td valign="top"><tt>:success</tt>:</td><td>Called when the XMLHttpRequest is completed, and the HTTP status code is in
+the 2XX range.
+
+</td></tr>
+<tr><td valign="top"><tt>:failure</tt>:</td><td>Called when the XMLHttpRequest is completed, and the HTTP status code is
+not in the 2XX range.
+
+</td></tr>
+<tr><td valign="top"><tt>:complete</tt>:</td><td>Called when the XMLHttpRequest is complete (fires after success/failure if
+they are present).
+
+</td></tr>
+</table>
+<p>
+You can further refine <tt>:success</tt> and <tt>:failure</tt> by adding
+additional callbacks for specific status codes.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  link_to_remote word,
+    :url =&gt; { :action =&gt; &quot;action&quot; },
+    404 =&gt; &quot;alert('Not found...? Wrong URL...?')&quot;,
+    :failure =&gt; &quot;alert('HTTP Error ' + request.status + '!')&quot;
+</pre>
+<p>
+A status code callback overrides the success/failure handlers if present.
+</p>
+<p>
+If you for some reason or another need synchronous processing
+(that&#8217;ll block the browser while the request is happening), you can
+specify <tt>options[:type] = :synchronous</tt>.
+</p>
+<p>
+You can customize further browser side call logic by passing in JavaScript
+code snippets via some optional parameters. In their order of use these
+are:
+</p>
+<table>
+<tr><td valign="top"><tt>:confirm</tt>:</td><td>Adds confirmation dialog.
+
+</td></tr>
+<tr><td valign="top"><tt>:condition</tt>:</td><td>Perform remote request conditionally by this expression. Use this to
+describe browser-side conditions when request should not be initiated.
+
+</td></tr>
+<tr><td valign="top"><tt>:before</tt>:</td><td>Called before request is initiated.
+
+</td></tr>
+<tr><td valign="top"><tt>:after</tt>:</td><td>Called immediately after request was initiated and before
+<tt>:loading</tt>.
+
+</td></tr>
+<tr><td valign="top"><tt>:submit</tt>:</td><td>Specifies the DOM element ID that&#8217;s used as the parent of the form
+elements. By default this is the current form, but it could just as well be
+the ID of a table row or any other DOM element.
+
+</td></tr>
+</table>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000412_source')" id="l_M000412_source">show source</a> ]</p>
+  <div id="M000412_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 127</span>
+127:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_remote</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-identifier">html_options</span> = {})  
+128:         <span class="ruby-identifier">link_to_function</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">remote_function</span>(<span class="ruby-identifier">options</span>), <span class="ruby-identifier">html_options</span>)
+129:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000421"></a><b>observe_field</b>(field_id, options = {})
+  </div>
+  <div class="description">
+  <p>
+Observes the field with the DOM ID specified by <tt>field_id</tt> and makes
+an Ajax call when its contents have changed.
+</p>
+<p>
+Required <tt>options</tt> are either of:
+</p>
+<table>
+<tr><td valign="top"><tt>:url</tt>:</td><td><tt>url_for</tt>-style options for the action to call when the field has
+changed.
+
+</td></tr>
+<tr><td valign="top"><tt>:function</tt>:</td><td>Instead of making a remote call to a URL, you can specify a function to be
+called instead.
+
+</td></tr>
+</table>
+<p>
+Additional options are:
+</p>
+<table>
+<tr><td valign="top"><tt>:frequency</tt>:</td><td>The frequency (in seconds) at which changes to this field will be detected.
+Not setting this option at all or to a value equal to or less than zero
+will use event based observation instead of time based observation.
+
+</td></tr>
+<tr><td valign="top"><tt>:update</tt>:</td><td>Specifies the DOM ID of the element whose innerHTML should be updated with
+the XMLHttpRequest response text.
+
+</td></tr>
+<tr><td valign="top"><tt>:with</tt>:</td><td>A JavaScript expression specifying the parameters for the XMLHttpRequest.
+This defaults to &#8216;value&#8217;, which in the evaluated context refers
+to the new field value. If you specify a string without a &quot;=&quot;,
+it&#8217;ll be extended to mean the form key that the value should be
+assigned to. So :with =&gt; &quot;term&quot; gives
+&quot;&#8217;term&#8217;=value&quot;. If a &quot;=&quot; is present, no
+extension will happen.
+
+</td></tr>
+<tr><td valign="top"><tt>:on</tt>:</td><td>Specifies which event handler to observe. By default, it&#8217;s set to
+&quot;changed&quot; for text fields and areas and &quot;click&quot; for
+radio buttons and checkboxes. With this, you can specify it instead to be
+&quot;blur&quot; or &quot;focus&quot; or any other event.
+
+</td></tr>
+</table>
+<p>
+Additionally, you may specify any of the options documented in <a
+href="PrototypeHelper.html#M000412">link_to_remote</a>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000421_source')" id="l_M000421_source">show source</a> ]</p>
+  <div id="M000421_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 352</span>
+352:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">observe_field</span>(<span class="ruby-identifier">field_id</span>, <span class="ruby-identifier">options</span> = {})
+353:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:frequency</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:frequency</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+354:           <span class="ruby-identifier">build_observer</span>(<span class="ruby-value str">'Form.Element.Observer'</span>, <span class="ruby-identifier">field_id</span>, <span class="ruby-identifier">options</span>)
+355:         <span class="ruby-keyword kw">else</span>
+356:           <span class="ruby-identifier">build_observer</span>(<span class="ruby-value str">'Form.Element.EventObserver'</span>, <span class="ruby-identifier">field_id</span>, <span class="ruby-identifier">options</span>)
+357:         <span class="ruby-keyword kw">end</span>
+358:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000422"></a><b>observe_form</b>(form_id, options = {})
+  </div>
+  <div class="description">
+  <p>
+Like <tt><a href="PrototypeHelper.html#M000421">observe_field</a></tt>, but
+operates on an entire form identified by the DOM ID <tt>form_id</tt>.
+<tt>options</tt> are the same as <tt><a
+href="PrototypeHelper.html#M000421">observe_field</a></tt>, except the
+default value of the <tt>:with</tt> option evaluates to the serialized
+(request string) value of the form.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000422_source')" id="l_M000422_source">show source</a> ]</p>
+  <div id="M000422_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 364</span>
+364:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">observe_form</span>(<span class="ruby-identifier">form_id</span>, <span class="ruby-identifier">options</span> = {})
+365:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:frequency</span>]
+366:           <span class="ruby-identifier">build_observer</span>(<span class="ruby-value str">'Form.Observer'</span>, <span class="ruby-identifier">form_id</span>, <span class="ruby-identifier">options</span>)
+367:         <span class="ruby-keyword kw">else</span>
+368:           <span class="ruby-identifier">build_observer</span>(<span class="ruby-value str">'Form.EventObserver'</span>, <span class="ruby-identifier">form_id</span>, <span class="ruby-identifier">options</span>)
+369:         <span class="ruby-keyword kw">end</span>
+370:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000413"></a><b>periodically_call_remote</b>(options = {})
+  </div>
+  <div class="description">
+  <p>
+Periodically calls the specified url (<tt>options[:url]</tt>) every
+<tt>options[:frequency]</tt> seconds (default is 10). Usually used to
+update a specified div (<tt>options[:update]</tt>) with the results of the
+remote call. The options for specifying the target with :url and defining
+callbacks is the same as <a
+href="PrototypeHelper.html#M000412">link_to_remote</a>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000413_source')" id="l_M000413_source">show source</a> ]</p>
+  <div id="M000413_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 136</span>
+136:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">periodically_call_remote</span>(<span class="ruby-identifier">options</span> = {})
+137:          <span class="ruby-identifier">frequency</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:frequency</span>] <span class="ruby-operator">||</span> <span class="ruby-value">10</span> <span class="ruby-comment cmt"># every ten seconds by default</span>
+138:          <span class="ruby-identifier">code</span> = <span class="ruby-node">&quot;new PeriodicalExecuter(function() {#{remote_function(options)}}, #{frequency})&quot;</span>
+139:          <span class="ruby-identifier">javascript_tag</span>(<span class="ruby-identifier">code</span>)
+140:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000415"></a><b>remote_form_for</b>(object_name, *args, &amp;proc)
+  </div>
+  <div class="description">
+  <p>
+Works like <a href="PrototypeHelper.html#M000414">form_remote_tag</a>, but
+uses form_for semantics.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="PrototypeHelper.html#M000416">form_remote_for</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000415_source')" id="l_M000415_source">show source</a> ]</p>
+  <div id="M000415_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 174</span>
+174:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remote_form_for</span>(<span class="ruby-identifier">object_name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
+175:         <span class="ruby-identifier">options</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> {}
+176:         <span class="ruby-identifier">concat</span>(<span class="ruby-identifier">form_remote_tag</span>(<span class="ruby-identifier">options</span>), <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">binding</span>)
+177:         <span class="ruby-identifier">fields_for</span>(<span class="ruby-identifier">object_name</span>, <span class="ruby-operator">*</span>(<span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">options</span>), <span class="ruby-operator">&amp;</span><span class="ruby-identifier">proc</span>)
+178:         <span class="ruby-identifier">concat</span>(<span class="ruby-value str">'&lt;/form&gt;'</span>, <span class="ruby-identifier">proc</span>.<span class="ruby-identifier">binding</span>)
+179:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000420"></a><b>remote_function</b>(options)
+  </div>
+  <div class="description">
+  <p>
+Returns the JavaScript needed for a remote function. Takes the same
+arguments as <a href="PrototypeHelper.html#M000412">link_to_remote</a>.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  &lt;select id=&quot;options&quot; onchange=&quot;&lt;%= remote_function(:update =&gt; &quot;options&quot;,
+      :url =&gt; { :action =&gt; :update_options }) %&gt;&quot;&gt;
+    &lt;option value=&quot;0&quot;&gt;Hello&lt;/option&gt;
+    &lt;option value=&quot;1&quot;&gt;World&lt;/option&gt;
+  &lt;/select&gt;
+</pre>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000420_source')" id="l_M000420_source">show source</a> ]</p>
+  <div id="M000420_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 288</span>
+288:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remote_function</span>(<span class="ruby-identifier">options</span>)
+289:         <span class="ruby-identifier">javascript_options</span> = <span class="ruby-identifier">options_for_ajax</span>(<span class="ruby-identifier">options</span>)
+290: 
+291:         <span class="ruby-identifier">update</span> = <span class="ruby-value str">''</span>
+292:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>].<span class="ruby-identifier">is_a?</span><span class="ruby-constant">Hash</span>
+293:           <span class="ruby-identifier">update</span>  = []
+294:           <span class="ruby-identifier">update</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;success:'#{options[:update][:success]}'&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>][<span class="ruby-identifier">:success</span>]
+295:           <span class="ruby-identifier">update</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;failure:'#{options[:update][:failure]}'&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>][<span class="ruby-identifier">:failure</span>]
+296:           <span class="ruby-identifier">update</span>  = <span class="ruby-value str">'{'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">update</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'}'</span>
+297:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>]
+298:           <span class="ruby-identifier">update</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;'#{options[:update]}'&quot;</span>
+299:         <span class="ruby-keyword kw">end</span>
+300: 
+301:         <span class="ruby-identifier">function</span> = <span class="ruby-identifier">update</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span>
+302:           <span class="ruby-value str">&quot;new Ajax.Request(&quot;</span> <span class="ruby-operator">:</span>
+303:           <span class="ruby-node">&quot;new Ajax.Updater(#{update}, &quot;</span>
+304: 
+305:         <span class="ruby-identifier">url_options</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:url</span>]
+306:         <span class="ruby-identifier">url_options</span> = <span class="ruby-identifier">url_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:escape</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">url_options</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Hash</span>
+307:         <span class="ruby-identifier">function</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;'#{url_for(url_options)}'&quot;</span>
+308:         <span class="ruby-identifier">function</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{javascript_options})&quot;</span>
+309: 
+310:         <span class="ruby-identifier">function</span> = <span class="ruby-node">&quot;#{options[:before]}; #{function}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:before</span>]
+311:         <span class="ruby-identifier">function</span> = <span class="ruby-node">&quot;#{function}; #{options[:after]}&quot;</span>  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:after</span>]
+312:         <span class="ruby-identifier">function</span> = <span class="ruby-node">&quot;if (#{options[:condition]}) { #{function}; }&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:condition</span>]
+313:         <span class="ruby-identifier">function</span> = <span class="ruby-node">&quot;if (confirm('#{escape_javascript(options[:confirm])}')) { #{function}; }&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:confirm</span>]
+314: 
+315:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">function</span>
+316:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000417"></a><b>submit_to_remote</b>(name, value, options = {})
+  </div>
+  <div class="description">
+  <p>
+Returns a button input tag that will submit form using XMLHttpRequest in
+the background instead of regular reloading POST arrangement.
+<tt>options</tt> argument is the same as in <tt><a
+href="PrototypeHelper.html#M000414">form_remote_tag</a></tt>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000417_source')" id="l_M000417_source">show source</a> ]</p>
+  <div id="M000417_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 185</span>
+185:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">submit_to_remote</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">options</span> = {})
+186:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">'Form.serialize(this.form)'</span>
+187: 
+188:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>] <span class="ruby-operator">||=</span> {}
+189:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:type</span>] = <span class="ruby-value str">'button'</span>
+190:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:onclick</span>] = <span class="ruby-node">&quot;#{remote_function(options)}; return false;&quot;</span>
+191:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:name</span>] = <span class="ruby-identifier">name</span>
+192:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>][<span class="ruby-identifier">:value</span>] = <span class="ruby-identifier">value</span>
+193: 
+194:         <span class="ruby-identifier">tag</span>(<span class="ruby-value str">&quot;input&quot;</span>, <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:html</span>], <span class="ruby-keyword kw">false</span>)
+195:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000418"></a><b>update_element_function</b>(element_id, options = {}, &amp;block)
+  </div>
+  <div class="description">
+  <p>
+Returns a JavaScript function (or expression) that&#8217;ll update a DOM
+element according to the options passed.
+</p>
+<ul>
+<li><tt>:content</tt>: The content to use for updating. Can be left out if
+using block, see example.
+
+</li>
+<li><tt>:action</tt>: Valid options are :update (assumed by default), :empty,
+:remove
+
+</li>
+<li><tt>:position</tt> If the :action is :update, you can optionally specify
+one of the following positions: :before, :top, :bottom, :after.
+
+</li>
+</ul>
+<p>
+Examples:
+</p>
+<pre>
+  &lt;%= javascript_tag(update_element_function(&quot;products&quot;,
+    :position =&gt; :bottom, :content =&gt; &quot;&lt;p&gt;New product!&lt;/p&gt;&quot;)) %&gt;
+
+  &lt;% replacement_function = update_element_function(&quot;products&quot;) do %&gt;
+    &lt;p&gt;Product 1&lt;/p&gt;
+    &lt;p&gt;Product 2&lt;/p&gt;
+  &lt;% end %&gt;
+  &lt;%= javascript_tag(replacement_function) %&gt;
+</pre>
+<p>
+This method can also be used in combination with remote method call where
+the result is evaluated afterwards to cause multiple updates on a page.
+Example:
+</p>
+<pre>
+  # Calling view
+  &lt;%= form_remote_tag :url =&gt; { :action =&gt; &quot;buy&quot; },
+    :complete =&gt; evaluate_remote_response %&gt;
+  all the inputs here...
+
+  # Controller action
+  def buy
+    @product = Product.find(1)
+  end
+
+  # Returning view
+  &lt;%= update_element_function(
+        &quot;cart&quot;, :action =&gt; :update, :position =&gt; :bottom,
+        :content =&gt; &quot;&lt;p&gt;New Product: #{@product.name}&lt;/p&gt;&quot;)) %&gt;
+  &lt;% update_element_function(&quot;status&quot;, :binding =&gt; binding) do %&gt;
+    You've bought a new product!
+  &lt;% end %&gt;
+</pre>
+<p>
+Notice how the second call doesn&#8217;t need to be in an ERb output block
+since it uses a block and passes in the binding to render directly. This
+trick will however only work in ERb (not Builder or other template forms).
+</p>
+<p>
+See also JavaScriptGenerator and <a
+href="PrototypeHelper.html#M000423">update_page</a>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000418_source')" id="l_M000418_source">show source</a> ]</p>
+  <div id="M000418_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 246</span>
+246:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_element_function</span>(<span class="ruby-identifier">element_id</span>, <span class="ruby-identifier">options</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+247:         <span class="ruby-identifier">content</span> = <span class="ruby-identifier">escape_javascript</span>(<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:content</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">''</span>)
+248:         <span class="ruby-identifier">content</span> = <span class="ruby-identifier">escape_javascript</span>(<span class="ruby-identifier">capture</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>
+249:         
+250:         <span class="ruby-identifier">javascript_function</span> = <span class="ruby-keyword kw">case</span> (<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:action</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">:update</span>)
+251:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:update</span>
+252:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:position</span>]
+253:               <span class="ruby-node">&quot;new Insertion.#{options[:position].to_s.camelize}('#{element_id}','#{content}')&quot;</span>
+254:             <span class="ruby-keyword kw">else</span>
+255:               <span class="ruby-node">&quot;$('#{element_id}').innerHTML = '#{content}'&quot;</span>
+256:             <span class="ruby-keyword kw">end</span>
+257:           
+258:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:empty</span>
+259:             <span class="ruby-node">&quot;$('#{element_id}').innerHTML = ''&quot;</span>
+260:           
+261:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:remove</span>
+262:             <span class="ruby-node">&quot;Element.remove('#{element_id}')&quot;</span>
+263:           
+264:           <span class="ruby-keyword kw">else</span>
+265:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;Invalid action, choose one of :update, :remove, :empty&quot;</span>
+266:         <span class="ruby-keyword kw">end</span>
+267:         
+268:         <span class="ruby-identifier">javascript_function</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;;\n&quot;</span>
+269:         <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:binding</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">concat</span>(<span class="ruby-identifier">javascript_function</span>, <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:binding</span>]) <span class="ruby-operator">:</span> <span class="ruby-identifier">javascript_function</span>
+270:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000423"></a><b>update_page</b>(&amp;block)
+  </div>
+  <div class="description">
+  <p>
+Yields a JavaScriptGenerator and returns the generated JavaScript code. Use
+this to update multiple elements on a page in an Ajax response. See
+JavaScriptGenerator for more information.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000423_source')" id="l_M000423_source">show source</a> ]</p>
+  <div id="M000423_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 669</span>
+669:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_page</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+670:         <span class="ruby-constant">JavaScriptGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@template</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">to_s</span>
+671:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000424"></a><b>update_page_tag</b>(&amp;block)
+  </div>
+  <div class="description">
+  <p>
+Works like <a href="PrototypeHelper.html#M000423">update_page</a> but wraps
+the generated JavaScript in a &lt;script&gt; tag. Use this to include
+generated JavaScript in an ERb template. See JavaScriptGenerator for more
+information.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000424_source')" id="l_M000424_source">show source</a> ]</p>
+  <div id="M000424_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 676</span>
+676:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_page_tag</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+677:         <span class="ruby-identifier">javascript_tag</span> <span class="ruby-identifier">update_page</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+678:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="sectiontitle">Protected Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000428"></a><b>build_callbacks</b>(options)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000428_source')" id="l_M000428_source">show source</a> ]</p>
+  <div id="M000428_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 721</span>
+721:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_callbacks</span>(<span class="ruby-identifier">options</span>)
+722:         <span class="ruby-identifier">callbacks</span> = {}
+723:         <span class="ruby-identifier">options</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">callback</span>, <span class="ruby-identifier">code</span><span class="ruby-operator">|</span>
+724:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">CALLBACKS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">callback</span>)
+725:             <span class="ruby-identifier">name</span> = <span class="ruby-value str">'on'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">callback</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">capitalize</span>
+726:             <span class="ruby-identifier">callbacks</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-node">&quot;function(request){#{code}}&quot;</span>
+727:           <span class="ruby-keyword kw">end</span>
+728:         <span class="ruby-keyword kw">end</span>
+729:         <span class="ruby-identifier">callbacks</span>
+730:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000427"></a><b>build_observer</b>(klass, name, options = {})
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000427_source')" id="l_M000427_source">show source</a> ]</p>
+  <div id="M000427_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 704</span>
+704:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_observer</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span> = {})
+705:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;=&quot;</span>)
+706:           <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>] = <span class="ruby-node">&quot;'#{options[:with]}=' + value&quot;</span>
+707:         <span class="ruby-keyword kw">else</span>
+708:           <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">'value'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:update</span>]
+709:         <span class="ruby-keyword kw">end</span>
+710: 
+711:         <span class="ruby-identifier">callback</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:function</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">remote_function</span>(<span class="ruby-identifier">options</span>)
+712:         <span class="ruby-identifier">javascript</span>  = <span class="ruby-node">&quot;new #{klass}('#{name}', &quot;</span>
+713:         <span class="ruby-identifier">javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{options[:frequency]}, &quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:frequency</span>]
+714:         <span class="ruby-identifier">javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;function(element, value) {&quot;</span>
+715:         <span class="ruby-identifier">javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{callback}}&quot;</span>
+716:         <span class="ruby-identifier">javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, '#{options[:on]}'&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:on</span>]
+717:         <span class="ruby-identifier">javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;)&quot;</span>
+718:         <span class="ruby-identifier">javascript_tag</span>(<span class="ruby-identifier">javascript</span>)
+719:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000426"></a><b>method_option_to_s</b>(method)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000426_source')" id="l_M000426_source">show source</a> ]</p>
+  <div id="M000426_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 700</span>
+700:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_option_to_s</span>(<span class="ruby-identifier">method</span>) 
+701:         (<span class="ruby-identifier">method</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">method</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value str">&quot;'&quot;</span>).<span class="ruby-identifier">nil?</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">method</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;'#{method}'&quot;</span>
+702:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000425"></a><b>options_for_ajax</b>(options)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000425_source')" id="l_M000425_source">show source</a> ]</p>
+  <div id="M000425_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/actionpack/lib/action_view/helpers/prototype_helper.rb, line 681</span>
+681:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">options_for_ajax</span>(<span class="ruby-identifier">options</span>)
+682:         <span class="ruby-identifier">js_options</span> = <span class="ruby-identifier">build_callbacks</span>(<span class="ruby-identifier">options</span>)
+683:       
+684:         <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'asynchronous'</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:type</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">:synchronous</span>
+685:         <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'method'</span>]       = <span class="ruby-identifier">method_option_to_s</span>(<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:method</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:method</span>]
+686:         <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'insertion'</span>]    = <span class="ruby-node">&quot;Insertion.#{options[:position].to_s.camelize}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:position</span>]
+687:         <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'evalScripts'</span>]  = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:script</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:script</span>]
+688: 
+689:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:form</span>]
+690:           <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'parameters'</span>] = <span class="ruby-value str">'Form.serialize(this)'</span>
+691:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:submit</span>]
+692:           <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'parameters'</span>] = <span class="ruby-node">&quot;Form.serialize('#{options[:submit]}')&quot;</span>
+693:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>]
+694:           <span class="ruby-identifier">js_options</span>[<span class="ruby-value str">'parameters'</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:with</span>]
+695:         <span class="ruby-keyword kw">end</span>
+696:       
+697:         <span class="ruby-identifier">options_for_javascript</span>(<span class="ruby-identifier">js_options</span>)
+698:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

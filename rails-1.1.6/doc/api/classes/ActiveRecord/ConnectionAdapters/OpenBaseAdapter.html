@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Class: ActiveRecord::ConnectionAdapters::OpenBaseAdapter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Class</span><br />ActiveRecord::ConnectionAdapters::OpenBaseAdapter</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter_rb.html">vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb</a>
+        </td>
+      </tr>
+    <tr>
+      <td>Parent:</td>
+      <td>
+        <a href="AbstractAdapter.html">
+AbstractAdapter
+         </a>
+     </td>
+   </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+The OpenBase adapter works with the Ruby/Openbase driver by Tetsuya Suzuki.
+<a
+href="http://www.spice-of-life.net/ruby-openbase">www.spice-of-life.net/ruby-openbase</a>/
+(needs version 0.7.3+)
+</p>
+<p>
+Options:
+</p>
+<ul>
+<li><tt>:host</tt> &#8212; Defaults to localhost
+
+</li>
+<li><tt>:username</tt> &#8212; Defaults to nothing
+
+</li>
+<li><tt>:password</tt> &#8212; Defaults to nothing
+
+</li>
+<li><tt>:database</tt> &#8212; The name of the database. No default, must be
+provided.
+
+</li>
+</ul>
+<p>
+The OpenBase adapter will make use of OpenBase&#8217;s ability to generate
+unique ids for any column with an unique index applied. Thus, if the value
+of a primary key is not specified at the time an INSERT is performed, the
+adapter will prefetch a unique id for the primary key. This prefetching is
+also necessary in order to return the id after an insert.
+</p>
+<p>
+Caveat: Operations involving LIMIT and OFFSET do not yet work!
+</p>
+<p>
+Maintainer: derrickspell@cdmplus.com
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000695">adapter_name</a></li>
+  <li><a href="#M000703">add_limit_offset!</a></li>
+  <li><a href="#M000696">native_database_types</a></li>
+  <li><a href="#M000699">next_sequence_value</a></li>
+  <li><a href="#M000698">prefetch_primary_key?</a></li>
+  <li><a href="#M000700">quote</a></li>
+  <li><a href="#M000702">quoted_false</a></li>
+  <li><a href="#M000701">quoted_true</a></li>
+  <li><a href="#M000697">supports_migrations?</a></li>
+  </ul>
+
+
+
+
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000695"></a><b>adapter_name</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000695_source')" id="l_M000695_source">show source</a> ]</p>
+  <div id="M000695_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 60</span>
+60:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">adapter_name</span>
+61:         <span class="ruby-value str">'OpenBase'</span>
+62:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000703"></a><b>add_limit_offset!</b>(sql, options)
+  </div>
+  <div class="description">
+  <p>
+DATABASE STATEMENTS ======================================
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000703_source')" id="l_M000703_source">show source</a> ]</p>
+  <div id="M000703_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 124</span>
+124:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_limit_offset!</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">options</span>) <span class="ruby-comment cmt">#:nodoc</span>
+125:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>]
+126:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">offset</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>]
+127:             <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; RETURN RESULTS #{limit}&quot;</span>
+128:           <span class="ruby-keyword kw">else</span>
+129:             <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">offset</span>
+130:             <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; RETURN RESULTS #{offset} TO #{limit}&quot;</span>
+131:           <span class="ruby-keyword kw">end</span>
+132:         <span class="ruby-keyword kw">end</span>
+133:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000696"></a><b>native_database_types</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000696_source')" id="l_M000696_source">show source</a> ]</p>
+  <div id="M000696_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 64</span>
+64:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">native_database_types</span>
+65:         {
+66:           <span class="ruby-identifier">:primary_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;integer UNIQUE INDEX DEFAULT _rowid&quot;</span>,
+67:           <span class="ruby-identifier">:string</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;char&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">4096</span> },
+68:           <span class="ruby-identifier">:text</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;text&quot;</span> },
+69:           <span class="ruby-identifier">:integer</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;integer&quot;</span> },
+70:           <span class="ruby-identifier">:float</span>       =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;float&quot;</span> },
+71:           <span class="ruby-identifier">:datetime</span>    =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;datetime&quot;</span> },
+72:           <span class="ruby-identifier">:timestamp</span>   =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;timestamp&quot;</span> },
+73:           <span class="ruby-identifier">:time</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;time&quot;</span> },
+74:           <span class="ruby-identifier">:date</span>        =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;date&quot;</span> },
+75:           <span class="ruby-identifier">:binary</span>      =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;object&quot;</span> },
+76:           <span class="ruby-identifier">:boolean</span>     =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;boolean&quot;</span> }
+77:         }
+78:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000699"></a><b>next_sequence_value</b>(sequence_name)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000699_source')" id="l_M000699_source">show source</a> ]</p>
+  <div id="M000699_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 92</span>
+92:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">next_sequence_value</span>(<span class="ruby-identifier">sequence_name</span>)
+93:         <span class="ruby-identifier">ary</span> = <span class="ruby-identifier">sequence_name</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+94:         <span class="ruby-keyword kw">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">ary</span>[<span class="ruby-value">1</span>]) <span class="ruby-keyword kw">then</span>
+95:           <span class="ruby-identifier">ary</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/(\w+)_nonstd_seq/</span>
+96:           <span class="ruby-identifier">ary</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">$1</span>
+97:         <span class="ruby-keyword kw">end</span>
+98:         <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">unique_row_id</span>(<span class="ruby-identifier">ary</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">ary</span>[<span class="ruby-value">1</span>])
+99:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000698"></a><b>prefetch_primary_key?</b>(table_name = nil)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000698_source')" id="l_M000698_source">show source</a> ]</p>
+  <div id="M000698_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 84</span>
+84:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">prefetch_primary_key?</span>(<span class="ruby-identifier">table_name</span> = <span class="ruby-keyword kw">nil</span>)
+85:         <span class="ruby-keyword kw">true</span>
+86:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000700"></a><b>quote</b>(value, column = nil)
+  </div>
+  <div class="description">
+  <p>
+QUOTING ==================================================
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000700_source')" id="l_M000700_source">show source</a> ]</p>
+  <div id="M000700_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 104</span>
+104:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">column</span> = <span class="ruby-keyword kw">nil</span>)
+105:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">column</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:binary</span>
+106:           <span class="ruby-node">&quot;'#{@connection.insert_binary(value)}'&quot;</span>
+107:         <span class="ruby-keyword kw">else</span>
+108:           <span class="ruby-keyword kw">super</span>
+109:         <span class="ruby-keyword kw">end</span>
+110:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000702"></a><b>quoted_false</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000702_source')" id="l_M000702_source">show source</a> ]</p>
+  <div id="M000702_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 116</span>
+116:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quoted_false</span>
+117:         <span class="ruby-value str">&quot;0&quot;</span>
+118:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000701"></a><b>quoted_true</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000701_source')" id="l_M000701_source">show source</a> ]</p>
+  <div id="M000701_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 112</span>
+112:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quoted_true</span>
+113:         <span class="ruby-value str">&quot;1&quot;</span>
+114:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000697"></a><b>supports_migrations?</b>()
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000697_source')" id="l_M000697_source">show source</a> ]</p>
+  <div id="M000697_source" class="dyn-source">
+<pre>
+    <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/connection_adapters/openbase_adapter.rb, line 80</span>
+80:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">supports_migrations?</span>
+81:         <span class="ruby-keyword kw">false</span>
+82:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>

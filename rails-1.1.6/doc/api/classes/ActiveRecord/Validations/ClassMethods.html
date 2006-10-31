@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Module: ActiveRecord::Validations::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "width=400,height=400,scrollbars=yes" )
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+  <table width="100%" border='0' cellpadding='0' cellspacing='0' class='banner'><tr>
+  <td class="file-title"><span class="file-title-prefix">Module</span><br />ActiveRecord::Validations::ClassMethods</td>
+  <td align="right">
+    <table cellspacing=0 cellpadding=2>
+      <tr valign="top">
+        <td>In:</td>
+        <td>
+<a href="../../../files/vendor/rails/activerecord/lib/active_record/validations_rb.html">vendor/rails/activerecord/lib/active_record/validations.rb</a>
+        </td>
+      </tr>
+         </table>
+        </td>
+        </tr>
+      </table>
+ <!-- banner header -->
+
+  <div id="bodyContent">
+      <div id="content">
+
+  <div class="description"><p>
+All of the following validations are defined in the class scope of the
+model that you&#8217;re interested in validating. They offer a more
+declarative way of specifying when the model is valid and when it is not.
+It is recommended to use these over the low-level calls to validate and <a
+href="ClassMethods.html#M000806">validate_on_create</a> when possible.
+</p>
+</div>
+
+
+
+  <div class="sectiontitle">Methods</div>
+  <ul>
+  <li><a href="#M000808">condition_block?</a></li>
+  <li><a href="#M000822">create!</a></li>
+  <li><a href="#M000809">evaluate_condition</a></li>
+  <li><a href="#M000805">validate</a></li>
+  <li><a href="#M000806">validate_on_create</a></li>
+  <li><a href="#M000807">validate_on_update</a></li>
+  <li><a href="#M000812">validates_acceptance_of</a></li>
+  <li><a href="#M000820">validates_associated</a></li>
+  <li><a href="#M000811">validates_confirmation_of</a></li>
+  <li><a href="#M000810">validates_each</a></li>
+  <li><a href="#M000819">validates_exclusion_of</a></li>
+  <li><a href="#M000817">validates_format_of</a></li>
+  <li><a href="#M000818">validates_inclusion_of</a></li>
+  <li><a href="#M000814">validates_length_of</a></li>
+  <li><a href="#M000821">validates_numericality_of</a></li>
+  <li><a href="#M000813">validates_presence_of</a></li>
+  <li><a href="#M000815">validates_size_of</a></li>
+  <li><a href="#M000816">validates_uniqueness_of</a></li>
+  </ul>
+
+
+
+
+  <div class="sectiontitle">Constants</div>
+  <table border='0' cellpadding='5'>
+  <tr valign='top'>
+    <td class="attr-name">DEFAULT_VALIDATION_OPTIONS</td>
+    <td>=</td>
+    <td class="attr-value">{         :on =&gt; :save,         :allow_nil =&gt; false,         :message =&gt; nil</td>
+  </tr>
+  <tr valign='top'>
+    <td class="attr-name">ALL_RANGE_OPTIONS</td>
+    <td>=</td>
+    <td class="attr-value">[ :is, :within, :in, :minimum, :maximum ].freeze</td>
+  </tr>
+  </table>
+
+
+<div class="sectiontitle">Public Instance methods</div>
+<div class="method">
+  <div class="title">
+    <a name="M000808"></a><b>condition_block?</b>(condition)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000808_source')" id="l_M000808_source">show source</a> ]</p>
+  <div id="M000808_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 254</span>
+254:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">condition_block?</span>(<span class="ruby-identifier">condition</span>)
+255:         <span class="ruby-identifier">condition</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;call&quot;</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">condition</span>.<span class="ruby-identifier">arity</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">condition</span>.<span class="ruby-identifier">arity</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>)
+256:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000822"></a><b>create!</b>(attributes = nil)
+  </div>
+  <div class="description">
+  <p>
+Creates an object just like <a href="../Base.html#M000863">Base.create</a>
+but calls save! instead of save so an exception is raised if the record is
+invalid.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000822_source')" id="l_M000822_source">show source</a> ]</p>
+  <div id="M000822_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 704</span>
+704:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create!</span>(<span class="ruby-identifier">attributes</span> = <span class="ruby-keyword kw">nil</span>)
+705:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+706:           <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span> <span class="ruby-identifier">create!</span>(<span class="ruby-identifier">attr</span>) }
+707:         <span class="ruby-keyword kw">else</span>
+708:           <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">reverse_merge!</span>(<span class="ruby-identifier">scope</span>(<span class="ruby-identifier">:create</span>)) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">scoped?</span>(<span class="ruby-identifier">:create</span>)
+709: 
+710:           <span class="ruby-identifier">object</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">attributes</span>)
+711:           <span class="ruby-identifier">object</span>.<span class="ruby-identifier">save!</span>
+712:           <span class="ruby-identifier">object</span>
+713:         <span class="ruby-keyword kw">end</span>
+714:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000809"></a><b>evaluate_condition</b>(condition, record)
+  </div>
+  <div class="description">
+  <p>
+Determine from the given condition (whether a block, procedure, method or
+string) whether or not to validate the record. See <a
+href="ClassMethods.html#M000810">validates_each</a>.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000809_source')" id="l_M000809_source">show source</a> ]</p>
+  <div id="M000809_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 260</span>
+260:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">evaluate_condition</span>(<span class="ruby-identifier">condition</span>, <span class="ruby-identifier">record</span>)
+261:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">condition</span>
+262:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span><span class="ruby-operator">:</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">condition</span>)
+263:           <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span><span class="ruby-operator">:</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">condition</span>, <span class="ruby-identifier">binding</span>)
+264:           <span class="ruby-keyword kw">else</span>
+265:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">condition_block?</span>(<span class="ruby-identifier">condition</span>)
+266:               <span class="ruby-identifier">condition</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">record</span>)
+267:             <span class="ruby-keyword kw">else</span>
+268:               <span class="ruby-identifier">raise</span>(
+269:                 <span class="ruby-constant">ActiveRecordError</span>,
+270:                 <span class="ruby-value str">&quot;Validations need to be either a symbol, string (to be eval'ed), proc/method, or &quot;</span> <span class="ruby-operator">+</span>
+271:                 <span class="ruby-value str">&quot;class implementing a static validation method&quot;</span>
+272:               )
+273:             <span class="ruby-keyword kw">end</span>
+274:           <span class="ruby-keyword kw">end</span>
+275:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000805"></a><b>validate</b>(*methods, &amp;block)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000805_source')" id="l_M000805_source">show source</a> ]</p>
+  <div id="M000805_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 239</span>
+239:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">methods</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+240:         <span class="ruby-identifier">methods</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+241:         <span class="ruby-identifier">write_inheritable_set</span>(<span class="ruby-identifier">:validate</span>, <span class="ruby-identifier">methods</span>)
+242:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000806"></a><b>validate_on_create</b>(*methods, &amp;block)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000806_source')" id="l_M000806_source">show source</a> ]</p>
+  <div id="M000806_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 244</span>
+244:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate_on_create</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">methods</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+245:         <span class="ruby-identifier">methods</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+246:         <span class="ruby-identifier">write_inheritable_set</span>(<span class="ruby-identifier">:validate_on_create</span>, <span class="ruby-identifier">methods</span>)
+247:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000807"></a><b>validate_on_update</b>(*methods, &amp;block)
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000807_source')" id="l_M000807_source">show source</a> ]</p>
+  <div id="M000807_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 249</span>
+249:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate_on_update</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">methods</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+250:         <span class="ruby-identifier">methods</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+251:         <span class="ruby-identifier">write_inheritable_set</span>(<span class="ruby-identifier">:validate_on_update</span>, <span class="ruby-identifier">methods</span>)
+252:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000812"></a><b>validates_acceptance_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Encapsulates the pattern of wanting to validate the acceptance of a terms
+of service check box (or similar agreement). Example:
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_acceptance_of :terms_of_service
+    validates_acceptance_of :eula, :message =&gt; &quot;must be abided&quot;
+  end
+</pre>
+<p>
+The terms_of_service attribute is entirely virtual. No database column is
+needed. This check is performed only if terms_of_service is not nil and by
+default on save.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - A custom error message (default is: &quot;must be
+accepted&quot;)
+
+</li>
+<li><tt>on</tt> - Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>accept</tt> - Specifies value that is considered accepted. The default
+value is a string &quot;1&quot;, which
+
+</li>
+</ul>
+<p>
+makes it easy to relate to an HTML checkbox.
+</p>
+<ul>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000812_source')" id="l_M000812_source">show source</a> ]</p>
+  <div id="M000812_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 359</span>
+359:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_acceptance_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+360:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:accepted</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span>, <span class="ruby-identifier">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:accept</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;1&quot;</span> }
+361:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+362: 
+363:         <span class="ruby-identifier">attr_accessor</span> <span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>
+364: 
+365:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>,<span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+366:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:accept</span>]
+367:         <span class="ruby-keyword kw">end</span>
+368:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000820"></a><b>validates_associated</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates whether the associated object or objects are all valid
+themselves. Works with any kind of association.
+</p>
+<pre>
+  class Book &lt; ActiveRecord::Base
+    has_many :pages
+    belongs_to :library
+
+    validates_associated :pages, :library
+  end
+</pre>
+<p>
+Warning: If, after the above definition, you then wrote:
+</p>
+<pre>
+  class Page &lt; ActiveRecord::Base
+    belongs_to :book
+
+    validates_associated :book
+  end
+</pre>
+<p>
+&#8230;this would specify a circular dependency and cause infinite
+recursion.
+</p>
+<p>
+NOTE: This validation will not fail if the association hasn&#8217;t been
+assigned. If you want to ensure that the association is both present and
+guaranteed to be valid, you also need to use <a
+href="ClassMethods.html#M000813">validates_presence_of</a>.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>on</tt> Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000820_source')" id="l_M000820_source">show source</a> ]</p>
+  <div id="M000820_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 654</span>
+654:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_associated</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+655:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:invalid</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span> }
+656:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+657: 
+658:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>, <span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+659:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span>
+660:             (<span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">:</span> [<span class="ruby-identifier">value</span>]).<span class="ruby-identifier">all?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">valid?</span> }
+661:         <span class="ruby-keyword kw">end</span>
+662:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000811"></a><b>validates_confirmation_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Encapsulates the pattern of wanting to validate a password or email address
+field with a confirmation. Example:
+</p>
+<pre>
+  Model:
+    class Person &lt; ActiveRecord::Base
+      validates_confirmation_of :user_name, :password
+      validates_confirmation_of :email_address, :message =&gt; &quot;should match confirmation&quot;
+    end
+
+  View:
+    &lt;%= password_field &quot;person&quot;, &quot;password&quot; %&gt;
+    &lt;%= password_field &quot;person&quot;, &quot;password_confirmation&quot; %&gt;
+</pre>
+<p>
+The person has to already have a password attribute (a column in the people
+table), but the password_confirmation is virtual. It exists only as an
+in-memory variable for validating the password. This check is performed
+only if password_confirmation is not nil and by default on save.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - A custom error message (default is: &quot;doesn&#8217;t
+match confirmation&quot;)
+
+</li>
+<li><tt>on</tt> - Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000811_source')" id="l_M000811_source">show source</a> ]</p>
+  <div id="M000811_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 330</span>
+330:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_confirmation_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+331:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:confirmation</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span> }
+332:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+333: 
+334:         <span class="ruby-identifier">attr_accessor</span> <span class="ruby-operator">*</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{n}_confirmation&quot;</span> })
+335: 
+336:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>, <span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+337:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{attr_name}_confirmation&quot;</span>).<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{attr_name}_confirmation&quot;</span>)
+338:         <span class="ruby-keyword kw">end</span>
+339:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000810"></a><b>validates_each</b>(*attrs) {|record, attr, value| ...}
+  </div>
+  <div class="description">
+  <p>
+Validates each attribute against a block.
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_each :first_name, :last_name do |record, attr, value|
+      record.errors.add attr, 'starts with z.' if value[0] == ?z
+    end
+  end
+</pre>
+<p>
+Options:
+</p>
+<ul>
+<li><tt>on</tt> - Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>allow_nil</tt> - Skip validation if attribute is nil.
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000810_source')" id="l_M000810_source">show source</a> ]</p>
+  <div id="M000810_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 291</span>
+291:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_each</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attrs</span>)
+292:         <span class="ruby-identifier">options</span> = <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">pop</span>.<span class="ruby-identifier">symbolize_keys</span> <span class="ruby-operator">:</span> {}
+293:         <span class="ruby-identifier">attrs</span> = <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">flatten</span>
+294: 
+295:         <span class="ruby-comment cmt"># Declare the validation.</span>
+296:         <span class="ruby-identifier">send</span>(<span class="ruby-identifier">validation_method</span>(<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:on</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">:save</span>)) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+297:           <span class="ruby-comment cmt"># Don't validate when there is an :if condition and that condition is false</span>
+298:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:if</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">evaluate_condition</span>(<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:if</span>], <span class="ruby-identifier">record</span>)
+299:             <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span>
+300:               <span class="ruby-identifier">value</span> = <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">attr</span>)
+301:               <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:allow_nil</span>]
+302:               <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr</span>, <span class="ruby-identifier">value</span>
+303:             <span class="ruby-keyword kw">end</span>
+304:           <span class="ruby-keyword kw">end</span>
+305:         <span class="ruby-keyword kw">end</span>
+306:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000819"></a><b>validates_exclusion_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates that the value of the specified attribute is not in a particular
+enumerable object.
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_exclusion_of :username, :in =&gt; %w( admin superuser ), :message =&gt; &quot;You don't belong here&quot;
+    validates_exclusion_of :age, :in =&gt; 30..60, :message =&gt; &quot;This site is only for under 30 and over 60&quot;
+  end
+</pre>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>in</tt> - An enumerable object of items that the value shouldn&#8217;t
+be part of
+
+</li>
+<li><tt>message</tt> - Specifies a customer error message (default is: &quot;is
+reserved&quot;)
+
+</li>
+<li><tt>allow_nil</tt> - If set to true, skips this validation if the attribute
+is null (default is: false)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000819_source')" id="l_M000819_source">show source</a> ]</p>
+  <div id="M000819_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 614</span>
+614:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_exclusion_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+615:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:exclusion</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span> }
+616:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+617: 
+618:         <span class="ruby-identifier">enum</span> = <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:in</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:within</span>]
+619: 
+620:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;An object with the method include? is required must be supplied as the :in option of the configuration hash&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">enum</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;include?&quot;</span>)
+621: 
+622:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>, <span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+623:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">enum</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">value</span>)
+624:         <span class="ruby-keyword kw">end</span>
+625:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000817"></a><b>validates_format_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates whether the value of the specified attribute is of the correct
+form by matching it against the regular expression provided.
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_format_of :email, :with =&gt; /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :on =&gt; :create
+  end
+</pre>
+<p>
+A regular expression must be provided or else an exception will be raised.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - A custom error message (default is: &quot;is
+invalid&quot;)
+
+</li>
+<li><tt>with</tt> - The regular expression used to validate the format with
+(note: must be supplied!)
+
+</li>
+<li><tt>on</tt> Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000817_source')" id="l_M000817_source">show source</a> ]</p>
+  <div id="M000817_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 562</span>
+562:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_format_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+563:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:invalid</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span>, <span class="ruby-identifier">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span> }
+564:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+565: 
+566:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;A regular expression must be supplied as the :with option of the configuration hash&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:with</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Regexp</span>)
+567: 
+568:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>, <span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+569:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:with</span>]
+570:         <span class="ruby-keyword kw">end</span>
+571:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000818"></a><b>validates_inclusion_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates whether the value of the specified attribute is available in a
+particular enumerable object.
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_inclusion_of :gender, :in=&gt;%w( m f ), :message=&gt;&quot;woah! what are you then!??!!&quot;
+    validates_inclusion_of :age, :in=&gt;0..99
+  end
+</pre>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>in</tt> - An enumerable object of available items
+
+</li>
+<li><tt>message</tt> - Specifies a customer error message (default is: &quot;is
+not included in the list&quot;)
+
+</li>
+<li><tt>allow_nil</tt> - If set to true, skips this validation if the attribute
+is null (default is: false)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000818_source')" id="l_M000818_source">show source</a> ]</p>
+  <div id="M000818_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 587</span>
+587:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_inclusion_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+588:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:inclusion</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span> }
+589:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+590: 
+591:         <span class="ruby-identifier">enum</span> = <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:in</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:within</span>]
+592: 
+593:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;An object with the method include? is required must be supplied as the :in option of the configuration hash&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">enum</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;include?&quot;</span>)
+594: 
+595:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>, <span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+596:           <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">enum</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">value</span>)
+597:         <span class="ruby-keyword kw">end</span>
+598:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000814"></a><b>validates_length_of</b>(*attrs)
+  </div>
+  <div class="description">
+  <p>
+Validates that the specified attribute matches the length restrictions
+supplied. Only one option can be used at a time:
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_length_of :first_name, :maximum=&gt;30
+    validates_length_of :last_name, :maximum=&gt;30, :message=&gt;&quot;less than %d if you don't mind&quot;
+    validates_length_of :fax, :in =&gt; 7..32, :allow_nil =&gt; true
+    validates_length_of :user_name, :within =&gt; 6..20, :too_long =&gt; &quot;pick a shorter name&quot;, :too_short =&gt; &quot;pick a longer name&quot;
+    validates_length_of :fav_bra_size, :minimum=&gt;1, :too_short=&gt;&quot;please enter at least %d character&quot;
+    validates_length_of :smurf_leader, :is=&gt;4, :message=&gt;&quot;papa is spelled with %d characters... don't play me.&quot;
+  end
+</pre>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>minimum</tt> - The minimum size of the attribute
+
+</li>
+<li><tt>maximum</tt> - The maximum size of the attribute
+
+</li>
+<li><tt>is</tt> - The exact size of the attribute
+
+</li>
+<li><tt>within</tt> - A range specifying the minimum and maximum size of the
+attribute
+
+</li>
+<li><tt>in</tt> - A synonym(or alias) for :within
+
+</li>
+<li><tt>allow_nil</tt> - Attribute may be nil; skip validation.
+
+</li>
+<li><tt>too_long</tt> - The error message if the attribute goes over the
+maximum (default is: &quot;is too long (maximum is %d characters)&quot;)
+
+</li>
+<li><tt>too_short</tt> - The error message if the attribute goes under the
+minimum (default is: &quot;is too short (min is %d characters)&quot;)
+
+</li>
+<li><tt>wrong_length</tt> - The error message if using the :is method and the
+attribute is the wrong size (default is: &quot;is the wrong length (should
+be %d characters)&quot;)
+
+</li>
+<li><tt>message</tt> - The error message to use for a :minimum, :maximum, or
+:is violation. An alias of the appropriate too_long/too_short/wrong_length
+message
+
+</li>
+<li><tt>on</tt> - Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="aka">
+  This method is also aliased as
+  <a href="ClassMethods.html#M000815">validates_size_of</a>
+</div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000814_source')" id="l_M000814_source">show source</a> ]</p>
+  <div id="M000814_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 438</span>
+438:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_length_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attrs</span>)
+439:         <span class="ruby-comment cmt"># Merge given options with defaults.</span>
+440:         <span class="ruby-identifier">options</span> = {
+441:           <span class="ruby-identifier">:too_long</span>     =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:too_long</span>],
+442:           <span class="ruby-identifier">:too_short</span>    =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:too_short</span>],
+443:           <span class="ruby-identifier">:wrong_length</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:wrong_length</span>]
+444:         }.<span class="ruby-identifier">merge</span>(<span class="ruby-constant">DEFAULT_VALIDATION_OPTIONS</span>)
+445:         <span class="ruby-identifier">options</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">pop</span>.<span class="ruby-identifier">symbolize_keys</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+446: 
+447:         <span class="ruby-comment cmt"># Ensure that one and only one range option is specified.</span>
+448:         <span class="ruby-identifier">range_options</span> = <span class="ruby-constant">ALL_RANGE_OPTIONS</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">keys</span>
+449:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">range_options</span>.<span class="ruby-identifier">size</span>
+450:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span>
+451:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">'Range unspecified.  Specify the :within, :maximum, :minimum, or :is option.'</span>
+452:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>
+453:             <span class="ruby-comment cmt"># Valid number of options; do nothing.</span>
+454:           <span class="ruby-keyword kw">else</span>
+455:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">'Too many range options specified.  Choose only one.'</span>
+456:         <span class="ruby-keyword kw">end</span>
+457: 
+458:         <span class="ruby-comment cmt"># Get range option and value.</span>
+459:         <span class="ruby-identifier">option</span> = <span class="ruby-identifier">range_options</span>.<span class="ruby-identifier">first</span>
+460:         <span class="ruby-identifier">option_value</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">range_options</span>.<span class="ruby-identifier">first</span>]
+461: 
+462:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">option</span>
+463:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:within</span>, <span class="ruby-identifier">:in</span>
+464:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;:#{option} must be a Range&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Range</span>)
+465: 
+466:             <span class="ruby-identifier">too_short</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:too_short</span>] <span class="ruby-operator">%</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">begin</span>
+467:             <span class="ruby-identifier">too_long</span>  = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:too_long</span>]  <span class="ruby-operator">%</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">end</span>
+468: 
+469:             <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attrs</span>, <span class="ruby-identifier">options</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+470:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">//</span>).<span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">begin</span>
+471:                 <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr</span>, <span class="ruby-identifier">too_short</span>)
+472:               <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">//</span>).<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">end</span>
+473:                 <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr</span>, <span class="ruby-identifier">too_long</span>)
+474:               <span class="ruby-keyword kw">end</span>
+475:             <span class="ruby-keyword kw">end</span>
+476:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:is</span>, <span class="ruby-identifier">:minimum</span>, <span class="ruby-identifier">:maximum</span>
+477:             <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;:#{option} must be a nonnegative Integer&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">option_value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Integer</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">option_value</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span>
+478: 
+479:             <span class="ruby-comment cmt"># Declare different validations per option.</span>
+480:             <span class="ruby-identifier">validity_checks</span> = { <span class="ruby-identifier">:is</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;==&quot;</span>, <span class="ruby-identifier">:minimum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&gt;=&quot;</span>, <span class="ruby-identifier">:maximum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;=&quot;</span> }
+481:             <span class="ruby-identifier">message_options</span> = { <span class="ruby-identifier">:is</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:wrong_length</span>, <span class="ruby-identifier">:minimum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:too_short</span>, <span class="ruby-identifier">:maximum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:too_long</span> }
+482: 
+483:             <span class="ruby-identifier">message</span> = (<span class="ruby-identifier">options</span>[<span class="ruby-identifier">:message</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">message_options</span>[<span class="ruby-identifier">option</span>]]) <span class="ruby-operator">%</span> <span class="ruby-identifier">option_value</span>
+484: 
+485:             <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attrs</span>, <span class="ruby-identifier">options</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+486:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>)
+487:                 <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr</span>, <span class="ruby-identifier">message</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">//</span>).<span class="ruby-identifier">size</span>.<span class="ruby-identifier">method</span>(<span class="ruby-identifier">validity_checks</span>[<span class="ruby-identifier">option</span>])[<span class="ruby-identifier">option_value</span>]
+488:               <span class="ruby-keyword kw">else</span>
+489:                 <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr</span>, <span class="ruby-identifier">message</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">size</span>.<span class="ruby-identifier">method</span>(<span class="ruby-identifier">validity_checks</span>[<span class="ruby-identifier">option</span>])[<span class="ruby-identifier">option_value</span>]
+490:               <span class="ruby-keyword kw">end</span>
+491:             <span class="ruby-keyword kw">end</span>
+492:         <span class="ruby-keyword kw">end</span>
+493:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000821"></a><b>validates_numericality_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates whether the value of the specified attribute is numeric by trying
+to convert it to a float with Kernel.Float (if <tt>integer</tt> is false)
+or applying it to the regular expression <tt>/^[+\-]?\d+$/</tt> (if
+<tt>integer</tt> is set to true).
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_numericality_of :value, :on =&gt; :create
+  end
+</pre>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - A custom error message (default is: &quot;is not a
+number&quot;)
+
+</li>
+<li><tt>on</tt> Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>only_integer</tt> Specifies whether the value has to be an integer,
+e.g. an integral value (default is false)
+
+</li>
+<li><tt>allow_nil</tt> Skip validation if attribute is nil (default is false).
+Notice that for fixnum and float columns empty strings are converted to nil
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000821_source')" id="l_M000821_source">show source</a> ]</p>
+  <div id="M000821_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 680</span>
+680:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_numericality_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+681:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:not_a_number</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span>,
+682:                            <span class="ruby-identifier">:only_integer</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>, <span class="ruby-identifier">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span> }
+683:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+684: 
+685:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:only_integer</span>]
+686:           <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>,<span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+687:             <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>]) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{attr_name}_before_type_cast&quot;</span>).<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^[+-]?\d+$/</span>
+688:           <span class="ruby-keyword kw">end</span>
+689:         <span class="ruby-keyword kw">else</span>
+690:           <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>,<span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+691:            <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:allow_nil</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{attr_name}_before_type_cast&quot;</span>).<span class="ruby-identifier">nil?</span>
+692:             <span class="ruby-keyword kw">begin</span>
+693:               <span class="ruby-constant">Kernel</span>.<span class="ruby-constant">Float</span>(<span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{attr_name}_before_type_cast&quot;</span>).<span class="ruby-identifier">to_s</span>)
+694:             <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-constant">TypeError</span>
+695:               <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>])
+696:             <span class="ruby-keyword kw">end</span>
+697:           <span class="ruby-keyword kw">end</span>
+698:         <span class="ruby-keyword kw">end</span>
+699:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000813"></a><b>validates_presence_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates that the specified attributes are not blank (as defined by
+Object#blank?). Happens by default on save. Example:
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_presence_of :first_name
+  end
+</pre>
+<p>
+The first_name attribute must be in the object and it cannot be blank.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - A custom error message (default is: &quot;can&#8217;t be
+blank&quot;)
+
+</li>
+<li><tt>on</tt> - Specifies when this validation is active (default is :save,
+other options :create, :update)
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+<h3>Warning</h3>
+<p>
+Validate the presence of the foreign key, not the instance variable itself.
+Do this:
+</p>
+<pre>
+ validate_presence_of :invoice_id
+</pre>
+<p>
+Not this:
+</p>
+<pre>
+ validate_presence_of :invoice
+</pre>
+<p>
+If you validate the presence of the associated object, you will get
+failures on saves when both the parent object and the child object are new.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000813_source')" id="l_M000813_source">show source</a> ]</p>
+  <div id="M000813_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 396</span>
+396:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_presence_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+397:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:blank</span>], <span class="ruby-identifier">:on</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:save</span> }
+398:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+399: 
+400:         <span class="ruby-comment cmt"># can't use validates_each here, because it cannot cope with nonexistent attributes,</span>
+401:         <span class="ruby-comment cmt"># while errors.add_on_empty can</span>
+402:         <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attr_name</span><span class="ruby-operator">|</span>
+403:           <span class="ruby-identifier">send</span>(<span class="ruby-identifier">validation_method</span>(<span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:on</span>])) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+404:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:if</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-keyword kw">not</span> <span class="ruby-identifier">evaluate_condition</span>(<span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:if</span>], <span class="ruby-identifier">record</span>)
+405:               <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add_on_blank</span>(<span class="ruby-identifier">attr_name</span>,<span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>])
+406:             <span class="ruby-keyword kw">end</span>
+407:           <span class="ruby-keyword kw">end</span>
+408:         <span class="ruby-keyword kw">end</span>
+409:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000815"></a><b>validates_size_of</b>(*attrs)
+  </div>
+  <div class="description">
+  <p>
+Alias for <a href="ClassMethods.html#M000814">validates_length_of</a>
+</p>
+  </div>
+</div>
+<div class="method">
+  <div class="title">
+    <a name="M000816"></a><b>validates_uniqueness_of</b>(*attr_names)
+  </div>
+  <div class="description">
+  <p>
+Validates whether the value of the specified attributes are unique across
+the system. Useful for making sure that only one user can be named
+&quot;davidhh&quot;.
+</p>
+<pre>
+  class Person &lt; ActiveRecord::Base
+    validates_uniqueness_of :user_name, :scope =&gt; :account_id
+  end
+</pre>
+<p>
+It can also validate whether the value of the specified attributes are
+unique based on multiple scope parameters. For example, making sure that a
+teacher can only be on the schedule once per semester for a particular
+class.
+</p>
+<pre>
+  class TeacherSchedule &lt; ActiveRecord::Base
+    validates_uniqueness_of :teacher_id, :scope =&gt; [:semester_id, :class_id]
+  end
+</pre>
+<p>
+When the record is created, a check is performed to make sure that no
+record exists in the database with the given value for the specified
+attribute (that maps to a column). When the record is updated, the same
+check is made but disregarding the record itself.
+</p>
+<p>
+Configuration options:
+</p>
+<ul>
+<li><tt>message</tt> - Specifies a custom error message (default is: &quot;has
+already been taken&quot;)
+
+</li>
+<li><tt>scope</tt> - One or more columns by which to limit the scope of the
+uniquness constraint.
+
+</li>
+<li><tt>if</tt> - Specifies a method, proc or string to call to determine if
+the validation should
+
+</li>
+</ul>
+<p>
+occur (e.g. :if =&gt; :allow_validation, or :if =&gt; Proc.new { |user|
+user.signup_step &gt; 2 }). The method, proc or string should return or
+evaluate to a true or false value.
+</p>
+  </div>
+<div class="sourcecode">
+  <p class="source-link">[ <a href="javascript:toggleSource('M000816_source')" id="l_M000816_source">show source</a> ]</p>
+  <div id="M000816_source" class="dyn-source">
+<pre>
+     <span class="ruby-comment cmt"># File vendor/rails/activerecord/lib/active_record/validations.rb, line 522</span>
+522:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validates_uniqueness_of</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">attr_names</span>)
+523:         <span class="ruby-identifier">configuration</span> = { <span class="ruby-identifier">:message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">default_error_messages</span>[<span class="ruby-identifier">:taken</span>] }
+524:         <span class="ruby-identifier">configuration</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attr_names</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+525: 
+526:         <span class="ruby-identifier">validates_each</span>(<span class="ruby-identifier">attr_names</span>,<span class="ruby-identifier">configuration</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span>, <span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+527:           <span class="ruby-identifier">condition_sql</span> = <span class="ruby-node">&quot;#{record.class.table_name}.#{attr_name} #{attribute_condition(value)}&quot;</span>
+528:           <span class="ruby-identifier">condition_params</span> = [<span class="ruby-identifier">value</span>]
+529:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">scope</span> = <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:scope</span>]
+530:             <span class="ruby-constant">Array</span>(<span class="ruby-identifier">scope</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">scope_item</span><span class="ruby-operator">|</span>
+531:               <span class="ruby-identifier">scope_value</span> = <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">scope_item</span>)
+532:               <span class="ruby-identifier">condition_sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND #{record.class.table_name}.#{scope_item} #{attribute_condition(scope_value)}&quot;</span>
+533:               <span class="ruby-identifier">condition_params</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">scope_value</span>
+534:             <span class="ruby-keyword kw">end</span>
+535:           <span class="ruby-keyword kw">end</span>
+536:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">new_record?</span>
+537:             <span class="ruby-identifier">condition_sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND #{record.class.table_name}.#{record.class.primary_key} &lt;&gt; ?&quot;</span>
+538:             <span class="ruby-identifier">condition_params</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:id</span>)
+539:           <span class="ruby-keyword kw">end</span>
+540:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">condition_sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">condition_params</span>])
+541:             <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">attr_name</span>, <span class="ruby-identifier">configuration</span>[<span class="ruby-identifier">:message</span>])
+542:           <span class="ruby-keyword kw">end</span>
+543:         <span class="ruby-keyword kw">end</span>
+544:       <span class="ruby-keyword kw">end</span>
+</pre>
+  </div>
+</div>
+</div>
+</div>
+
+  </div>
+
+    </body>
+</html>
