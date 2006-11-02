@@ -1,4 +1,4 @@
-min_release  = "1.8.2 (2004-12-25)"
+min_release  = "1.8.2 (2004-12-16)"
 ruby_release = "#{RUBY_VERSION} (#{RUBY_RELEASE_DATE})"
 if ruby_release =~ /1\.8\.3/
   abort <<-end_message
