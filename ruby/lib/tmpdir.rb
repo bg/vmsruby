@@ -31,6 +31,7 @@ class Dir
     else
       for dir in [ENV['TMPDIR'], ENV['TMP'], ENV['TEMP'],
 	          ENV['USERPROFILE'], @@systmpdir, '/tmp']
+	dir='/sys$scratch' if PLATFORM =~ /vms/i
 	if dir and File.directory?(dir) and File.writable?(dir)
 	  tmp = dir
 	  break
