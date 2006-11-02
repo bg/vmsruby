@@ -1,0 +1,34 @@
+#======
+#
+# Purpose-
+#   
+#   Fake Rails required SYMLINK'ed directory on VMS
+#
+# Usage:
+#
+#   From the Rails app root:
+#   - Ruby SCRIPT/SYMLINK
+#
+# Todo:
+#   - Needs relocated to standard copied template
+#   - Eliminate need to manually run
+#
+#======
+
+require 'fileutils'
+
+# FIXME: Eliminate hardcoded filepath
+VENDOR_RAILS='[dymax.pro.ruby.lib.site_ruby.rails.vendor.rails]'
+TARGET_VENDOR_RAILS='[.vendor.rails]'
+
+FileUtils.cd(VENDOR_RAILS){SYMLINK_DIRS=Dir['*'].collect{|root| "#{root}.dir"}}
+
+Dir.mkdir TARGET_VENDOR_RAILS unless File.directory? TARGET_VENDOR_RAILS
+
+# We also need to add file entries for [.vendor] to simulate the rails -> . symlink
+['[.vendor]',TARGET_VENDOR_RAILS].each{|current|
+    FileUtils.cd(current){
+        SYMLINK_DIRS.each{|dir|
+            `set file/enter=[]#{dir} #{VENDOR_RAILS}#{dir}`}}}
+    
+
