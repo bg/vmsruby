@@ -127,6 +127,7 @@ module IRB
 
     def real_load(path, priv)
       tmp_base = path.tr("./:", "___")
+      tmp_base = tmp_base[0..20] if PLATFORM =~ /vms/i
       lc_file = Tempfile.new(tmp_base)
       File.foreach(path) do |line|
 	line = self.String(line)
