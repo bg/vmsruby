@@ -21,7 +21,11 @@ module WEBrick
 
     def set_close_on_exec(io)
       if defined?(Fcntl::FD_CLOEXEC)
-        io.fcntl(Fcntl::FD_CLOEXEC, 1)
+        begin
+           io.fcntl(Fcntl::FD_CLOEXEC, 1)
+        rescue
+           nil
+        end
       end
     end
     module_function :set_close_on_exec
