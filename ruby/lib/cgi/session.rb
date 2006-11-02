@@ -243,19 +243,22 @@ class CGI
     #       undef_method :fieldset
     #   end
     #
+
+
     def initialize(request, option={})
       @new_session = false
       session_key = option['session_key'] || '_session_id'
       session_id = option['session_id']
       unless session_id
-	if option['new_session']
-	  session_id = create_new_id
-	end
+    	if option['new_session']
+    	  session_id = create_new_id
+    	end
       end
       unless session_id
-	if session_id = request[session_key] 
-	  session_id = session_id.read if session_id.respond_to?(:read)
-	end
+        session_id= request[session_key] if request.key? session_key
+    	if session_id
+    	  session_id = session_id.read if session_id.respond_to?(:read)
+    	end
 	unless session_id
 	  session_id, = request.cookies[session_key]
 	end
