@@ -1,0 +1,10 @@
+When running rails on VMS, specify Unix filepaths, e.g.
+
+       $ rails=="''ruby' /dym$disk/dymax/pro/ruby/lib/site_ruby/rails/vendor/rails/railties/bin/rails"
+       $ rails testapp
+       ... fix vendor links using set file/enter (tailor script/symlink & run)
+       $ ruby script/server
+
+VMS Rails does not yet display files in ./public
+
+Most, if not all workarounds in VMS Rails would be better solved in ruby lib or core.
