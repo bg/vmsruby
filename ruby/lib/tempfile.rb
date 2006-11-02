@@ -34,7 +34,11 @@ class Tempfile < DelegateClass(File)
 
       begin
 	tmpname = File.join(tmpdir, make_tmpname(basename, n))
-	lock = tmpname + '.lock'
+	if PLATFORM =~ /vms/i
+	  lock = tmpname + '_lock'
+	else
+	  lock = tmpname + '.lock'
+	end
 	n += 1
       end while @@cleanlist.include?(tmpname) or
 	File.exist?(lock) or File.exist?(tmpname)
@@ -67,7 +71,11 @@ class Tempfile < DelegateClass(File)
   end
 
   def make_tmpname(basename, n)
-    sprintf('%s%d.%d', basename, $$, n)
+    if PLATFORM =~ /vms/i
+      sprintf('%s%d_%d', basename, $$, n)
+    else
+      sprintf('%s%d.%d', basename, $$, n)
+    end
   end
   private :make_tmpname
 
