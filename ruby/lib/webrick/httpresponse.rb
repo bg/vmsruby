@@ -313,7 +313,11 @@ module WEBrick
       else
         while size > 0
           sz = BUFSIZE < size ? BUFSIZE : size
-          buf = input.read(sz)
+	  # Probably due to VMS socket/select breakage elsewhere,
+	  # this read() can sometimes return nil, so we need to
+	  # convert it to_s to ensure buf.size doesn't throw an
+	  # exception.
+          buf = input.read(sz).to_s
           _write_data(output, buf)
           size -= buf.size
         end
