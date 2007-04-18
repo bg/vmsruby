@@ -11,14 +11,14 @@ module Find
                 next unless File.exist? path
                 begin
                     if File.lstat(path).directory?
+			path_syntax=:unix
+			path=$1+'.'+$2+']' if path=~/(^.*?)\](.*?)\.DIR;\d+/i
+		        path_syntax=:vms if path=~/[\]:]$/
+			path+="/" unless path_syntax==:vms || /\/$/.match(path)
                         dir=Dir.open path
                         begin
                             for file in dir
-                                if path=~/(^.*?)\](.*?)\.DIR;\d+/i
-                                    file=$1+'.'+$2+']'+file
-                                else
-                                    file=path+file
-                                end
+				file=path+file
                                 paths.unshift file.untaint
                             end
                         ensure
