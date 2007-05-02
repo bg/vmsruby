@@ -360,7 +360,7 @@ void dummy_free(void *p)
 extern void usleep(unsigned long usec);
 #else
 # ifdef RUBY_BINDINGS
-struct timeval rb_time_interval _((VALUE));
+extern "C" struct timeval rb_time_interval _((VALUE));
 # else
 #  include <unistd.h>
 # endif

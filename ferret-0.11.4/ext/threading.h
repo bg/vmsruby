@@ -9,7 +9,7 @@ typedef struct HashTable *thread_key_t;
 typedef int thread_once_t;
 #define MUTEX_INITIALIZER NULL
 #define MUTEX_RECURSIVE_INITIALIZER NULL
-#define THREAD_ONCE_INIT 1;
+#define THREAD_ONCE_INIT 1
 #define mutex_init(a, b)
 #define mutex_lock(a)
 #define mutex_trylock(a)
