@@ -820,17 +820,19 @@ static bool spanoe_skip_to(SpanEnum *self, int target)
         }
         soe->first_time = false;
     }
-    else {
-        while ((soe->queue->size != 0) &&
-               ((se = (SpanEnum *)pq_top(soe->queue))->doc(se) < target)) {
-            if (se->skip_to(se, target)) {
-                pq_down(soe->queue);
-            }
-            else {
-                pq_pop(soe->queue);
-            }
-        }
-    }
+	else {
+		se=(SpanEnum *)pq_top(soe->queue);
+		while ((soe->queue->size != 0) &&
+			   (se->doc(se) < target)) {
+			if (se->skip_to(se, target)) {
+				pq_down(soe->queue);
+			}
+			else {
+				pq_pop(soe->queue);
+			}
+		    se=(SpanEnum *)pq_top(soe->queue);
+		}
+	}
 
     return soe->queue->size != 0;
 }
