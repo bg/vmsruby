@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <math.h>
 #include <ctype.h>
+#include "missing.h"
 
 const char *EMPTY_STRING = "";
 
