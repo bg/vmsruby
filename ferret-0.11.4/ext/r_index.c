@@ -1,3 +1,5 @@
+#include "ruby.h"
+#include "intern.h"
 #include "ferret.h"
 #include "index.h"
 #include <st.h>
