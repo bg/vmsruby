@@ -1,8 +1,9 @@
-#include <regex.h>
+﻿#include <regex.h>
 #include <locale.h>
 #include <st.h>
 #include "ferret.h"
 #include "analysis.h"
+#include "intern.h"
 
 static char *frt_locale = NULL;
 
