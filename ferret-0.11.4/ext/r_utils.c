@@ -1,5 +1,6 @@
 #include "ferret.h"
 #include "bitvector.h"
+#include "intern.h"
 
 /*****************
  *** BitVector ***
