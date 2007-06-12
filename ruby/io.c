@@ -121,6 +121,7 @@ static VALUE lineno = INT2FIX(0);
 
 #ifdef __VMS
 VALUE rb_VmsFileMode;
+VALUE rb_VmsUseFwrite;
 #endif
 
 #ifdef _STDIO_USES_IOSTREAM  /* GNU libc */
@@ -423,13 +424,34 @@ io_fwrite(str, fptr)
         }
         return -1L;
     }
-#if defined(__human68k__) || defined(__vms)
+#if defined(__human68k__)
     do {
 	if (fputc(*(RSTRING(str)->ptr+(offset++)), f) == EOF) {
 	    if (ferror(f)) return -1L;
 	    break;
 	}
     } while (--n > 0);
+#elif defined(__VMS)
+    if (!NIL_P(rb_VmsUseFwrite) && (TYPE(rb_VmsUseFwrite) != T_TRUE)) {
+        do {
+            if (fputc(*(RSTRING(str)->ptr+(offset++)), f) == EOF) {
+                if (ferror(f)) return -1L;
+                break;
+            }
+        } while (--n > 0);
+    } else {
+        while (errno = 0, offset += (r = fwrite(RSTRING(str)->ptr+offset, 1, n, f)), (n -= r) > 0) {
+            if (ferror(f)) {
+                if (rb_io_wait_writable(fileno(f))) {
+                    rb_io_check_closed(fptr);
+                    clearerr(f);
+                    if (offset < RSTRING(str)->len)
+                        continue;
+                }
+                return -1L;
+            }
+        }
+    }
 #else
     while (errno = 0, offset += (r = fwrite(RSTRING(str)->ptr+offset, 1, n, f)), (n -= r) > 0) {
 	if (ferror(f)
@@ -2443,12 +2465,18 @@ rb_fopen(fname, mode)
     const char *mode;
 {
     FILE *file;
+    char *vms_mode;
 
 #ifdef __VMS
     /* BG: 02-Feb-05: Support VMS file open modes to allow shared
-     * access. */
+     * access.
+     * BG: 11-Jun-07: Support fixed-512 */
     if (!NIL_P(rb_VmsFileMode) && (TYPE(rb_VmsFileMode) == T_STRING)) {
-       file = fopen(fname, mode, RSTRING(rb_VmsFileMode)->ptr);
+       vms_mode=RSTRING(rb_VmsFileMode)->ptr;
+       if (strncmp(vms_mode,"rfm=fix",7)==0)
+          file = fopen(fname, mode, "rfm=fix", "mrs=512");
+       else
+          file = fopen(fname, mode, vms_mode);
     }
     else {
        file = fopen(fname, mode);
@@ -5546,6 +5574,8 @@ Init_IO()
 
 #ifdef __VMS
     rb_VmsFileMode = Qnil;
+    rb_VmsUseFwrite = Qfalse;
     rb_define_variable("$VMS_FILE_MODE",&rb_VmsFileMode);
+    rb_define_variable("$VMS_USE_FWRITE",&rb_VmsUseFwrite);
 #endif
 }
