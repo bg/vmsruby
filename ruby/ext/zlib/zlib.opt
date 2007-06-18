@@ -1,0 +1,2 @@
+LIBZ_SHR64/share
+SYMBOL_VECTOR=(Init_zlib=PROCEDURE)
