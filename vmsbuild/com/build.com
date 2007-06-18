@@ -1,6 +1,7 @@
 $! BUILD.COM P1
 $!
 $!   P1 - start phase (SETUP, [CLEANUP], MAKE, EXTLIB, BLDLIB, KITGEN)
+$!   P2 - When P1=EXTLIB, P2=<external library name> (i.e. fcntl,zlib)
 $
 $ RUBY_STREAM   = "018"
 $
@@ -95,7 +96,7 @@ $LAST_ACTION:
 $ GOTO EXIT
 $
 $EXTLIB:
-$ @COM$:BUILD_EXTLIB "" 'P1'
+$ @COM$:BUILD_EXTLIB "''P2'" 'P1'
 $ GOTO EXIT
 $
 $BLDLIB:

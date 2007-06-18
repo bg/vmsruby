@@ -25,12 +25,14 @@ $ CALL BUILD NKF		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST 		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.MD5		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.SHA1	'phase' 'target' 'libroot'
+$ CALL BUILD DIGEST.SHA2	'phase' 'target' 'libroot'
 $ CALL BUILD SDBM		'phase' 'target' 'libroot'
 $ CALL BUILD FCNTL		'phase' 'target'
 $! CALL BUILD DL			'phase' 'target' 'libroot'
 $ CALL BUILD STRINGIO		'phase' 'target' 'libroot'
 $ CALL BUILD STRSCAN		'phase' 'target' 'libroot'
 $ CALL BUILD SYCK		'phase' 'target' 'libroot'
+$ CALL BUILD ZLIB		'phase' 'target' 'libroot'
 $ EXIT
 $
 $!
