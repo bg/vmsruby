@@ -56,9 +56,7 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
                :BindAddress => options[:ip] }
     params[:MimeTypes] = options[:mime_types] if options[:mime_types]
 
-    # Save $server to allow us to later access $server.shutdown from
-    # within the rails app.
-    $server = server = WEBrick::HTTPServer.new(params)
+    server = WEBrick::HTTPServer.new(params)
     server.mount('/', DispatchServlet, options)
 
     trap("INT") { server.shutdown }
