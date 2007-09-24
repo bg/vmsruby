@@ -7,8 +7,8 @@ module StoreLockTest
 
   def test_locking()
     lock_time_out = 0.001 # we want this test to run quickly
-    lock1 = @dir.make_lock("l.lck")
-    lock2 = @dir.make_lock("l.lck")
+    lock1 = @dir.make_lock("l_lck")
+    lock2 = @dir.make_lock("l_lck")
 
     assert(!lock2.locked?)
     assert(lock1.obtain(lock_time_out))
