@@ -1,0 +1,5 @@
+rubyshr/shareable
+SYMBOL_VECTOR=(Init_Ferret=PROCEDURE)
+SYMBOL_VECTOR=(Init_Term=PROCEDURE)
+SYMBOL_VECTOR=(Init_ferret_ext=PROCEDURE)
+

@@ -1,4 +1,4 @@
-﻿#include <regex.h>
+#include <regex.h>
 #include <locale.h>
 #include <st.h>
 #include "ferret.h"
