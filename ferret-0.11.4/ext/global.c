@@ -358,11 +358,11 @@ void dummy_free(void *p)
 }
 
 #ifdef FRT_IS_C99
-extern void usleep(unsigned long usec);
+   extern void usleep(unsigned long usec);
 #else
-# ifdef RUBY_BINDINGS
-extern "C" struct timeval rb_time_interval _((VALUE));
-# else
+#ifdef RUBY_BINDINGS
+   extern "C" struct timeval rb_time_interval _((VALUE));
+#else
 #  include <unistd.h>
 # endif
 #endif
@@ -370,7 +370,11 @@ extern "C" struct timeval rb_time_interval _((VALUE));
 extern void micro_sleep(const int micro_seconds)
 {
 #ifdef RUBY_BINDINGS
+# ifdef FRT_IS_C99
+    usleep(micro_seconds);
+# else
     rb_thread_wait_for(rb_time_interval(rb_float_new((double)micro_seconds/1000000.0)));
+# endif
 #else
 # ifdef POSH_OS_WIN32
     Sleep(micro_seconds / 1000);
