@@ -13,6 +13,7 @@ class Float
 end
 
 require 'test/unit'
+require 'test/unit/autorunner'
 require 'ferret'
 require 'unit/index/th_doc' if (defined?(IndexTestHelper).nil?)
 
@@ -22,3 +23,9 @@ def load_test_dir(dir)
     require file
   end
 end
+
+
+#ar=Test::Unit::AutoRunner.new(true) 
+#ar.output_level=Test::Unit::UI::VERBOSE
+##ar.output_level=3
+#ar.run
