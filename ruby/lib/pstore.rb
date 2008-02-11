@@ -1,3 +1,4 @@
+$VMS_USE_FWRITE=true
 #
 # How to use:
 #
