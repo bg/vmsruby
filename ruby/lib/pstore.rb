@@ -88,10 +88,10 @@ class PStore
   end
 
   def transaction(read_only=false)
-    old_vms_use_fwrite=$VMS_USE_FWRITE
-    $VMS_USE_FWRITE=true
     raise PStore::Error, "nested transaction" if @transaction
     begin
+      old_vms_use_fwrite=$VMS_USE_FWRITE
+      $VMS_USE_FWRITE=true
       @rdonly = read_only
       @abort = false
       @transaction = true
@@ -153,8 +153,8 @@ class PStore
       @table = nil
       @transaction = false
       file.close if file
+      $VMS_USE_FWRITE=old_vms_use_fwrite
     end
-    $VMS_USE_FWRITE=old_vms_use_fwrite
     value
   end
 
