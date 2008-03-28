@@ -313,10 +313,10 @@ module WEBrick
       else
         while size > 0
           sz = BUFSIZE < size ? BUFSIZE : size
-	  # Probably due to VMS socket/select breakage elsewhere,
-	  # this read() can sometimes return nil, so we need to
-	  # convert it to_s to ensure buf.size doesn't throw an
-	  # exception.
+          # Probably due to VMS socket/select breakage elsewhere,
+          # this read() can sometimes return nil, so we need to
+          # convert it to_s to ensure buf.size doesn't throw an
+          # exception.
           buf = input.read(sz).to_s
           _write_data(output, buf)
           size -= buf.size
@@ -324,8 +324,25 @@ module WEBrick
       end
     end
 
+    # On VMS, sockets are limited by RMS to a 64K buffersize.  Attempts
+    # to write beyond this length will throw an "invalid buffer length"
+    # error, e.g.
+    #        [2008-03-20 13:48:11] ERROR Errno::E65535: invalid buffer length
+    #        /RUBY_LIBROOT/018/webrick/httpresponse.rb:324:in `write'
+    #        /RUBY_LIBROOT/018/webrick/httpresponse.rb:324:in `<<'
+    #        /RUBY_LIBROOT/018/webrick/httpresponse.rb:324:in `_write_data'
+    # Therefore, we slice the data into 64K segments instead of writing
+    # it out in a single append operation.
+    WRITE_LIMIT=65535
+
     def _write_data(socket, data)
-      socket << data
+      start,size=0,data.size
+      while size > 0
+        sz = WRITE_LIMIT < size ? WRITE_LIMIT : size
+        socket << data[start..start+sz-1]
+        start += sz
+        size -= sz
+      end
     end
   end
 end
