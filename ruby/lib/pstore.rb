@@ -16,9 +16,17 @@ require "fileutils"
 require "digest/md5"
 
 # ODS-2 does not allow multiple dots in filenames, so replace any
-# that might occur in the filename before adding suffix.
+# that might occur in the filename (only substituting dots after ']'
+# if one is present) before adding suffix.
 def suffix_filename filename,suffix
-  filename.gsub(/\./,'_')+suffix
+  vms_dir,base=filename.split(/\]/)
+  if base
+      vms_dir += ']'
+  else
+      base = vms_dir
+      vms_dir = ''
+  end
+  vms_dir+base.gsub(/\./,'_')+suffix 
 end
 
 class PStore
