@@ -15,6 +15,12 @@
 require "fileutils"
 require "digest/md5"
 
+# ODS-2 does not allow multiple dots in filenames, so replace any
+# that might occur in the filename before adding suffix.
+def suffix_filename filename,suffix
+  filename.gsub(/\./,'_')+suffix
+end
+
 class PStore
   class Error < StandardError
   end
@@ -96,7 +102,7 @@ class PStore
       @abort = false
       @transaction = true
       value = nil
-      new_file = @filename + ".new"
+      new_file = suffix_filename @filename,".new"
 
       content = nil
       unless read_only
@@ -136,7 +142,7 @@ class PStore
 	raise
       ensure
 	if !read_only and !@abort
-          tmp_file = @filename + ".tmp"
+          tmp_file = suffix_filename @filename,".tmp"
 	  content = dump(@table)
 	  if !md5 || size != content.size || md5 != Digest::MD5.digest(content)
             File.open(tmp_file, "w") {|t|
@@ -174,13 +180,14 @@ class PStore
   def commit_new(f)
     f.truncate(0)
     f.rewind
-    new_file = @filename + ".new"
+    new_file = suffix_filename @filename,".new"
     File.open(new_file) do |nf|
       nf.binmode
       FileUtils.copy_stream(nf, f)
     end
     File.unlink(new_file)
   end
+
 end
 
 if __FILE__ == $0
