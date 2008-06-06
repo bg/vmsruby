@@ -15,18 +15,15 @@
 require "fileutils"
 require "digest/md5"
 
-# ODS-2 does not allow multiple dots in filenames, so replace any
-# that might occur in the filename (only substituting dots after ']'
-# if one is present) before adding suffix.
+# ODS-2 does not allow multiple dots in filenames, so suffix
+# with underscore instead.
+# - FixMe: ideally we would change the final dot in the basename to an
+#   underscore and leave the dot in the suffix alone, but as of
+#   06-Jun-2008, basename doesn't work with VMS filepaths; there is a
+#   workaround for this in our util.rb, but it *breaks* basename on Unix
+#   filepaths and we need to handle both.
 def suffix_filename filename,suffix
-  vms_dir,base=filename.split(/\]/)
-  if base
-      vms_dir += ']'
-  else
-      base = vms_dir
-      vms_dir = ''
-  end
-  vms_dir+base.gsub(/\./,'_')+suffix 
+  filename+suffix.sub(/\./,'_')
 end
 
 class PStore
