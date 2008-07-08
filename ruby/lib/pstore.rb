@@ -113,14 +113,20 @@ class PStore
       unless read_only
         file = File.open(@filename, File::RDWR | File::CREAT)
         file.binmode
-        file.flock(File::LOCK_EX)
+# FixMe: disabled until VMS file locking is fixed
+#   - In testing, the lock was never released after the
+#     file was closed.
+#       file.flock(File::LOCK_EX)
         commit_new(file) if FileTest.exist?(new_file)
         content = file.read()
       else
         begin
           file = File.open(@filename, File::RDONLY)
           file.binmode
-          file.flock(File::LOCK_SH)
+# FixMe: disabled until VMS file locking is fixed
+#   - We didn't test read_only mode, but we assume it has the
+#     same problem with locks not being relieved upon close.
+#         file.flock(File::LOCK_SH)
           content = (File.read(new_file) rescue file.read())
         rescue Errno::ENOENT
           content = ""
