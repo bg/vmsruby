@@ -111,8 +111,11 @@ class PStore
 
       content = nil
       unless read_only
-        file = File.open(@filename, File::RDWR | File::CREAT)
-        file.binmode
+	exists=File.exists? @filename
+        $VMS_FILE_MODE='shr=get,put'
+	file = (exists ?
+		File.open(@filename,'r+') :
+		File.open(@filename,'w+')).binmode
 # FixMe: disabled until VMS file locking is fixed
 #   - In testing, the lock was never released after the
 #     file was closed.
@@ -121,8 +124,8 @@ class PStore
         content = file.read()
       else
         begin
-          file = File.open(@filename, File::RDONLY)
-          file.binmode
+          $VMS_FILE_MODE='shr=get,put'
+          file = File.open(@filename, 'r').binmode
 # FixMe: disabled until VMS file locking is fixed
 #   - We didn't test read_only mode, but we assume it has the
 #     same problem with locks not being relieved upon close.
