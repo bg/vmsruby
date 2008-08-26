@@ -26,6 +26,12 @@
 #ifdef __DJGPP__
 #include <process.h>
 #endif
+#ifdef __VMS
+#include <ssdef.h>
+#include <stsdef.h>
+#include <descrip.h>
+#include <lib$routines.h>
+#endif
 
 #include <time.h>
 #include <ctype.h>
@@ -1051,7 +1057,15 @@ rb_proc_exec(str)
 		exit(status);
 #else
 	    before_exec();
+#ifdef __VMS
+            static unsigned long int r0_status;
+            struct dsc$descriptor_s str_d =
+                       {strlen(str), DSC$K_DTYPE_T, DSC$K_CLASS_S, str };
+            fprintf(stderr, "lib$do_command(\"%s\")\n" ,str);
+            r0_status = lib$do_command (&str_d);
+#else
 	    execl("/bin/sh", "sh", "-c", str, (char *)NULL);
+#endif
 	    after_exec();
 #endif
 #endif
