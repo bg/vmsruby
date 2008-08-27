@@ -1061,7 +1061,6 @@ rb_proc_exec(str)
             static unsigned long int r0_status;
             struct dsc$descriptor_s str_d =
                        {strlen(str), DSC$K_DTYPE_T, DSC$K_CLASS_S, str };
-            fprintf(stderr, "lib$do_command(\"%s\")\n" ,str);
             r0_status = lib$do_command (&str_d);
 #else
 	    execl("/bin/sh", "sh", "-c", str, (char *)NULL);
