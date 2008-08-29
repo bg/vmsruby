@@ -970,19 +970,26 @@ io_fread(ptr, len, fptr)
     long n = len;
     int c;
 
+//    fprintf(stderr,"DEBUG: io_fread(ptr, %li, fptr)\n",len);
+//    fprintf(stderr,"DEBUG: fptr->path = %s\n",fptr->path);
+//    fprintf(stderr,"DEBUG: fptr->lineno = %i\n",fptr->lineno);
+
     while (n > 0) {
 #ifdef READ_DATA_PENDING_COUNT
 	long i = READ_DATA_PENDING_COUNT(fptr->f);
+//        fprintf(stderr,"DEBUG: READ_DATA_PENDING_COUNT(fptr->f) = %li\n",i);
 	if (i <= 0) {
 	    rb_thread_wait_fd(fileno(fptr->f));	
 	    rb_io_check_closed(fptr);
 	    i = READ_DATA_PENDING_COUNT(fptr->f);
+//            fprintf(stderr,"DEBUG: READ_DATA_PENDING_COUNT(fptr->f) = %li\n",i);
 	}
 	if (i > 0) {
 	    if (i > n) i = n;
 	    TRAP_BEG;
 	    c = fread(ptr, 1, i, fptr->f);
 	    TRAP_END;
+//            fprintf(stderr,"DEBUG: fread(ptr, 1, %li, fptr->f) = %i\n",i,c);
 	    if (c < 0) goto eof;
 	    ptr += c;
 	    n -= c;
@@ -1000,6 +1007,7 @@ io_fread(ptr, len, fptr)
 	TRAP_END;
 	if (c == EOF) {
 	  eof:
+//            fprintf(stderr,"DEBUG: eof\n");
 	    if (ferror(fptr->f)) {
 		switch (errno) {
 		  case EINTR:
@@ -2459,6 +2467,30 @@ rb_sysopen(fname, flags, mode)
     return fd;
 }
 
+#define MAX_SPLIT_ELEMENT_SIZE 20
+
+static int
+split(input, delimiter, outputArray)
+    const char* input;
+    char delimiter;
+    char outputArray[][MAX_SPLIT_ELEMENT_SIZE];
+{
+    int index=0,
+	length;
+    char *start=(char*)input, *end;
+    char *trailingNull=start+strlen(input);
+
+    while(start<trailingNull){
+        end=strchr(start,delimiter);
+        if (end==NULL) end=trailingNull;
+        length=end-start;
+        strncpy(outputArray[index],start,length);
+        outputArray[index++][length+1]='\0';
+        start=end+1;
+    }
+    return index;
+}
+
 FILE *
 rb_fopen(fname, mode)
     const char *fname;
@@ -2466,17 +2498,38 @@ rb_fopen(fname, mode)
 {
     FILE *file;
     char *vms_mode;
+    int numMatch = 0;
+    char vmsModes[4][MAX_SPLIT_ELEMENT_SIZE]={{0,0}};
 
 #ifdef __VMS
     /* BG: 02-Feb-05: Support VMS file open modes to allow shared
      * access.
-     * BG: 11-Jun-07: Support fixed-512 */
+     * BG: 11-Jun-07: Support fixed-512
+     * BG: 10-Jan-07: Support arbitrary number of modes */
     if (!NIL_P(rb_VmsFileMode) && (TYPE(rb_VmsFileMode) == T_STRING)) {
-       vms_mode=RSTRING(rb_VmsFileMode)->ptr;
-       if (strncmp(vms_mode,"rfm=fix",7)==0)
-          file = fopen(fname, mode, "rfm=fix", "mrs=512");
-       else
-          file = fopen(fname, mode, vms_mode);
+        vms_mode=RSTRING(rb_VmsFileMode)->ptr;
+        if (strncmp(vms_mode,"rfm=fix",7)==0)
+            file = fopen(fname, mode, "rfm=fix", "mrs=512");
+        else {
+            numMatch=split(vms_mode, ';', vmsModes);
+            switch (numMatch) {
+                case 0:
+                    file = fopen(fname, mode);
+                    break;
+                case 1:
+                    file = fopen(fname, mode, vmsModes[0]);
+                    break;
+                case 2:
+                    file = fopen(fname, mode, vmsModes[0], vmsModes[1]);
+                    break;
+                case 3:
+                    file = fopen(fname, mode, vmsModes[0], vmsModes[1], vmsModes[2]);
+                    break;
+                case 4:
+                    file = fopen(fname, mode, vmsModes[0], vmsModes[1], vmsModes[2], vmsModes[3]);
+                    break;
+	    }
+        }
     }
     else {
        file = fopen(fname, mode);
