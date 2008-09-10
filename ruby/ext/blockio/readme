@@ -1,0 +1,12 @@
+-*- rd -*-
+$Author: bg $
+$Date: 2008/01/16 13:48:03 $
+
+=begin
+
+= BlockIO
+ (({IO})) class from/to block structured (({File})).
+
+= Differences to (({IO}))
+
+=end
