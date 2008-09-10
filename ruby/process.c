@@ -1034,6 +1034,12 @@ rb_proc_exec(str)
     do_spawn(P_OVERLAY, (char *)str);
     after_exec();
 #else
+#ifdef __VMS
+    static unsigned long int r0_status;
+    struct dsc$descriptor_s str_d =
+               {strlen(str), DSC$K_DTYPE_T, DSC$K_CLASS_S, str };
+    r0_status = lib$do_command (&str_d);
+#else
     for (s=str; *s; s++) {
 	if (*s != ' ' && !ISALPHA(*s) && strchr("*?{}[]<>()~&|\\$;'`\"\n",*s)) {
 #if defined(MSDOS)
@@ -1057,14 +1063,7 @@ rb_proc_exec(str)
 		exit(status);
 #else
 	    before_exec();
-#ifdef __VMS
-            static unsigned long int r0_status;
-            struct dsc$descriptor_s str_d =
-                       {strlen(str), DSC$K_DTYPE_T, DSC$K_CLASS_S, str };
-            r0_status = lib$do_command (&str_d);
-#else
 	    execl("/bin/sh", "sh", "-c", str, (char *)NULL);
-#endif
 	    after_exec();
 #endif
 #endif
@@ -1084,6 +1083,7 @@ rb_proc_exec(str)
 	return proc_exec_v(argv, 0);
     }
     errno = ENOENT;
+#endif  /* __VMS */
 #endif	/* _WIN32 */
     return -1;
 }
