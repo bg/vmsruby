@@ -1,2 +1,2 @@
 require 'mkmf'
-create_makefile('blockio')
+create_makefile('lcklib')
