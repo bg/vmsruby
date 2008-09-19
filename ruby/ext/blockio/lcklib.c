@@ -11,36 +11,24 @@
 **********************************************************************/
 
 #include "ruby.h"
-#include "rubyio.h"
-//#include "lcklib.h"
-
-static VALUE lcklib_open _((VALUE));
-static VALUE lcklib_initialize _((int, VALUE *, VALUE));
-void Init_lcklib _((void));
+/* #include "lcklib.h" */
 
 static VALUE
-lcklib_open(argc, argv, klass)
-    int argc;
-    VALUE *argv;
-    VALUE klass;
+lcklib_open(VALUE self, VALUE obj)
 {
     return Qnil;
 }
 
 static VALUE
-lcklib_initialize(argc, argv, self)
-    int argc;
-    VALUE *argv;
-    VALUE self;
+lcklib_initialize(VALUE self)
 {
     return self;
 }
 
 void
-Init_lcklib()
+Init_Lcklib()
 {
-    VALUE Lcklib = rb_define_class("Lcklib", rb_cData);
+    VALUE Lcklib = rb_define_class("Lcklib", rb_cObject);
 
-    rb_define_singleton_method(Lcklib, "open", lcklib_open, -1);
-    rb_define_method(Lcklib, "initialize", lcklib_initialize, -1);
+    rb_define_method(Lcklib, "initialize", lcklib_initialize, 0);
 }
