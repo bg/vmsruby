@@ -14,37 +14,97 @@
 #include "rubyio.h"
 #include "clcklib.h"
 
-static VALUE
-lcklib_open(VALUE self, VALUE fname)
-{
-    int errCode,retVal;
+static VALUE rb_cLcklib, rb_eLcklibError;
+
+struct lckdata {
     void *fptr;
-    retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_READ,512);
-    if(retVal == -1){
-	rb_sys_fail(RSTRING(fname)->ptr);
+};
+
+#define GetLck(obj, lckp) {\
+    Data_Get_Struct(obj, struct lckdata, lckp);\
+    if (lckp == 0) closed_lck();\
+    if (lckp->fptr == NULL) closed_lck();\
+}
+
+static void
+free_lck(lckp)
+    struct lckdata *lckp;
+{
+    int errCode;
+
+    if (lckp) {
+	if (lckp->fptr) cRecordCloseFile(lckp->fptr, &errCode);
+	free(lckp);
     }
-    /* FixMe: store fptr in an instance variable */
-    /* return fptr; */
-    return self;
+}
+
+static VALUE lcklib_alloc _((VALUE));
+static VALUE
+lcklib_alloc(klass)
+    VALUE klass;
+{
+    return Data_Wrap_Struct(klass, 0, free_lck, 0);
+}
+
+static void
+closed_lck()
+{
+    rb_raise(rb_eLcklibError, "closed Lcklib file");
 }
 
 static VALUE
-lcklib_initialize(VALUE self)
+lcklib_initialize(argc, argv, obj)
+    int argc;
+    VALUE *argv;
+    VALUE obj;
 {
-    return self;
+    int errCode,retVal;
+    struct lckdata *lckp;
+    VALUE fname;
+    void *fptr;
+    
+    rb_scan_args(argc, argv, "1", &fname);
+    SafeStringValue(fname);
+
+    retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_READ,512);
+
+    if(retVal == -1){
+        rb_raise(rb_eLcklibError, "could not open Lcklib file");
+    }
+
+    lckp = ALLOC(struct lckdata);
+    lckp->fptr = fptr;
+    DATA_PTR(obj) = lckp;
+
+    return obj;
+}
+
+static VALUE
+lcklib_s_open(argc, argv, klass)
+    int argc;
+    VALUE *argv;
+    VALUE klass;
+{
+    VALUE obj = Data_Wrap_Struct(klass, 0, free_lck, 0);
+
+    lcklib_initialize(argc, argv, obj);
+
+    return obj;
 }
 
 void
 Init_Lcklib()
 {
-    VALUE Lcklib = rb_define_class("Lcklib", rb_cObject);
-    rb_include_module(Lcklib, rb_mEnumerable);
+    rb_cLcklib = rb_define_class("Lcklib", rb_cObject);
+    rb_eLcklibError = rb_define_class("LcklibError", rb_eStandardError);
+    rb_include_module(rb_cLcklib, rb_mEnumerable);
 
+    rb_define_singleton_method(rb_cLcklib, "open", lcklib_s_open, -1);
 
-    rb_define_method(Lcklib, "initialize", lcklib_initialize, 0);
-    rb_define_singleton_method(Lcklib, "open", lcklib_open, 1);
-/*    rb_define_method(Lcklib, "close", lcklib_close, 0);
-    rb_define_method(Lcklib, "[]", lcklib_fetch, 1);
+    rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
+    rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, 0);
+/*    rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
+    rb_define_method(rb_cLcklib, "[]", lcklib_fetch, 1);
 
     id_lcklib = rb_intern("lcklib"); */
 }
