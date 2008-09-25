@@ -153,6 +153,21 @@ lcklib_unlock(obj, record)
     return Qnil;
 }
 
+static VALUE
+lcklib_put(obj, record, buf)
+    VALUE obj, record, buf;
+{
+    int errCode;
+    struct lckdata *lckp;
+
+    GetLck(obj, lckp);
+    if (cRecordPut(lckp->fptr, &errCode, NUM2LONG(record), RSTRING(buf)->ptr, LCKLIB_STD_REC_SIZ)==-1) {
+        rb_raise(rb_eLcklibError, "could not put record");
+    }
+
+    return buf;
+}
+
 void
 Init_Lcklib()
 {
@@ -160,16 +175,16 @@ Init_Lcklib()
     rb_eLcklibError = rb_define_class("LcklibError", rb_eStandardError);
     rb_include_module(rb_cLcklib, rb_mEnumerable);
 
+    rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
+
     rb_define_singleton_method(rb_cLcklib, "open", lcklib_s_open, -1);
 
-    rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
     rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, 0);
     rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
     rb_define_method(rb_cLcklib, "get", lcklib_get, 1);
     rb_define_alias(rb_cLcklib, "[]", "get");
     rb_define_method(rb_cLcklib, "get_locked", lcklib_get_locked, 1);
     rb_define_method(rb_cLcklib, "unlock", lcklib_unlock, 1);
-
-    /* id_lcklib = rb_intern("lcklib"); */
+    rb_define_method(rb_cLcklib, "put", lcklib_put, 2);
 }
 
