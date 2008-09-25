@@ -122,6 +122,37 @@ lcklib_get(obj, record)
     return rb_tainted_str_new(buf, 512);
 }
 
+static VALUE
+lcklib_get_locked(obj, record)
+    VALUE obj, record;
+{
+    char buf[512]={0};
+    int errCode;
+    struct lckdata *lckp;
+
+    GetLck(obj, lckp);
+    if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, 512)==-1) {
+        rb_raise(rb_eLcklibError, "could not get record locked");
+    }
+
+    return rb_tainted_str_new(buf, 512);
+}
+
+static VALUE
+lcklib_unlock(obj, record)
+    VALUE obj, record;
+{
+    int errCode;
+    struct lckdata *lckp;
+
+    GetLck(obj, lckp);
+    if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), 512)==-1) {
+        rb_raise(rb_eLcklibError, "could not unlock record");
+    }
+
+    return Qnil;
+}
+
 void
 Init_Lcklib()
 {
@@ -136,6 +167,8 @@ Init_Lcklib()
     rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
     rb_define_method(rb_cLcklib, "get", lcklib_get, 1);
     rb_define_alias(rb_cLcklib, "[]", "get");
+    rb_define_method(rb_cLcklib, "get_locked", lcklib_get_locked, 1);
+    rb_define_method(rb_cLcklib, "unlock", lcklib_unlock, 1);
 
     /* id_lcklib = rb_intern("lcklib"); */
 }
