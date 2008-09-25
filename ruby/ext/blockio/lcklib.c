@@ -105,7 +105,23 @@ lcklib_close(obj)
 
     return Qnil;
 }
-    
+
+static VALUE
+lcklib_get(obj, record)
+    VALUE obj, record;
+{
+    char buf[512]={0};
+    int errCode;
+    struct lckdata *lckp;
+
+    GetLck(obj, lckp);
+    if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, 512)==-1) {
+        rb_raise(rb_eLcklibError, "could not get record");
+    }
+
+    return rb_tainted_str_new(buf, 512);
+}
+
 void
 Init_Lcklib()
 {
@@ -118,8 +134,9 @@ Init_Lcklib()
     rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
     rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, 0);
     rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
-/*   rb_define_method(rb_cLcklib, "[]", lcklib_fetch, 1);
+    rb_define_method(rb_cLcklib, "get", lcklib_get, 1);
+    rb_define_alias(rb_cLcklib, "[]", "get");
 
-    id_lcklib = rb_intern("lcklib"); */
+    /* id_lcklib = rb_intern("lcklib"); */
 }
 
