@@ -22,7 +22,7 @@ struct lckdata {
 
 #define GetLck(obj, lckp) {\
     Data_Get_Struct(obj, struct lckdata, lckp);\
-    if (lckp == 0) closed_lck();\
+    if (lckp == NULL) closed_lck();\
     if (lckp->fptr == NULL) closed_lck();\
 }
 
@@ -49,7 +49,7 @@ lcklib_alloc(klass)
 static void
 closed_lck()
 {
-    rb_raise(rb_eLcklibError, "closed Lcklib file");
+    rb_raise(rb_eLcklibError, "attempted access to closed file");
 }
 
 static VALUE
@@ -69,7 +69,7 @@ lcklib_initialize(argc, argv, obj)
     retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_READ,512);
 
     if(retVal == -1){
-        rb_raise(rb_eLcklibError, "could not open Lcklib file");
+        rb_raise(rb_eLcklibError, "could not open file");
     }
 
     lckp = ALLOC(struct lckdata);
@@ -92,6 +92,20 @@ lcklib_s_open(argc, argv, klass)
     return obj;
 }
 
+static VALUE
+lcklib_close(obj)
+    VALUE obj;
+{
+    int errCode;
+    struct lckdata *lckp;
+
+    GetLck(obj, lckp);
+    cRecordCloseFile(lckp->fptr, &errCode);
+    lckp->fptr=NULL;
+
+    return Qnil;
+}
+    
 void
 Init_Lcklib()
 {
@@ -103,8 +117,8 @@ Init_Lcklib()
 
     rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
     rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, 0);
-/*    rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
-    rb_define_method(rb_cLcklib, "[]", lcklib_fetch, 1);
+    rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
+/*   rb_define_method(rb_cLcklib, "[]", lcklib_fetch, 1);
 
     id_lcklib = rb_intern("lcklib"); */
 }
