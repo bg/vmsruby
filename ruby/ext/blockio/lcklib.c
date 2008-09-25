@@ -66,7 +66,7 @@ lcklib_initialize(argc, argv, obj)
     rb_scan_args(argc, argv, "1", &fname);
     SafeStringValue(fname);
 
-    retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_READ,512);
+    retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_WRITE_SH_WRITE,LCKLIB_STD_REC_SIZ);
 
     if(retVal == -1){
         rb_raise(rb_eLcklibError, "could not open file");
@@ -110,32 +110,32 @@ static VALUE
 lcklib_get(obj, record)
     VALUE obj, record;
 {
-    char buf[512]={0};
+    char buf[LCKLIB_STD_REC_SIZ]={0};
     int errCode;
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
-    if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, 512)==-1) {
+    if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(rb_eLcklibError, "could not get record");
     }
 
-    return rb_tainted_str_new(buf, 512);
+    return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
 }
 
 static VALUE
 lcklib_get_locked(obj, record)
     VALUE obj, record;
 {
-    char buf[512]={0};
+    char buf[LCKLIB_STD_REC_SIZ]={0};
     int errCode;
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
-    if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, 512)==-1) {
+    if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(rb_eLcklibError, "could not get record locked");
     }
 
-    return rb_tainted_str_new(buf, 512);
+    return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
 }
 
 static VALUE
@@ -146,7 +146,7 @@ lcklib_unlock(obj, record)
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
-    if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), 512)==-1) {
+    if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(rb_eLcklibError, "could not unlock record");
     }
 
