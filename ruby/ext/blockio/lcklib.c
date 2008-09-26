@@ -69,7 +69,7 @@ lcklib_initialize(argc, argv, obj)
     retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_WRITE_SH_WRITE,LCKLIB_STD_REC_SIZ);
 
     if(retVal == -1){
-        rb_raise(rb_eLcklibError, "could not open file");
+        rb_raise(rb_eLcklibError, "could not open file: %s",RSTRING(fname)->ptr);
     }
 
     lckp = ALLOC(struct lckdata);
@@ -116,7 +116,7 @@ lcklib_get(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not get record");
+        rb_raise(rb_eLcklibError, "could not get record: %d",NUM2LONG(record));
     }
 
     return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
@@ -132,7 +132,7 @@ lcklib_get_locked(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not get record locked");
+        rb_raise(rb_eLcklibError, "could not get record locked: %d",NUM2LONG(record));
     }
 
     return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
@@ -147,7 +147,7 @@ lcklib_unlock(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not unlock record");
+        rb_raise(rb_eLcklibError, "could not unlock record: %d",NUM2LONG(record));
     }
 
     return Qnil;
@@ -162,7 +162,7 @@ lcklib_put(obj, record, buf)
 
     GetLck(obj, lckp);
     if (cRecordPut(lckp->fptr, &errCode, NUM2LONG(record), RSTRING(buf)->ptr, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not put record");
+        rb_raise(rb_eLcklibError, "could not put record: %d",NUM2LONG(record));
     }
 
     return buf;
@@ -179,7 +179,7 @@ Init_Lcklib()
 
     rb_define_singleton_method(rb_cLcklib, "open", lcklib_s_open, -1);
 
-    rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, 0);
+    rb_define_method(rb_cLcklib, "initialize", lcklib_initialize, -1);
     rb_define_method(rb_cLcklib, "close", lcklib_close, 0);
     rb_define_method(rb_cLcklib, "get", lcklib_get, 1);
     rb_define_alias(rb_cLcklib, "[]", "get");
