@@ -14,7 +14,7 @@
 #include "rubyio.h"
 #include "clcklib.h"
 
-static VALUE rb_cLcklib, rb_eLcklibError;
+static VALUE rb_cLcklib, rb_eLcklibError, rb_eLcklibLockError;
 
 struct lckdata {
     void *fptr;
@@ -137,7 +137,7 @@ lcklib_get_locked(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not get record locked: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
+        rb_raise(rb_eLcklibLockError, "could not get record locked: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
 
     return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
@@ -178,6 +178,7 @@ Init_Lcklib()
 {
     rb_cLcklib = rb_define_class("Lcklib", rb_cObject);
     rb_eLcklibError = rb_define_class("LcklibError", rb_eStandardError);
+    rb_eLcklibLockError = rb_define_class_under(rb_eLcklibError, "Lock", rb_eStandardError);
     rb_include_module(rb_cLcklib, rb_mEnumerable);
 
     rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
