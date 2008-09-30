@@ -165,7 +165,7 @@ lcklib_put(obj, record, buf)
         rb_raise(rb_eLcklibError, "could not put record: %d",NUM2LONG(record));
     }
 
-    return buf;
+    return Qnil;
 }
 
 void
