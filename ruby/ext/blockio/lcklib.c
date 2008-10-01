@@ -14,7 +14,13 @@
 #include "rubyio.h"
 #include "clcklib.h"
 
-static VALUE rb_cLcklib, rb_eLcklibError, rb_eLcklibLockError;
+static VALUE
+    rb_cLcklib,
+    rb_eLcklibAccessError,
+    rb_eLcklibEndOfFileError,
+    rb_eLcklibFileClosedError,
+    rb_eLcklibFileNotFoundError,
+    rb_eLcklibOtherError;
 
 struct lckdata {
     void *fptr;
@@ -40,6 +46,22 @@ free_lck(lckp)
     }
 }
 
+static VALUE
+error_class(error_code)
+    int error_code;
+{
+    switch(cRecordErr(error_code)) {
+        case LCKLIB_ACCESS:
+            return rb_eLcklibAccessError;
+        case LCKLIB_EOF:
+            return rb_eLcklibEndOfFileError;
+        case LCKLIB_FNF:
+            return rb_eLcklibFileNotFoundError;
+        case LCKLIB_OTHER:
+            return rb_eLcklibOtherError;
+    }
+}
+
 static VALUE lcklib_alloc _((VALUE));
 static VALUE
 lcklib_alloc(klass)
@@ -51,7 +73,7 @@ lcklib_alloc(klass)
 static void
 closed_lck()
 {
-    rb_raise(rb_eLcklibError, "attempted access to closed file");
+    rb_raise(rb_eLcklibFileClosedError, "attempted access to closed file");
 }
 
 static VALUE
@@ -71,7 +93,7 @@ lcklib_initialize(argc, argv, obj)
     retVal=cRecordOpenFile(&fptr,&errCode,RSTRING(fname)->ptr,LCKMOD_WRITE_SH_WRITE,LCKLIB_STD_REC_SIZ);
 
     if(retVal == -1){
-        rb_raise(rb_eLcklibError, "could not open file: %s",RSTRING(fname)->ptr);
+        rb_raise(error_class(errCode), "could not open file: %s",RSTRING(fname)->ptr);
     }
 
     lckp = ALLOC(struct lckdata);
@@ -121,7 +143,7 @@ lcklib_get(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not get record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
+        rb_raise(error_class(errCode), "could not get record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
 
     return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
@@ -137,7 +159,7 @@ lcklib_get_locked(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibLockError, "could not get record locked: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
+        rb_raise(error_class(errCode), "could not get record locked: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
 
     return rb_tainted_str_new(buf, LCKLIB_STD_REC_SIZ);
@@ -152,7 +174,7 @@ lcklib_unlock(obj, record)
 
     GetLck(obj, lckp);
     if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not unlock record: %d",NUM2LONG(record));
+        rb_raise(error_class(errCode), "could not unlock record: %d",NUM2LONG(record));
     }
 
     return Qnil;
@@ -167,7 +189,7 @@ lcklib_put(obj, record, buf)
 
     GetLck(obj, lckp);
     if (cRecordPut(lckp->fptr, &errCode, NUM2LONG(record), RSTRING(buf)->ptr, LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(rb_eLcklibError, "could not put record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
+        rb_raise(error_class(errCode), "could not put record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
 
     return Qnil;
@@ -177,8 +199,11 @@ void
 Init_Lcklib()
 {
     rb_cLcklib = rb_define_class("Lcklib", rb_cObject);
-    rb_eLcklibError = rb_define_class("LcklibError", rb_eStandardError);
-    rb_eLcklibLockError = rb_define_class_under(rb_eLcklibError, "Lock", rb_eStandardError);
+    rb_eLcklibAccessError = rb_define_class_under(rb_cLcklib, "AccessError", rb_eStandardError);
+    rb_eLcklibEndOfFileError = rb_define_class_under(rb_cLcklib, "EndOfFileError", rb_eStandardError);
+    rb_eLcklibFileClosedError = rb_define_class_under(rb_cLcklib, "FileClosedError", rb_eStandardError);
+    rb_eLcklibFileNotFoundError = rb_define_class_under(rb_cLcklib, "FileNotFoundError", rb_eStandardError);
+    rb_eLcklibOtherError = rb_define_class_under(rb_cLcklib, "OtherError", rb_eStandardError);
     rb_include_module(rb_cLcklib, rb_mEnumerable);
 
     rb_define_alloc_func(rb_cLcklib, lcklib_alloc);
