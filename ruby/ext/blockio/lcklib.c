@@ -33,6 +33,11 @@ struct lckdata {
     if (lckp->fptr == NULL) closed_lck();\
 }
 
+#define ValidateRecord(record, lckp) \
+    if (NUM2LONG(record) <= 0) rb_raise(rb_eLcklibOtherError,\
+        "seek before start of file: %d in: %s",NUM2LONG(record),\
+        RSTRING(lckp->fname));
+
 static void
 free_lck(lckp)
     struct lckdata *lckp;
@@ -142,6 +147,7 @@ lcklib_get(obj, record)
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
+    ValidateRecord(record, lckp);
     if (cRecordGet(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(error_class(errCode), "could not get record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
@@ -158,6 +164,7 @@ lcklib_get_locked(obj, record)
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
+    ValidateRecord(record, lckp);
     if (cRecordLock(lckp->fptr, &errCode, NUM2LONG(record), buf, LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(error_class(errCode), "could not get record locked: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
@@ -173,8 +180,9 @@ lcklib_unlock(obj, record)
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
+    ValidateRecord(record, lckp);
     if (cRecordRelease(lckp->fptr, &errCode, NUM2LONG(record), LCKLIB_STD_REC_SIZ)==-1) {
-        rb_raise(error_class(errCode), "could not unlock record: %d",NUM2LONG(record));
+        rb_raise(error_class(errCode), "could not unlock record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
 
     return Qnil;
@@ -188,6 +196,7 @@ lcklib_put(obj, record, buf)
     struct lckdata *lckp;
 
     GetLck(obj, lckp);
+    ValidateRecord(record, lckp);
     if (cRecordPut(lckp->fptr, &errCode, NUM2LONG(record), RSTRING(buf)->ptr, LCKLIB_STD_REC_SIZ)==-1) {
         rb_raise(error_class(errCode), "could not put record: %d in file: %s",NUM2LONG(record),RSTRING(lckp->fname));
     }
