@@ -282,7 +282,7 @@ ossl_engine_ctrl_cmd(int argc, VALUE *argv, VALUE self)
     StringValue(cmd);
     if (!NIL_P(val)) StringValue(val);
     ret = ENGINE_ctrl_cmd_string(e, RSTRING_PTR(cmd),
-				 NIL_P(val) ? NULL : RSTRING_PTR(val), 0);
+				 NIL_P(val) ? RSTRING_PTR(NULL) : RSTRING_PTR(val), 0);
     if (!ret) ossl_raise(eEngineError, NULL);
 
     return self;
