@@ -98,9 +98,9 @@ get_strio(self)
 
 #define StringIO(obj) get_strio(obj)
 
-#define CLOSED(ptr) NIL_P((ptr)->string)
-#define READABLE(ptr) (!CLOSED(ptr) && ((ptr)->flags & FMODE_READABLE))
-#define WRITABLE(ptr) (!CLOSED(ptr) && ((ptr)->flags & FMODE_WRITABLE))
+#define CLOSED(ptr) (!((ptr)->flags & FMODE_READWRITE))
+#define READABLE(ptr) ((ptr)->flags & FMODE_READABLE)
+#define WRITABLE(ptr) ((ptr)->flags & FMODE_WRITABLE)
 
 static struct StringIO*
 readable(ptr)
@@ -136,6 +136,7 @@ check_modifiable(ptr)
 
 static VALUE strio_s_allocate _((VALUE));
 static VALUE strio_s_open _((int, VALUE *, VALUE));
+static void strio_init _((int, VALUE *, struct StringIO *));
 static VALUE strio_initialize _((int, VALUE *, VALUE));
 static VALUE strio_finalize _((VALUE));
 static VALUE strio_self _((VALUE));
@@ -198,6 +199,11 @@ strio_s_open(argc, argv, klass)
     return rb_ensure(rb_yield, obj, strio_finalize, obj);
 }
 
+/*
+ * call-seq: StringIO.new(string=""[, mode])
+ *
+ * Creates new StringIO instance from with _string_ and _mode_.
+ */
 static VALUE
 strio_initialize(argc, argv, self)
     int argc;
@@ -205,13 +211,24 @@ strio_initialize(argc, argv, self)
     VALUE self;
 {
     struct StringIO *ptr = check_strio(self);
-    VALUE string, mode;
-    int trunc = Qfalse;
 
     if (!ptr) {
 	DATA_PTR(self) = ptr = strio_alloc();
     }
     rb_call_super(0, 0);
+    strio_init(argc, argv, ptr);
+    return self;
+}
+
+static void
+strio_init(argc, argv, ptr)
+    int argc;
+    VALUE *argv;
+    struct StringIO *ptr;
+{
+    VALUE string, mode;
+    int trunc = Qfalse;
+
     switch (rb_scan_args(argc, argv, "02", &string, &mode)) {
       case 2:
 	if (FIXNUM_P(mode)) {
@@ -243,7 +260,6 @@ strio_initialize(argc, argv, self)
 	break;
     }
     ptr->string = string;
-    return self;
 }
 
 static VALUE
@@ -339,9 +355,8 @@ strio_close(self)
     if (CLOSED(ptr)) {
 	rb_raise(rb_eIOError, "closed stream");
     }
-    ptr->string = Qnil;
     ptr->flags &= ~FMODE_READWRITE;
-    return self;
+    return Qnil;
 }
 
 static VALUE
@@ -352,10 +367,8 @@ strio_close_read(self)
     if (!READABLE(ptr)) {
 	rb_raise(rb_eIOError, "closing non-duplex IO for reading");
     }
-    if (!((ptr->flags &= ~FMODE_READABLE) & FMODE_READWRITE)) {
-	ptr->string = Qnil;
-    }
-    return self;
+    ptr->flags &= ~FMODE_READABLE;
+    return Qnil;
 }
 
 static VALUE
@@ -366,10 +379,8 @@ strio_close_write(self)
     if (!WRITABLE(ptr)) {
 	rb_raise(rb_eIOError, "closing non-duplex IO for writing");
     }
-    if (!((ptr->flags &= ~FMODE_WRITABLE) & FMODE_READWRITE)) {
-	ptr->string = Qnil;
-    }
-    return self;
+    ptr->flags &= ~FMODE_WRITABLE;
+    return Qnil;
 }
 
 static VALUE
@@ -449,6 +460,14 @@ strio_set_lineno(self, lineno)
 
 #define strio_fsync strio_0
 
+/*
+ * call-seq:
+ *   strio.reopen(other_StrIO)     -> strio
+ *   strio.reopen(string, mode)    -> strio
+ *
+ * Reinitializes *strio* with the given <i>other_StrIO</i> or _string_ 
+ * and _mode_ (see StringIO#new).
+ */
 static VALUE
 strio_reopen(argc, argv, self)
     int argc;
@@ -459,7 +478,8 @@ strio_reopen(argc, argv, self)
     if (argc == 1 && TYPE(*argv) != T_STRING) {
 	return strio_copy(self, *argv);
     }
-    return strio_initialize(argc, argv, self);
+    strio_init(argc, argv, StringIO(self));
+    return self;
 }
 
 static VALUE
