@@ -3,14 +3,14 @@ module Mail # :doc:
 
   require 'date'
   
-  gem "treetop", ">= 1.4"
+#  gem "treetop", ">= 1.4"
   require 'treetop'
-  gem 'activesupport', ">= 2.3"
-  require 'activesupport'
+#  gem 'activesupport', ">= 2.3"
+#  require 'activesupport'
   require 'uri'
   require 'net/smtp'
   require 'mime/types'
-  require 'tlsmail' if RUBY_VERSION <= '1.8.6'
+#  require 'tlsmail' if RUBY_VERSION <= '1.8.6'
 
   dir_name = File.join(File.dirname(__FILE__), 'mail')
 
