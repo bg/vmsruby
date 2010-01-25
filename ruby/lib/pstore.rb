@@ -14,6 +14,7 @@
 
 require "fileutils"
 require "digest/md5"
+require "vms"
 
 # ODS-2 does not allow multiple dots in filenames, so suffix
 # with underscore instead.
@@ -101,8 +102,6 @@ class PStore
   def transaction(read_only=false)
     raise PStore::Error, "nested transaction" if @transaction
     begin
-      old_vms_use_fwrite=$VMS_USE_FWRITE
-      $VMS_USE_FWRITE=true
       @rdonly = read_only
       @abort = false
       @transaction = true
@@ -116,6 +115,7 @@ class PStore
 	file = (exists ?
 		File.open(@filename,'r+') :
 		File.open(@filename,'w+')).binmode
+        file.write_mode=:FWRITE
 # FixMe: disabled until VMS file locking is fixed
 #   - In testing, the lock was never released after the
 #     file was closed.
@@ -161,6 +161,7 @@ class PStore
 	  if !md5 || size != content.size || md5 != Digest::MD5.digest(content)
             File.open(tmp_file, "w") {|t|
               t.binmode
+              t.write_mode=:FWRITE
               t.write(content)
             }
             File.rename(tmp_file, new_file)
@@ -173,7 +174,6 @@ class PStore
       @table = nil
       @transaction = false
       file.close if file
-      $VMS_USE_FWRITE=old_vms_use_fwrite
     end
     value
   end
@@ -197,6 +197,7 @@ class PStore
     new_file = suffix_filename @filename,".new"
     File.open(new_file) do |nf|
       nf.binmode
+      nf.write_mode=:FWRITE
       FileUtils.copy_stream(nf, f)
     end
     File.unlink(new_file)
