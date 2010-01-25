@@ -14,6 +14,8 @@
 
 require "fileutils"
 require "digest/md5"
+# FIXME: would be better to include in ruby definition than each place
+# we need it.
 require "vms"
 
 # ODS-2 does not allow multiple dots in filenames, so suffix
