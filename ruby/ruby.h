@@ -412,8 +412,12 @@ struct RBignum {
 #define RMODULE(obj) RCLASS(obj)
 #define RFLOAT(obj)  (R_CAST(RFloat)(obj))
 #define RSTRING(obj) (R_CAST(RString)(obj))
+#define RSTRING_PTR(s) (RSTRING(s)->ptr)
+#define RSTRING_LEN(s) (RSTRING(s)->len)
 #define RREGEXP(obj) (R_CAST(RRegexp)(obj))
 #define RARRAY(obj)  (R_CAST(RArray)(obj))
+#define RARRAY_LEN(s) (RARRAY(s)->len)
+#define RARRAY_PTR(s) (RARRAY(s)->ptr)
 #define RHASH(obj)   (R_CAST(RHash)(obj))
 #define RDATA(obj)   (R_CAST(RData)(obj))
 #define RSTRUCT(obj) (R_CAST(RStruct)(obj))
@@ -667,7 +671,10 @@ rb_special_const_p(obj)
     return Qfalse;
 }
 
-#include "missing.h"
+#if !defined(__cplusplus)
+# include "missing.h"
+#endif
+
 #include "intern.h"
 
 #if defined(EXTLIB) && defined(USE_DLN_A_OUT)
