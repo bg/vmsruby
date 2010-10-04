@@ -34,6 +34,7 @@ $ CALL BUILD STRSCAN		'phase' 'target' 'libroot'
 $ CALL BUILD SYCK		'phase' 'target' 'libroot'
 $ CALL BUILD ZLIB		'phase' 'target' 'libroot'
 $ CALL BUILD LCKLIB		'phase' 'target' 'libroot'
+$ CALL BUILD OPENSSL		'phase' 'target' 'libroot'
 $ EXIT
 $
 $!
