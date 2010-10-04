@@ -720,3 +720,4 @@ SYMBOL_VECTOR=(st_init_strtable=PROCEDURE)
 SYMBOL_VECTOR=(st_insert=PROCEDURE)
 SYMBOL_VECTOR=(st_lookup=PROCEDURE)
 
+symbol_vector=(rb_block_proc=procedure)
