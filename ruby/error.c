@@ -61,8 +61,11 @@ err_snprintf(buf, len, fmt, args)
 
     n = err_position(buf, len);
     if (len > n) {
-/*	vsnprintf((char*)buf+n, len-n, fmt, args); */
+#ifdef __ia64
+ 	vsnprintf((char*)buf+n, len-n, fmt, args);
+#else
 	vsprintf((char*)buf+n, fmt, args);
+#endif
     }
 }
 
@@ -108,8 +111,11 @@ rb_compile_error_append(fmt, va_alist)
     char buf[BUFSIZ];
 
     va_init_list(args, fmt);
-/*  vsnprintf(buf, BUFSIZ, fmt, args); */
+#ifdef __ia64
+    vsnprintf(buf, BUFSIZ, fmt, args); 
+#else
     vsprintf(buf, fmt, args);
+#endif
     va_end(args);
     err_append(buf);
 }
@@ -608,8 +614,11 @@ rb_name_error(id, fmt, va_alist)
     char buf[BUFSIZ];
 
     va_init_list(args, fmt);
-/*    vsnprintf(buf, BUFSIZ, fmt, args); */
+#ifdef __ia64
+    vsnprintf(buf, BUFSIZ, fmt, args); 
+#else
     vsprintf(buf, fmt, args);
+#endif
     va_end(args);
 
     argv[0] = rb_str_new2(buf);
@@ -1056,8 +1065,11 @@ rb_raise(exc, fmt, va_alist)
     char buf[BUFSIZ];
 
     va_init_list(args,fmt);
-/*    vsnprintf(buf, BUFSIZ, fmt, args); */
+#ifdef __ia64
+    vsnprintf(buf, BUFSIZ, fmt, args); 
+#else
     vsprintf(buf, fmt, args);
+#endif
     va_end(args);
     rb_exc_raise(rb_exc_new2(exc, buf));
 }
@@ -1075,8 +1087,11 @@ rb_loaderror(fmt, va_alist)
     char buf[BUFSIZ];
 
     va_init_list(args, fmt);
-/*    vsnprintf(buf, BUFSIZ, fmt, args); */
+#ifdef __ia64
+    vsnprintf(buf, BUFSIZ, fmt, args); 
+#else
     vsprintf(buf, fmt, args);
+#endif
     va_end(args);
     rb_exc_raise(rb_exc_new2(rb_eLoadError, buf));
 }
@@ -1102,8 +1117,11 @@ rb_fatal(fmt, va_alist)
     char buf[BUFSIZ];
 
     va_init_list(args, fmt);
-/*    vsnprintf(buf, BUFSIZ, fmt, args); */
+#ifdef __ia64
+    vsnprintf(buf, BUFSIZ, fmt, args); 
+#else
     vsnprintf(buf, fmt, args);
+#endif
     va_end(args);
 
     ruby_in_eval = 0;

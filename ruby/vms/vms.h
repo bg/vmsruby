@@ -10,7 +10,9 @@ extern int isinf(double);
 extern int isnan(double);
 extern int flock(int fd, int oper);
 
+#ifndef __ia64
 extern int vsnprintf();
+#endif 
 
 #ifdef INET6
 #undef INET6

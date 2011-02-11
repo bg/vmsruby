@@ -159,7 +159,13 @@ extern void freeaddrinfo __P((struct addrinfo *));
 #if defined __UCLIBC__
 const
 #endif
+
+// Apparently defined already on itanium: netdb.h
+#ifndef __ia64
 extern char *gai_strerror __P((int));
+#else
+#include <netdb.h>
+#endif
 
 /* In case there is no definition of offsetof() provided - though any proper
 Standard C system should have one. */

@@ -202,9 +202,13 @@ if (pai->ai_flags & AI_CANONNAME) {\
 #if defined __UCLIBC__
 const
 #endif
-char *
-gai_strerror(ecode)
-	int ecode;
+
+// TH>Itanium requires "const char*"
+// TH>gai_strerror is defined inside netdb.h, however we actually
+//    use this version (otherwise gai_strerror causes missing
+//    symbol link errors).
+const char *
+gai_strerror(int ecode)
 {
 	if (ecode < 0 || ecode > EAI_MAX)
 		ecode = EAI_MAX;

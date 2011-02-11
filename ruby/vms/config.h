@@ -4,6 +4,12 @@
 #define VMS_RUBY_STREAM "018"
 #endif
 
+#ifdef __ia64
+#define HAVE_VSNPRINTF 1
+#define HAVE_STDARG_PROTOTYPES 1
+#define HAVE_CRYPT 1
+#endif
+
 /* #define HAVE_PROTOTYPES 1 */
 #define HAVE_STDARG_PROTOTYPES 1
 /* #define HAVE_ATTR_NORETURN 1 */
