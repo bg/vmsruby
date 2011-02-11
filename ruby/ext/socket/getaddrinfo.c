@@ -203,12 +203,19 @@ if (pai->ai_flags & AI_CANONNAME) {\
 const
 #endif
 
+
+#ifdef __ia64__
 // TH>Itanium requires "const char*"
 // TH>gai_strerror is defined inside netdb.h, however we actually
 //    use this version (otherwise gai_strerror causes missing
 //    symbol link errors).
 const char *
 gai_strerror(int ecode)
+#else
+char *
+gai_strerror(ecode)
+   int ecode;
+#endif
 {
 	if (ecode < 0 || ecode > EAI_MAX)
 		ecode = EAI_MAX;
