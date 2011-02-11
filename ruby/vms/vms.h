@@ -16,4 +16,6 @@ extern int vsnprintf();
 #undef INET6
 #endif
 
+typedef int socklen_t;
+
 #endif
