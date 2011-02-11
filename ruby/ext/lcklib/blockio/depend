@@ -1,0 +1,2 @@
+lcklib.o: lcklib.c $(hdrdir)/ruby.h $(topdir)/config.h \
+  $(hdrdir)/defines.h $(hdrdir)/intern.h $(hdrdir)/rubyio.h
