@@ -1,0 +1,24 @@
+CAST2FLOAT	amatch.c	/^#define CAST2FLOAT(obj) \\$/
+DEF_ALLOCATOR	amatch.c	/^#define DEF_ALLOCATOR(type)                       /
+DEF_CONSTRUCTOR	amatch.c	/^#define DEF_CONSTRUCTOR(klass, type)              /
+DEF_ITERATE_STRINGS	amatch.c	/^#define DEF_ITERATE_STRINGS(type)                 /
+DEF_PATTERN_ACCESSOR	amatch.c	/^#define DEF_PATTERN_ACCESSOR(type)                /
+DEF_RB_FREE	amatch.c	/^#define DEF_RB_FREE(klass, type)                  /
+DEF_RB_READER	amatch.c	/^#define DEF_RB_READER(type, function, name, conver/
+DEF_RB_WRITER	amatch.c	/^#define DEF_RB_WRITER(type, function, name, vtype,/
+FLOAT2C	amatch.c	/^#define FLOAT2C(obj) RFLOAT(obj)->value$/
+GET_STRUCT	amatch.c	/^#define GET_STRUCT(klass)                 \\$/
+Init_amatch	amatch.c	/^void Init_amatch()$/
+Levenshtein_search	amatch.c	/^static VALUE Levenshtein_search(Levenshtein *amatc/
+PairDistance_match	amatch.c	/^static VALUE PairDistance_match($/
+amatch_LongestSubstring	amatch.c	/^static VALUE amatch_LongestSubstring(General *amat/
+hamming	amatch.c	/^static VALUE hamming(General *amatch, VALUE string/
+longest_subsequence	amatch.c	/^static VALUE longest_subsequence(General *amatch, /
+rb_Levenshtein_initialize	amatch.c	/^static VALUE rb_Levenshtein_initialize(VALUE self,/
+rb_Levenshtein_search	amatch.c	/^static VALUE rb_Levenshtein_search(VALUE self, VAL/
+rb_str_Levenshtein_match	amatch.c	/^static VALUE rb_str_Levenshtein_match(VALUE self, /
+rb_str_Levenshtein_search	amatch.c	/^static VALUE rb_str_Levenshtein_search(VALUE self,/
+rb_str_hamming	amatch.c	/^static VALUE rb_str_hamming(VALUE self, VALUE stri/
+rb_str_longest_subsequence	amatch.c	/^static VALUE rb_str_longest_subsequence(VALUE self/
+rb_str_longest_substring	amatch.c	/^static VALUE rb_str_longest_substring(VALUE self, /
+rb_str_pair_distance	amatch.c	/^static VALUE rb_str_pair_distance(VALUE self, VALU/

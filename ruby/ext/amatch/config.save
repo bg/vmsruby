@@ -1,0 +1,12 @@
+bin-dir=$prefix/bin
+site-ruby=$prefix/lib/ruby/site_ruby/1.8
+prefix=c:/program files/ruby
+ruby-path=c:/program files/ruby/bin/ruby
+make-prog=make
+rb-dir=$site-ruby
+without-ext=no
+ruby-prog=c:/program files/ruby/bin/ruby
+site-ruby-common=$prefix/lib/ruby/site_ruby
+std-ruby=$prefix/lib/ruby/1.8
+data-dir=$prefix/share
+so-dir=$prefix/lib/ruby/site_ruby/1.8/i386-msvcrt
