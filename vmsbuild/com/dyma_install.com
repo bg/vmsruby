@@ -23,7 +23,8 @@ $ backup/log 'source_root'.obj]ruby_interpreter.exe -
                                             'target_root'.prog]ruby.exe
 $ backup/log 'source_root'.obj]*.           'target_root'.prog]*.
 $ backup/log 'source_root'.tmpsrc]*.h       'target_root'.include]*.*
-$ backup/log 'source_root'.-.test...]*.*    'target_root'.test...]*.*
+$ backup/log 'source_root'.-.test...]*.*/excl=*corrupt_dirs* -
+                                            'target_root'.test...]*.*
 $ backup/log 'source_root'.-.ruby...]*.*    'target_root'.src.ruby...]*.*
 $ set file/prot=(s:rwed,o:rwed,g:rwed,w:re) 'target_root'...]*.*;
 $ set file/prot=(s:rwed,o:rwed,g:rwed,w:re) 'target_parent'ruby_new.dir;
@@ -31,3 +32,5 @@ $! TODO: ruby_dylib & other site_ruby?
 $!
 $! rename 'target_parent'ruby.dir           ruby_old.dir
 $! rename 'target_parent'ruby_new.dir       ruby.dir
+$! rename dyulib:clklib.exe		    dyulib:clcklib_exe.old
+%! copy 'source_root'.obj]clcklib.exe	    dyulib:clklib.exe

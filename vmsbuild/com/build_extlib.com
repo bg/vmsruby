@@ -23,7 +23,9 @@ $BUILD_ALL:
 $ CALL BUILD SOCKET		'phase' 'target' 'libroot'
 $ CALL BUILD NKF		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST 		'phase' 'target' 'libroot'
+$ CALL BUILD DIGEST.BUBBLEBABBLE		'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.MD5		'phase' 'target' 'libroot'
+$ CALL BUILD DIGEST.RMD160	'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.SHA1	'phase' 'target' 'libroot'
 $ CALL BUILD DIGEST.SHA2	'phase' 'target' 'libroot'
 $ CALL BUILD SDBM		'phase' 'target' 'libroot'
@@ -35,6 +37,7 @@ $ CALL BUILD SYCK		'phase' 'target' 'libroot'
 $ CALL BUILD ZLIB		'phase' 'target' 'libroot'
 $ CALL BUILD LCKLIB		'phase' 'target' 'libroot'
 $ CALL BUILD OPENSSL		'phase' 'target' 'libroot'
+$ CALL BUILD AMATCH		'phase' 'target' 'libroot'
 $ EXIT
 $
 $!
@@ -73,12 +76,14 @@ $ makeflag = "/FROM"
 $
 $MAKE:
 $EXTLIB:
+$ SHOW LOG SYS$LIBRARY
 $ MMS'makeflag'/DESCRIPTION=EXTSRC$:['extlib']'libname'.MMS EXE$:'libname'.EXE
 $ EXIT
 $
 $BLDLIB:
 $ MMS/DESCRIPTION=EXTSRC$:['extlib']'libname.MMS BLDLIB -
-     /MACRO=(TARGET="''target'", LIBROOT="''libroot'")
+     /MACRO=(TARGET="''target'",LIBROOT="''libroot'", -
+     CFLAGS="/LIST=LIS$:.LIS/SHOW=ALL")
 $ EXIT
 $
 $ ENDSUBROUTINE
