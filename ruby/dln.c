@@ -1162,6 +1162,20 @@ dln_sym(name)
 #define GetProcAddress GetProcAddressA
 #endif
 
+#if defined(__VMS)
+#include <starlet.h>
+#include <rms.h>
+#include <stsdef.h>
+#include <unixlib.h>
+#include <descrip.h>
+#include <lib$routines.h>
+
+static unsigned long int vms_dln_status;
+static char *vms_filespec;
+static int vms_fileact(char *filespec, int type);
+static long vms_fisexh(long *sigarr, long *mecarr);
+#endif
+
 static const char *
 dln_strerror()
 {
@@ -1210,6 +1224,25 @@ dln_strerror()
     }
     return message;
 #endif
+
+#ifdef __VMS
+    static unsigned long int r0_status;
+    static char msg[255+1];
+    static struct dsc$descriptor_s msg_d = { sizeof (msg) - 1,
+                                             DSC$K_DTYPE_T,
+                                             DSC$K_CLASS_S,
+                                             msg };
+
+    r0_status = lib$sys_getmsg (&vms_dln_status,
+                                &msg_d.dsc$w_length,
+                                &msg_d);
+    if (!($VMS_STATUS_SUCCESS(r0_status)))
+        (void)lib$signal(r0_status);
+    msg[msg_d.dsc$w_length]=0;
+
+    return msg;
+#endif /* __VMS */
+
 }
 
 
@@ -1259,19 +1292,6 @@ aix_loaderror(const char *pathname)
     rb_loaderror(errbuf);
     return;
 }
-#endif
-
-#if defined(__VMS)
-#include <starlet.h>
-#include <rms.h>
-#include <stsdef.h>
-#include <unixlib.h>
-#include <descrip.h>
-#include <lib$routines.h>
-
-static char *vms_filespec;
-static int vms_fileact(char *filespec, int type);
-static long vms_fisexh(long *sigarr, long *mecarr);
 #endif
 
 void*
@@ -1574,7 +1594,6 @@ dln_load(file)
 #if defined(__VMS)
 #define DLN_DEFINED
     {
-	long status;
 	void (*init_fct)();
 	char *fname, *p1, *p2;
 
@@ -1600,7 +1619,7 @@ dln_load(file)
 
 	lib$establish(vms_fisexh);
 
-	status = lib$find_image_symbol (
+	vms_dln_status = lib$find_image_symbol (
 		     &fname_d,
 		     &buf_d, 
 		     &init_fct, 
@@ -1608,10 +1627,10 @@ dln_load(file)
 
 	lib$establish(0);
 
-	if (status == RMS$_FNF) {
+	if (vms_dln_status == RMS$_FNF) {
 	    error = dln_strerror();
 	    goto failed;
-	} else if (!$VMS_STATUS_SUCCESS(status)) {
+	} else if (!$VMS_STATUS_SUCCESS(vms_dln_status)) {
 	    error = DLN_ERROR();
 	    goto failed;
 	}
