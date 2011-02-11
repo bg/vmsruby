@@ -4561,7 +4561,11 @@ io_cntl(fd, cmd, narg, io_p)
 # if defined(__CYGWIN__)
     retval = io_p?ioctl(fd, cmd, (void*)narg):fcntl(fd, cmd, narg);
 # else
+#  ifdef __VMS
+    retval = io_p?ioctl(fd, cmd, &narg):fcntl(fd, cmd, narg);
+#  else
     retval = io_p?ioctl(fd, cmd, narg):fcntl(fd, cmd, narg);
+#  endif
 # endif
     TRAP_END;
 #else
@@ -5612,7 +5616,7 @@ Init_IO()
     rb_file_const("NONBLOCK", INT2FIX(O_NONBLOCK));
 #   else
     rb_file_const("NONBLOCK", INT2FIX(O_NDELAY));
-#   endif
+#endif
 #endif
     rb_file_const("TRUNC", INT2FIX(O_TRUNC));
 #ifdef O_NOCTTY
