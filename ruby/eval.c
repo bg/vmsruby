@@ -9337,7 +9337,7 @@ Init_Binding()
     rb_define_global_function("binding", rb_f_binding, 0);
 }
 
-#if defined __ia64__ || defined(__VMS)
+#if defined __dym_not_defined__ || defined(__VMS)
 #if defined(__FreeBSD__)
 /*
  * FreeBSD/ia64 and OpenVMS/ia64 currently do not have a way for a process to get the
@@ -9453,7 +9453,7 @@ struct thread {
     long   stk_max;
     VALUE *stk_ptr;
     VALUE *stk_pos;
-#ifdef __ia64__
+#ifdef __dym_not_defined__
     VALUE *bstr_ptr;
     long   bstr_len;
 #endif
@@ -9727,7 +9727,7 @@ thread_mark(th)
 #if defined(THINK_C) || defined(__human68k__)
 	rb_gc_mark_locations(th->stk_ptr+2, th->stk_ptr+th->stk_len+2);
 #endif
-#ifdef __ia64__
+#ifdef __dym_not_defined__
 	if (th->bstr_ptr) {
 	    rb_gc_mark_locations(th->bstr_ptr, th->bstr_ptr+th->bstr_len);
 	}
@@ -9776,7 +9776,7 @@ thread_free(th)
 {
     if (th->stk_ptr) free(th->stk_ptr);
     th->stk_ptr = 0;
-#ifdef __ia64__
+#ifdef __dym_not_defined__
     if (th->bstr_ptr) free(th->bstr_ptr);
     th->bstr_ptr = 0;
 #endif
@@ -9835,7 +9835,7 @@ rb_thread_save_context(th)
     th->stk_len = len;
     FLUSH_REGISTER_WINDOWS;
     MEMCPY(th->stk_ptr, th->stk_pos, VALUE, th->stk_len);
-#ifdef __ia64__
+#ifdef __dym_not_defined__
     {
 	ucontext_t ctx;
 	VALUE *top, *bot;
@@ -9991,7 +9991,7 @@ rb_thread_restore_context(th, exit)
     ex = exit;
     FLUSH_REGISTER_WINDOWS;
     MEMCPY(tmp->stk_pos, tmp->stk_ptr, VALUE, tmp->stk_len);
-#ifdef __ia64__
+#ifdef __dym_not_defined__
     MEMCPY((VALUE*)__libc_ia64_register_backing_store_base, tmp->bstr_ptr, VALUE, tmp->bstr_len);
 #endif
 
@@ -11206,7 +11206,7 @@ rb_thread_group(thread)
     return group;
 }
 
-#ifdef __ia64__
+#ifdef __dym_not_defined__
 # define IA64_INIT(x) x
 #else
 # define IA64_INIT(x)
