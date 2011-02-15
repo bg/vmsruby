@@ -1,0 +1,15 @@
+TODO, In no particular order:
+
+- bring up-to-date (1.8.7 at least, 1.9.x later?)
+- finish port to Itanium
+- better filepath handling (natively use Unix paths and provide path
+  conversion Unix <-> VMS)
+- separate out local (Dymaxion-only) bits from standard MRI bits
+- separate out non-core-ruby bits (rspec, rails, etc.)
+- support gems
+- distinguish between truly arch-specific and compiler-specific
+  patches
+- replace ad-hoc build system with a sane one
+- ensure VMS patches are sent upstream (reinstating VMS as an
+  officially supported port)
+

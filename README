@@ -1,0 +1,4 @@
+A port of Ruby for OpenVMS based on Ruby 1.8.2 (MRI).
+
+This work is early Alpha and not suitable for release yet. See TODO
+for more details.
