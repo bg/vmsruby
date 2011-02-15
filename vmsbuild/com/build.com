@@ -5,13 +5,12 @@ $!   P2 - When P1=EXTLIB, P2=<external library name> (i.e. fcntl,zlib)
 $
 $ RUBY_STREAM   = "018"
 $
-$ on_vax   = F$GETSYI("ARCH_NAME") .EQS. "VAX"
-$ on_alpha = F$GETSYI("ARCH_NAME") .EQS. "Alpha"
-$ on_ia64  = F$GETSYI("ARCH_NAME") .EQS. "IA64"
+$ arch_name = F$EDIT(F$GETSYI("ARCH_NAME"),"LOWERCASE")
+$ on_vax   = arch_name .EQS. "vax"
+$ on_alpha = arch_name .EQS. "alpha"
+$ on_ia64  = arch_name .EQS. "ia64"
 $
-$ IF on_vax   THEN RUBY_PLATFORM = "vax-vms"
-$ IF on_alpha THEN RUBY_PLATFORM = "alpha-vms"
-$ IF on_ia64  THEN RUBY_PLATFORM = "ia64-vms"
+$ RUBY_PLATFORM=arch_name+"-vms"
 $
 $ DEFINE  := DEFINE/NOLOG
 $ XDEFINE := DEFINE/NOLOG/TRANSLATION=(CONCEALED,TERMINAL)
@@ -94,8 +93,8 @@ $ WRITE VMSVERSION_H F$FAO("#define RUBY_ARCHLIB      ""!AS""", RUBY_ARCHLIB)
 $ CLOSE VMSVERSION_H
 $
 $ IF P2 .NES. "DEBUG"
-$ THEN MMS/DESCRIPTION=COM$:RUBY.MMS
-$ ELSE MMS/DESCRIPTION=COM$:RUBY.MMS /MACRO="DEBUG=1"
+$ THEN MMS/DESCRIPTION=COM$:RUBY_'arch_name'.MMS
+$ ELSE MMS/DESCRIPTION=COM$:RUBY_'arch_name'.MMS /MACRO="DEBUG=1"
 $ ENDIF
 $
 $LAST_ACTION:

@@ -18,6 +18,7 @@ $ECHO "[ STEP 3 - @BUILD EXTLIB ]"
 $echo ""
 $@build extlib
 $create/dir [-.stage.ruby.lib.018.alpha-vms.digest]
+$create/dir [-.stage.ruby.lib.018.ia64-vms.digest]
 $echo ""
 $ECHO "[ STEP 4 - @BUILD BLDLIB ]"
 $echo ""
