@@ -30,9 +30,7 @@
 #include <sys/resource.h>
 #endif
 
-// TH> This used to be __ia64__ but the code does not compile on 
-//     OpenVMS on IA64, so was likely intended for a unix distribution.
-#ifdef __dym_not_defined__
+#if defined(__ia64__) && !defined(__VMS)
 #include <ucontext.h>
 #if defined(__FreeBSD__)
 /*
@@ -433,7 +431,7 @@ static unsigned int STACK_LEVEL_MAX = 655300;
 # define SET_STACK_END VALUE stack_end; alloca(0);
 # define STACK_END (&stack_end)
 #else
-# if defined(__GNUC__) && defined(USE_BUILTIN_FRAME_ADDRESS) && !defined(__dym_not_defined__)
+# if defined(__GNUC__) && defined(USE_BUILTIN_FRAME_ADDRESS) && !defined(__VMS)
 __attribute__ ((noinline)) static VALUE *
 stack_end_address(void)
 {
@@ -1359,7 +1357,7 @@ garbage_collect()
     else
 	rb_gc_mark_locations(rb_gc_stack_start, (VALUE*)STACK_END + 1);
 #endif
-#ifdef __dym_not_defined__
+#if defined(__ia64__) && !defined(__VMS)
     /* mark backing store (flushed register window on the stack) */
     /* the basic idea from guile GC code                         */
     {
@@ -1480,7 +1478,7 @@ Init_stack(addr)
 	    STACK_LEVEL_MAX = (rlim.rlim_cur - space) / sizeof(VALUE);
 	}
     }
-#if defined(__dym_not_defined__) && (!defined(__GNUC__) || __GNUC__ < 2 || defined(__OPTIMIZE__))
+#if defined(__ia64__) && !defined(__VMS) && (!defined(__GNUC__) || __GNUC__ < 2 || defined(__OPTIMIZE__))
     /* ruby crashes on IA64 if compiled with optimizer on */
     /* when if STACK_LEVEL_MAX is greater than this magic number */
     /* I know this is a kludge.  I suspect optimizer bug */
