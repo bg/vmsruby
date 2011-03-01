@@ -1843,6 +1843,7 @@ class TestKernel < Rubicon::TestCase
 
   # Need a better test here
   def test_s_select
+    fail "This test is known to deadlock.  Skipping ..."
     assert_nil(select(nil, nil, nil, 0))
     assert_raise(ArgumentError) { select(nil, nil, nil, -1) }
     
@@ -2211,4 +2212,3 @@ class TestKernel < Rubicon::TestCase
 end
 
 Rubicon::handleTests(TestKernel) if $0 == __FILE__
-                                                                                                                     
