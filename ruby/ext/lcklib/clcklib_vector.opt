@@ -1,3 +1,4 @@
+GSMATCH=LEQUAL,1,0
 symbol_vector=(cRecordLock=PROCEDURE)
 symbol_vector=(cRecordRelease=PROCEDURE)
 symbol_vector=(cRecordGet=PROCEDURE)

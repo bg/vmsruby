@@ -13,13 +13,13 @@ $DEFINE SYS$LIBRARY DYLIBS,DYM$DISK:[DYMAX.DYLIBS.83STATIC]
 $DEFINE ALPHA$LIBRARY DYLIBS
 $
 $ echo "[ cxx''switches_cxx'/share_globals lcklib_cpp.pre ]"
-$ cxx'switches_cxx'/share_globals lcklib_cpp.pre
+$ cxx'switches_cxx'/share_globals/debug/noopt lcklib_cpp.pre
 $ 
 $ echo "[ cxx''switches_cxx'/share_globals clcklib_c.pre ]"
-$ cxx'switches_cxx'/share_globals clcklib_c.pre
+$ cxx'switches_cxx'/share_globals/debug/noopt clcklib_c.pre
 $
-$ echo "[ Building clcklib.exe ]"
-$ cxxlink/gst/shareable=clcklib.exe clcklib_c.obj,lcklib_cpp.obj,clcklib_vector.opt/opt
+$ echo "[ Building clcklib_debug.exe ]"
+$ cxxlink/gst/shareable=clcklib.exe clcklib_c.obj,lcklib_cpp.obj,clcklib_vector.opt/opt/debug
 $
 $! del clcklib_c.pre;
 $! del lcklib_cpp.pre;
