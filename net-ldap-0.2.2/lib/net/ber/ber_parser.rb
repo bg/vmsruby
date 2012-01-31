@@ -164,5 +164,9 @@ module Net::BER::BERParser
     end
 
     parse_ber_object(syntax, id, data)
-  end
+
+    # Ruby 1.8.x compatibility - prior to 1.9, getbyte and getc were equivalent
+    def getbyte
+      getc
+    end unless self.methods.include? :getbyte
 end
