@@ -29,6 +29,7 @@ module Enumerable
 end
 
 module Enumerable
+  undef each_cons if instance_methods.include? 'each_cons'
   def each_cons(num)
     n = Type.coerce_to(num, Fixnum, :to_int)
     raise ArgumentError, "invalid size: #{n}" if n <= 0
@@ -41,6 +42,7 @@ module Enumerable
     nil
   end
 
+  undef each_slice if instance_methods.include? 'each_slice'
   def each_slice(slice_size)
     n = Type.coerce_to(slice_size, Fixnum, :to_int)
     raise ArgumentError, "invalid slice size: #{n}" if n <= 0
