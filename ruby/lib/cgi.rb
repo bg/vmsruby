@@ -985,6 +985,26 @@ class CGI
         if 10240 < content_length
           require "tempfile"
           body = Tempfile.new("CGI")
+
+          # FIXME: Replace with monkey patched vms-ruby File class
+          class << body
+            def initialize *args
+              $VMS_FILE_MODE = 'rfm=fix'
+              super *args
+              self.write_mode = :FWRITE
+              self.binmode
+            end
+
+            def print *args
+              self.write_mode = :FWRITE
+              write *args
+            end
+
+            def rewind mode = 'rb'
+              reopen path, mode
+            end
+          end
+
         else
           begin
             require "stringio"
